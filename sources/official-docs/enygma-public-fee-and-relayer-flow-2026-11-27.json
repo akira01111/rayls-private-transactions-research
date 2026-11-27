@@ -1,0 +1,186 @@
+{
+  "record_id": "RAYLS-ENYGMA-PUBLIC-FEE-FLOW-DOC-REVIEW-20261127",
+  "record_type": "official_documentation_review",
+  "status": "in_progress",
+  "retrieved_date": "2026-11-27",
+  "scope": "Compare current official Enygma Public documentation with the historical testnet transaction 0x09edab2b...25bb. Documentation statements are official claims, not independent proof of historical transaction behavior.",
+  "sources": [
+    {
+      "source_id": "DOC-ENYGMA-PUBLIC-WORKS",
+      "title": "How Enygma Public works",
+      "url": "https://docs.rayls.com/docs/how-enygma-public-works",
+      "publisher": "Rayls Docs",
+      "source_type": "official_product_documentation",
+      "retrieval_date": "2026-11-27",
+      "relevant_claims": [
+        {
+          "topic": "relayer_role",
+          "claim": "A relayer submits Enygma Public transactions and charges gas in RLS.",
+          "classification": "official_claim"
+        },
+        {
+          "topic": "shielded_payment_fee_flow",
+          "claim": "For a shielded payment, the wallet proves a smaller payment of gas from the sender's shielded RLS to the relayer; for an RLS payment, the relayer fee can instead be a note in the same proof.",
+          "classification": "official_claim"
+        },
+        {
+          "topic": "transaction_submission",
+          "claim": "The documentation describes the relayer checking its fee and submitting the payment and fee payment in one transaction through Multicall3.",
+          "classification": "official_claim"
+        },
+        {
+          "topic": "fee_split",
+          "claim": "Each gas fee includes a 15% commission to the Rayls Foundation; the relayer collects fees and pays the Foundation share after the transaction is mined.",
+          "classification": "official_claim"
+        },
+        {
+          "topic": "shared_vault_asset_visibility",
+          "claim": "The shared vault accepts any ERC-20 token in one Merkle tree, so a payment in that shared vault does not publicly identify which token was moved.",
+          "classification": "official_claim"
+        }
+      ],
+      "publication_or_last_updated_date": "not established from the retrieved page result"
+    },
+    {
+      "source_id": "DOC-ENYGMA-PUBLIC",
+      "title": "Enygma Public",
+      "url": "https://docs.rayls.com/docs/enygma-public",
+      "publisher": "Rayls Docs",
+      "source_type": "official_product_documentation",
+      "retrieval_date": "2026-11-27",
+      "relevant_claims": [
+        {
+          "topic": "privacy_and_auditor",
+          "claim": "The deployment's auditor can read shielded payments; the public does not see who paid whom or how much.",
+          "classification": "official_claim"
+        },
+        {
+          "topic": "gas_in_rls",
+          "claim": "Enygma Public transactions pay gas in RLS through a relayer.",
+          "classification": "official_claim"
+        },
+        {
+          "topic": "system_components",
+          "claim": "The documented deployment includes vault contracts, a verifier, a gas forwarder, a relayer, and an owner multisig; the owner multisig can upgrade the registry and shared vault, register vaults, and add verifying keys.",
+          "classification": "official_claim"
+        }
+      ],
+      "publication_or_last_updated_date": "not established from the retrieved page result"
+    },
+    {
+      "source_id": "DOC-RAYLS-HIGH-LEVEL-ARCHITECTURE",
+      "title": "Rayls high-level architecture",
+      "url": "https://docs.rayls.com/docs/rayls-high-level-architecture",
+      "publisher": "Rayls Docs",
+      "source_type": "official_product_documentation",
+      "retrieval_date": "2026-11-27",
+      "retrieved_page_update_label": "Updated 3 months ago",
+      "relevant_claims": [
+        {
+          "topic": "public_chain_gas",
+          "claim": "The general Rayls Public Chain gas token is USDr, while Enygma Public is documented as an exception: its transactions pay gas in RLS through a relayer, with a 15% commission to the Rayls Foundation.",
+          "classification": "official_claim"
+        }
+      ]
+    }
+  ],
+  "historical_transaction_reference": {
+    "transaction_hash": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "block_number": 24825928,
+    "transaction_date_utc": "2026-11-21T09:40:42Z",
+    "sender": "0xa5f0c684eb49866a9f62f901cd85f98a19da0ac8",
+    "destination": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "method": "transferV2",
+    "receipt_shape": {
+      "number_of_inputs": 1,
+      "number_of_outputs": 3,
+      "statement_length": 10
+    },
+    "statement_8_integer": "4416000000000000000",
+    "related_transaction": {
+      "hash": "0xacc7d175e08b72766796807b34141185e461fcec0d72df6ccb8dc621406509b2",
+      "block_number": 24825932,
+      "observed_value_in_previous_audit": "0.576 RLS",
+      "purpose_and_beneficiary_identity": "unknown"
+    },
+    "prior_evidence_record": "https://github.com/akira01111/rayls-enygma-testnet/blob/main/experiments/transactions/tx-09edab2b/decoded/audit_summary.json"
+  },
+  "comparison": {
+    "consistent_with_current_documentation": [
+      {
+        "observation": "The examined transaction is submitted from a relayer address.",
+        "documentation_link": "DOC-ENYGMA-PUBLIC-WORKS",
+        "assessment": "consistent; it does not by itself establish the relayer's internal fee accounting."
+      },
+      {
+        "observation": "The transaction receipt has one input and three outputs.",
+        "documentation_link": "DOC-ENYGMA-PUBLIC-WORKS",
+        "assessment": "consistent with the current source-level PaymentRelayerFee layout and the documented possibility that an RLS payment includes the relayer fee note in the same proof; historical circuit semantics are not proven."
+      },
+      {
+        "observation": "A separate transaction with an observed value of 0.576 RLS occurs four blocks later.",
+        "documentation_link": "DOC-ENYGMA-PUBLIC-WORKS",
+        "assessment": "temporally consistent with the documentation's statement that the relayer pays the Foundation share after mining; the recipient identity and transaction purpose remain unverified, so this is not proof of the documented commission payment."
+      },
+      {
+        "observation": "The destination is identified in current Explorer metadata as SharedVaultProxy.",
+        "documentation_link": "DOC-ENYGMA-PUBLIC-WORKS",
+        "assessment": "consistent with the documented shared-vault design; the token type remains unidentifiable from this transaction alone."
+      }
+    ],
+    "apparent_difference_or_gap": [
+      {
+        "observation": "The historical transaction calls transferV2 directly on SharedVaultProxy; the saved transaction record says it is not routed through Multicall3.",
+        "documentation_claim": "The current documentation describes submitting the payment and fee payment together through Multicall3.",
+        "assessment": "unresolved. Possible explanations include different transaction paths, an RLS-payment fee-note variant, or a documentation/code version difference. Do not assume one explanation."
+      }
+    ],
+    "fee_arithmetic_without_semantic_assumption": {
+      "observed_statement_8_integer": "4416000000000000000",
+      "previously_observed_related_transfer_display": "0.576 RLS",
+      "arithmetic_candidate_base_if_values_are_comparable": "3.84",
+      "arithmetic_identity": "4.416 - 0.576 = 3.84; 0.576 is 15% of 3.84",
+      "classification": "arithmetic_reconstruction_only",
+      "limitation": "The relationship does not establish that statement[8] is denominated in RLS, that the related transfer is the Foundation commission for this transaction, or that 3.84 is the relayer's retained fee."
+    }
+  },
+  "evidence_classification": {
+    "official_claims": [
+      "Current Rayls documentation states that Enygma Public gas is charged in RLS through a relayer.",
+      "Current Rayls documentation states that an Enygma Public fee includes a 15% Rayls Foundation commission.",
+      "Current Rayls documentation states that an RLS payment may include the relayer fee as a note in the same proof.",
+      "Current Rayls documentation states that the relayer collects fees and pays the Foundation share after the transaction is mined."
+    ],
+    "direct_observations_from_existing_transaction_archive": [
+      "The historical transaction is a direct transferV2 call to SharedVaultProxy, from the relayer address.",
+      "The decoded receipt contains one input, three outputs, and ten statement integers.",
+      "Statement[8] contains the integer 4416000000000000000.",
+      "A separate transaction four blocks later was previously recorded with a value of 0.576 RLS; its purpose and beneficiary identity are unresolved."
+    ],
+    "inferences_not_upgraded": [
+      "The historical statement[8] is an RLS-denominated fee.",
+      "The 0.576 RLS transfer is the Foundation commission associated with this shielded payment.",
+      "The 3.84 arithmetic remainder is the relayer's retained fee.",
+      "The third output note belongs to the relayer."
+    ],
+    "unknowns": [
+      "Whether the current documentation describes the exact version and transaction path active on 2026-11-21.",
+      "Whether the historical transfer was denominated in RLS or another token without independent token/vault identification.",
+      "Whether the related 0.576 RLS transaction is the fee payment described by current documentation.",
+      "Why the examined historical transaction is a direct vault call whereas current documentation describes Multicall3 for a payment-plus-fee submission path."
+    ]
+  },
+  "next_investigation": [
+    "Inspect historical vault/proxy upgrade and deployment history to identify the implementation active at block 24825928.",
+    "Inspect current and historical vault token configuration and vaultId mapping to determine whether this transaction used the RLS vault or the shared vault.",
+    "Inspect the related transaction 0xacc7d175... and its recipient/contract context without assigning purpose by timing alone.",
+    "Inspect the Enygma wallet/client bundle around the transaction date for the relayer fee path, including any Multicall3 or same-proof fee-note variant."
+  ],
+  "change_control": {
+    "raw_transaction_archive_modified": false,
+    "prior_audit_classifications_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false,
+    "note": "This is a dated official-documentation comparison. It supplements rather than overwrites the historical transaction audit."
+  }
+}
