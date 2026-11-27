@@ -15,18 +15,19 @@
       "relevant_claims": [
         {
           "topic": "relayer_role",
-          "claim": "A relayer submits Enygma Public transactions and charges gas in RLS.",
+          "claim": "A relayer submits Enygma Public transactions and charges their gas in RLS.",
           "classification": "official_claim"
         },
         {
-          "topic": "shielded_payment_fee_flow",
-          "claim": "For a shielded payment, the wallet proves a smaller payment of gas from the sender's shielded RLS to the relayer; for an RLS payment, the relayer fee can instead be a note in the same proof.",
+          "topic": "shielded_payment_fee_variants",
+          "claim": "Shielded payments normally use a second, smaller payment from the sender's shielded RLS to the relayer; for an RLS payment, the relayer fee can instead be a note in the same proof.",
           "classification": "official_claim"
         },
         {
-          "topic": "transaction_submission",
-          "claim": "The documentation describes the relayer checking its fee and submitting the payment and fee payment in one transaction through Multicall3.",
-          "classification": "official_claim"
+          "topic": "separate_payment_submission",
+          "claim": "For the separate-fee-payment path, the relayer checks its fee and submits the payment and fee payment in one transaction through Multicall3.",
+          "classification": "official_claim",
+          "scope_note": "Read together with the documented same-proof RLS-payment variant; the Multicall3 description should not be treated as the only possible path."
         },
         {
           "topic": "fee_split",
@@ -39,7 +40,8 @@
           "classification": "official_claim"
         }
       ],
-      "publication_or_last_updated_date": "not established from the retrieved page result"
+      "publication_or_last_updated_date": "not established from the retrieved page result",
+      "content_evidence": "https://docs.rayls.com/docs/how-enygma-public-works"
     },
     {
       "source_id": "DOC-ENYGMA-PUBLIC",
@@ -65,7 +67,8 @@
           "classification": "official_claim"
         }
       ],
-      "publication_or_last_updated_date": "not established from the retrieved page result"
+      "publication_or_last_updated_date": "not established from the retrieved page result",
+      "content_evidence": "https://docs.rayls.com/docs/enygma-public"
     },
     {
       "source_id": "DOC-RAYLS-HIGH-LEVEL-ARCHITECTURE",
@@ -74,14 +77,15 @@
       "publisher": "Rayls Docs",
       "source_type": "official_product_documentation",
       "retrieval_date": "2026-11-27",
-      "retrieved_page_update_label": "Updated 3 months ago",
+      "retrieved_page_update_label": "Updated 3 months ago; retrieved via web search on 2026-11-27",
       "relevant_claims": [
         {
           "topic": "public_chain_gas",
-          "claim": "The general Rayls Public Chain gas token is USDr, while Enygma Public is documented as an exception: its transactions pay gas in RLS through a relayer, with a 15% commission to the Rayls Foundation.",
+          "claim": "The general Rayls Public Chain gas token is USDr, but the architecture page explicitly identifies Enygma Public as an exception: its transactions pay gas in RLS through a relayer, with a 15% Rayls Foundation commission.",
           "classification": "official_claim"
         }
-      ]
+      ],
+      "content_evidence": "https://docs.rayls.com/docs/rayls-high-level-architecture"
     }
   ],
   "historical_transaction_reference": {
@@ -130,9 +134,10 @@
     ],
     "apparent_difference_or_gap": [
       {
-        "observation": "The historical transaction calls transferV2 directly on SharedVaultProxy; the saved transaction record says it is not routed through Multicall3.",
-        "documentation_claim": "The current documentation describes submitting the payment and fee payment together through Multicall3.",
-        "assessment": "unresolved. Possible explanations include different transaction paths, an RLS-payment fee-note variant, or a documentation/code version difference. Do not assume one explanation."
+        "observation": "The historical transaction calls transferV2 directly on SharedVaultProxy; the saved historical transaction record says the destination is called directly and not through Multicall3.",
+        "documentation_claim": "The current documentation describes a separate shielded-RLS fee payment submitted with the payment through Multicall3, but also explicitly says that for an RLS payment the relayer fee can be a note in the same proof.",
+        "assessment": "The direct vault call and 1-input/3-output receipt are consistent with the possibility of a same-proof relayer-fee path. The current source layout also describes a 1-input/3-output relayer-fee circuit with a third output for the relayer. This is a plausible path match, not proof that the historical deployed circuit assigned the third note to the relayer or that the current source was active at the historical block.",
+        "classification": "inference_pending_historical_implementation_and_note_ownership_verification"
       }
     ],
     "fee_arithmetic_without_semantic_assumption": {
@@ -158,10 +163,12 @@
       "A separate transaction four blocks later was previously recorded with a value of 0.576 RLS; its purpose and beneficiary identity are unresolved."
     ],
     "inferences_not_upgraded": [
-      "The historical statement[8] is an RLS-denominated fee.",
-      "The 0.576 RLS transfer is the Foundation commission associated with this shielded payment.",
+      "The historical statement[8] is semantically StFee for this transaction.",
+      "The integer in statement[8] represents an RLS-denominated total customer fee.",
+      "The 0.576 RLS related transfer is the Foundation commission associated with this transaction.",
       "The 3.84 arithmetic remainder is the relayer's retained fee.",
-      "The third output note belongs to the relayer."
+      "The third output note belongs to the relayer.",
+      "The direct transferV2 transaction used the same-proof fee-note variant described in current documentation."
     ],
     "unknowns": [
       "Whether the current documentation describes the exact version and transaction path active on 2026-11-21.",
