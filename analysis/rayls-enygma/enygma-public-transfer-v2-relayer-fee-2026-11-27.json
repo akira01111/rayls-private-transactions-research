@@ -1,0 +1,301 @@
+{
+  "record_id": "RAYLS-ENYGMA-TX-09EDAB2B-SOURCE-REVIEW-20261127",
+  "record_type": "transaction_source_review",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-27",
+  "network": {
+    "name": "Rayls Enygma Public Testnet",
+    "chain_id_decimal": 7295799,
+    "chain_id_hex": "0x6f5337",
+    "rpc": "https://testnet-rpc.rayls.com",
+    "explorer": "https://testnet-explorer.rayls.com"
+  },
+  "subject": {
+    "transaction_hash": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "block_number": 24825928,
+    "transaction_timestamp_utc": "2026-11-21T09:40:42Z",
+    "status": "success",
+    "from": "0xa5f0c684eb49866a9f62f901cd85f98a19da0ac8",
+    "to": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "explorer_method_label": "transferV2",
+    "selector": "0xaacd552c",
+    "calldata_bytes": 4804
+  },
+  "provenance": {
+    "transaction_data": {
+      "source": "Rayls Public Testnet JSON-RPC and Explorer API",
+      "retrieval_mode": "read_only",
+      "explorer_transaction_endpoint": "https://testnet-explorer.rayls.com/api/v2/transactions/0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+      "explorer_logs_endpoint": "https://testnet-explorer.rayls.com/api/v2/transactions/0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb/logs",
+      "rpc_endpoint": "https://testnet-rpc.rayls.com"
+    },
+    "source_code_review": {
+      "source_contract_name": "SharedVault",
+      "source_file": "project/src/SharedVault.sol",
+      "relevant_inherited_source_files": [
+        "project/src/Erc20CoinVault.sol",
+        "project/src/AbstractCoinVault.sol",
+        "project/src/generated/PaymentStatementLayout.sol",
+        "project/src/CiphertextHash.sol"
+      ],
+      "source_verification_status": "verified_on_explorer",
+      "source_verification_timestamp_utc": "2026-11-27T00:02:55.444785Z",
+      "source_compiler": "0.8.28",
+      "source_changed_bytecode_flag": false,
+      "current_implementation_address_reported_by_explorer": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+      "proxy_address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "explorer_metadata_endpoint": "https://testnet-explorer.rayls.com/api/v2/smart-contracts/0x937471B6aCDaD0c77d6874D0546d6009e09CD3f0",
+      "temporal_scope_warning": "This source was verified on 2026-11-27. It is not established that this implementation was active at the transaction block on 2026-11-21."
+    },
+    "earlier_transaction_archive": {
+      "repository": "https://github.com/akira01111/rayls-enygma-testnet",
+      "decoded_transaction_file": "experiments/transactions/tx-09edab2b/decoded/decoded_events.json",
+      "decoded_statement_length": 10,
+      "prior_audit_summary": "experiments/transactions/tx-09edab2b/decoded/audit_summary.json",
+      "prior_audit_implementation_address_recorded": "0xad9667049f14d1757d147f652c41dc241c57091c",
+      "prior_audit_implementation_source_status": "unverified_at_the_time_of_that_audit"
+    }
+  },
+  "transaction_observations": {
+    "decoded_function": "transferV2",
+    "decoded_function_signature": "transferV2((((uint256,uint256),(uint256[2],uint256[2]),(uint256,uint256)),uint256[],uint256,uint256),bytes[],bytes[])",
+    "receipt": {
+      "number_of_inputs": 1,
+      "number_of_outputs": 3,
+      "statement_length": 10,
+      "ciphertextI_count": 3,
+      "ciphertextII_count": 3,
+      "ciphertextI_each_bytes": 1088,
+      "ciphertextII_each_bytes": 92
+    },
+    "logs": {
+      "total": 7,
+      "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "event_signature_matches": {
+        "Nullifier": 1,
+        "Commitment": 3,
+        "EncryptedNote": 3
+      },
+      "classification_note": "Explorer-decoded logs and ABI signature matches; these observations do not independently establish the historical implementation's internal execution semantics."
+    }
+  },
+  "receipt_statement": {
+    "length": 10,
+    "values": [
+      {
+        "index": 0,
+        "value_decimal": "0",
+        "candidate_field": "message",
+        "classification": "inference_from_current_verified_source_layout",
+        "note": "Current source describes statement[0] as message; transaction value is directly observed as zero."
+      },
+      {
+        "index": 1,
+        "value_decimal": "0",
+        "candidate_field": "tree_number",
+        "classification": "inference_from_current_verified_source_layout",
+        "note": "Current source layout places the input tree number here; transaction value is directly observed as zero."
+      },
+      {
+        "index": 2,
+        "value_decimal": "6075942233978560974817876474580508440370379496250920001406337333479246925317",
+        "candidate_field": "merkle_root",
+        "classification": "unresolved",
+        "note": "Position is consistent with the current source layout, but the historical implementation binding is unresolved; do not upgrade to verified fact."
+      },
+      {
+        "index": 3,
+        "value_decimal": "5454502945763875592701576071810508002020494068481157713198958958266091961725",
+        "candidate_field": "nullifier",
+        "classification": "verified_value_match_in_transaction_evidence",
+        "matched_log": "Nullifier event value in log 0"
+      },
+      {
+        "index": 4,
+        "value_decimal": "4203572301681572519174046107482780314928988640423590098121725576397071145878",
+        "candidate_field": "output_commitment_1",
+        "classification": "verified_value_match_in_transaction_evidence",
+        "matched_logs": [
+          "Commitment event in log 1",
+          "EncryptedNote commitment in log 4"
+        ]
+      },
+      {
+        "index": 5,
+        "value_decimal": "15839529834485623130174369121072127754401553698747807161464355374853279437644",
+        "candidate_field": "output_commitment_2",
+        "classification": "verified_value_match_in_transaction_evidence",
+        "note": "Exact 77-digit value copied from the saved decoded_events.json; matches the second Commitment and corresponding EncryptedNote commitment.",
+        "matched_logs": [
+          "Commitment event in log 2",
+          "EncryptedNote commitment in log 5"
+        ]
+      },
+      {
+        "index": 6,
+        "value_decimal": "14669864028715638200222044110428971928201299967250355082911741678037893517256",
+        "candidate_field": "output_commitment_3",
+        "classification": "verified_value_match_in_transaction_evidence",
+        "matched_logs": [
+          "Commitment event in log 3",
+          "EncryptedNote commitment in log 6"
+        ]
+      },
+      {
+        "index": 7,
+        "value_decimal": "892628260469465868192251870087974236548138731202",
+        "value_hex_address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "candidate_field": "vault_contract_address",
+        "classification": "verified_value_match",
+        "note": "Converts to the transaction destination address."
+      },
+      {
+        "index": 8,
+        "value_decimal": "4416000000000000000",
+        "candidate_field": "StFee_candidate_under_current_source_layout",
+        "classification": {
+          "integer": "verified_fact",
+          "semantic_field_assignment": "current_source_layout_match_not_historically_proven",
+          "token_unit": "unknown_from_statement_alone",
+          "total_fee_interpretation": "inference"
+        },
+        "note": "The integer is directly present in calldata. Current verified source places the PaymentRelayerFee fee at offset 8. Historical implementation/source equivalence is not established."
+      },
+      {
+        "index": 9,
+        "value_decimal": "6941936981953762233230311379582840826160420420689931747109419297423123379602",
+        "candidate_field": "ciphertext_hash",
+        "classification": "unresolved",
+        "note": "Current source places the ciphertext hash in the final statement position for vault-bound receipts; historical implementation binding remains unresolved."
+      }
+    ]
+  },
+  "current_verified_source_review": {
+    "source_scope": "Current Explorer-associated SharedVault implementation source as retrieved and reviewed on 2026-11-27; not automatically applicable to the 2026-11-21 transaction.",
+    "relevant_logic": [
+      {
+        "file": "project/src/Erc20CoinVault.sol",
+        "function": "transferV2",
+        "lines": "416-464",
+        "observation": "Calls _requireStandaloneTransfer(), then checkReceiptConditions(receipt, CiphertextHash.ofNotes(ciphertextI, ciphertextII)), nullifies inputs, inserts commitments, and emits EncryptedNote for each output."
+      },
+      {
+        "file": "project/src/Erc20CoinVault.sol",
+        "function": "_requireStandaloneTransfer",
+        "lines": "394-401",
+        "observation": "Requires statement[0] == 0 and numberOfOutputs >= 2. It does not check statement length."
+      },
+      {
+        "file": "project/src/Erc20CoinVault.sol",
+        "function": "checkReceiptConditions",
+        "lines": "712-765",
+        "observation": "For vault-bound receipts, checks the contract address at jCommitmentsIndex + numberOfOutputs and checks the last statement element against the ciphertext hash."
+      },
+      {
+        "file": "project/src/Erc20CoinVault.sol",
+        "function": "_verificationKeyId",
+        "lines": "776-815",
+        "observation": "Routes receipts with one input and three outputs to VK_ID_ERC20_JOINSPLIT_RELAYER (slot 3). This branch does not explicitly check statement length."
+      },
+      {
+        "file": "project/src/Erc20CoinVault.sol",
+        "function": "partialWithdrawWithRelayerFee",
+        "lines": "532-568",
+        "observation": "Explicitly requires 1 input, 3 outputs, and PAYMENT_RELAYER_FEE_LEN. Its comments describe output 0 as recipient payment, output 1 as sender change, and output 2 as a spendable relayer fee note. This is not the function called by the examined transaction."
+      },
+      {
+        "file": "project/src/generated/PaymentStatementLayout.sol",
+        "constants": "PAYMENT_RELAYER_FEE_*",
+        "lines": "61-77",
+        "observation": "Defines PAYMENT_RELAYER_FEE_LEN = 10; commitments offset 4 size 3; contract address offset 7; fee offset 8; ciphertext hash offset 9."
+      }
+    ],
+    "source_consistency_issue": {
+      "issue": "_verificationKeyId() comment says the PaymentRelayer circuit has an 8-element statement, while PaymentStatementLayout.sol defines PAYMENT_RELAYER_FEE_LEN as 10 and the transaction receipt has 10 elements.",
+      "assessment": "Documentation/source-comment inconsistency. Do not silently resolve it as stale without further circuit/verification-key investigation."
+    },
+    "interpretation_boundary": "The transaction invokes transferV2, not partialWithdrawWithRelayerFee. The shared source-level verifier dispatch is relevant, but comments about the withdrawal path do not prove that the examined transaction paid, assigned, or settled a fee note."
+  },
+  "implementation_timeline_assessment": {
+    "historical_transaction_date": "2026-11-21",
+    "source_verification_date": "2026-11-27",
+    "historical_implementation_recorded_in_earlier_audit": "0xad9667049f14d1757d147f652c41dc241c57091c",
+    "current_explorer_associated_implementation": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+    "addresses_match": false,
+    "historical_proxy_slot_recheck": "RPC returned a pruned historical-state error for the requested block.",
+    "conclusion": "The current verified source cannot yet be treated as proof of the code executed at the historical transaction block. A proxy implementation change between the audit snapshot and current Explorer metadata is possible, but not yet established."
+  },
+  "evidence_classification": {
+    "verified_facts": [
+      "Transaction hash, block, sender, destination, successful status, transferV2 selector/signature match, calldata structure and 10 decoded statement integers.",
+      "One input and three outputs in the decoded receipt.",
+      "Seven Explorer/RPC-audit logs: one Nullifier, three Commitment, and three EncryptedNote signature matches.",
+      "Statement[3] matches the Nullifier event value.",
+      "Statement[4], statement[5], and statement[6] match the three Commitment values and their corresponding EncryptedNote commitment values.",
+      "Statement[7] converts to the transaction destination address.",
+      "Statement[8] equals the integer 4416000000000000000 in calldata."
+    ],
+    "current_source_observations_not_historically_attributed": [
+      "The Explorer currently associates the proxy with SharedVault implementation 0x937471b6acdad0c77d6874d0546d6009e09cd3f0 and marks that source verified.",
+      "The current source defines a 10-element PaymentRelayerFee layout and fee offset 8.",
+      "The current source routes the one-input/three-output shape to verifier slot 3."
+    ],
+    "inferences": [
+      "Statement[8] is semantically StFee for this historical transaction.",
+      "The integer in statement[8] represents an RLS-denominated total fee.",
+      "The receipt proves that a relayer fee note was created or paid to a particular owner."
+    ],
+    "unknowns": [
+      "Which implementation address was active at the transaction's exact block unless historical proxy state can be independently reconstructed.",
+      "Whether the current Verified SharedVault source is byte-for-byte or semantically the same as the implementation active at block 24825928.",
+      "The deployed verification key contents and the exact circuit constraints used at the historical transaction.",
+      "The token denomination/decimals of statement[8] from this statement alone.",
+      "The owner and decrypted value of the third output note.",
+      "The meaning of statement[2] and statement[9] under the historical deployed circuit.",
+      "Why _verificationKeyId() comment refers to an 8-element statement while the generated relayer-fee layout defines 10."
+    ]
+  },
+  "limitations": [
+    "The earlier transaction archive explicitly recorded implementation 0xAd966704... as unverified. The current Explorer metadata now associates the proxy with a different implementation, 0x937471...; historical attribution is unresolved.",
+    "A read-only RPC historical eth_getStorageAt request for the transaction block failed because the state was pruned.",
+    "The source-level review is useful for generating a hypothesis and follow-up checks, but it does not prove historical contract execution semantics.",
+    "The transaction called transferV2, not partialWithdrawWithRelayerFee.",
+    "The 4.416e18 integer is not enough, by itself, to prove an RLS unit or a total-fee interpretation."
+  ],
+  "next_checks": [
+    "Obtain an independently timestamped historical implementation-slot record for the proxy at block 24825928, or a trustworthy deployment/upgrade history.",
+    "Compare the historical implementation's deployed bytecode hash with available verified source/build metadata if historical bytecode is obtainable.",
+    "Inspect the deployed verifier registry and verification key slot 3 as of the relevant deployment/version.",
+    "Inspect the circuit source/public signal schema for PaymentRelayerFeePublic and reconcile the 8-versus-10 comment/layout mismatch.",
+    "Keep statement[8] classified as an observed integer until token identity, decimals, and proof semantics are independently supported.",
+    "Do not assert a named fee recipient or ownership of output 2 without decryption/key ownership or other independent evidence."
+  ],
+  "sources": [
+    {
+      "id": "SRC-TX-09EDAB2B-EXPLORER",
+      "type": "transaction_and_logs",
+      "url": "https://testnet-explorer.rayls.com/tx/0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb"
+    },
+    {
+      "id": "SRC-TX-09EDAB2B-OLD-DECODE",
+      "type": "prior_decoded_transaction_record",
+      "url": "https://github.com/akira01111/rayls-enygma-testnet/blob/main/experiments/transactions/tx-09edab2b/decoded/decoded_events.json"
+    },
+    {
+      "id": "SRC-TX-09EDAB2B-OLD-AUDIT",
+      "type": "prior_audit_summary",
+      "url": "https://github.com/akira01111/rayls-enygma-testnet/blob/main/experiments/transactions/tx-09edab2b/decoded/audit_summary.json"
+    },
+    {
+      "id": "SRC-SHAREDVAULT-CURRENT",
+      "type": "current_explorer_verified_source_metadata",
+      "url": "https://testnet-explorer.rayls.com/address/0x937471B6aCDaD0c77d6874D0546d6009e09CD3f0#code"
+    }
+  ],
+  "change_control": {
+    "raw_evidence_modified": false,
+    "source_repository_modified": false,
+    "transaction_signed_or_sent": false,
+    "status_note": "This record is an analysis artifact. It does not overwrite prior audit files or change earlier classifications."
+  }
+}
