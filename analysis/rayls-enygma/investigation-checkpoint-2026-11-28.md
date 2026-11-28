@@ -177,6 +177,29 @@ Immediate next action:
 - Check whether pages move backward in block height and whether known upgrade transaction hashes ever appear.
 - Continue toward creation block only if pagination is stable. If it omits known upgrade transactions, use it only as supplementary evidence and seek block transaction lists or an independent indexer.
 
+## 9. Two later upgrades executed through OwnerMultisig
+
+Explorer transaction metadata for both upgrade transactions shows the outer call destination is `0xbf099175a241194c38e977735d59ccb22596d775`, not the SharedVaultProxy. Both outer transactions are successful calls to `execute(uint256 id)`, selector `0xfe0d94c1`.
+
+| Date UTC | Block | Outer tx | Action ID | Proxy event implementation |
+|---|---:|---|---:|---|
+| 2026-11-26 22:08:28 | 25,699,353 | `0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567` | 13 | `0x9644667cc096964bafb6a533d57873544fbfb956` |
+| 2026-11-27 00:22:17 | 25,714,062 | `0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c` | 16 | `0x937471b6acdad0c77d6874d0546d6009e09cd3f0` |
+
+The proxy-emitted `Upgraded(address)` event hash/block correlates with each outer `execute(id)` transaction. This strongly indicates multisig-mediated upgrades. Internal call traces have not yet been retrieved.
+
+The address transaction index's first page returned 50 items, with newest block 25,683,008 and oldest block 24,560,687. It includes the target transaction at block 24,825,928 (item index 32). Its next-page cursor was:
+- `index: 0`
+- `value: "0"`
+- `hash: 0xfa4ee432b2718f1f555d8c49ed0fcdfe3b930c0f93e5c39cb2171abb35013fa6`
+- `inserted_at: 2026-11-19T17:22:13.207381Z`
+- `block_number: 24560687`
+- `fee: 61384656000000000`
+
+The first page does not include the known upgrade transactions at blocks 25,699,353 and 25,714,062. The endpoint may omit multisig-executed proxy calls, so do not treat this address transaction index as a complete upgrade timeline.
+
+**Next action:** fetch internal calls and raw traces for both multisig execution transactions, then inspect multisig metadata/source and determine whether its action history can reveal upgrades before the target transaction.
+
 ## 8. Evidence discipline
 
 Label conclusions as direct observation / verified fact, current verified source observation, official claim, inference, or unknown.
