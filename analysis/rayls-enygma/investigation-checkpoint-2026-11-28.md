@@ -363,3 +363,44 @@ Updated records:
 - [Historical vault upgrade candidates](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-historical-vault-upgrade-candidates-2026-11-28.json)
 
 Next action: query historical EIP-1967 implementation storage at block 24825928.
+
+
+## 16. Proposal 10 logs confirmed; historical slot read unavailable
+
+Transaction-specific Explorer logs for execute(10) transaction:
+`0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4`
+
+Endpoint: `https://testnet-explorer.rayls.com/api/v2/transactions/0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4/logs`
+
+Two logs were returned:
+- Log index 0, emitted by SharedVaultProxy: `Upgraded(address)`; indexed implementation = `0xad9667049f14d1757d147f652c41dc241c57091c`.
+- Log index 1, emitted by OwnerMultisig: `Executed(uint256,address)`; indexed action ID = 10; executor = `0x3bffb10f6f17f15164fbc0416f1bc42c56b2c191`.
+
+This independently confirms Proposal 10 installed `0xad966...` at block 23,399,976 (2026-11-11 21:25:01 UTC). Proposal 5 was already confirmed by its own transaction-specific logs to install `0x3a3f95...` at block 22,380,723 (2026-11-04 17:03:01 UTC).
+
+The historical target transaction is block 24,825,928 (2026-11-21 09:40:42 UTC). Enumerated direct SharedVaultProxy upgrade proposals 13 and 16 installed later implementations at blocks 25,699,353 and 25,714,062, both after the target. Therefore `0xad966...` is currently the best-supported implementation at target time based on the confirmed upgrade chronology.
+
+### Historical EIP-1967 slot attempt
+
+Attempted read:
+- method: `eth_getStorageAt`
+- proxy: `0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2`
+- slot: `0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc` (EIP-1967 implementation slot)
+- requested block: 24,825,927 (block immediately preceding target transaction)
+- endpoint: `https://testnet-rpc.rayls.com`
+- response: JSON-RPC error code `-32603`, message `state at block #24825928 is pruned`.
+
+Classification: direct observation of an RPC historical-state availability failure. No storage value was returned. Do not interpret this as a zero slot or as evidence of another implementation.
+
+### Remaining authorization-path check
+
+The enumerated OwnerMultisig proposal set also contains proposals targeting SharedVaultProxy with `grantRole(bytes32,address)`: IDs 3, 4, 14, 17, 21, and 22. The grantRole selector alone does not identify the role or grantee. Before finalizing the implementation reconstruction, decode these calls and determine whether any role granted before target block 24,825,928 could authorize an independent upgrade path. IDs 14, 17, 21, and 22 must also be timestamped/ordered against the target; do not assume their IDs imply execution order.
+
+New record:
+[Historical implementation slot pruned result](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-historical-implementation-slot-pruned-2026-11-28.json)
+
+Updated records:
+- [Proposal 10 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-10-execution-chronology-2026-11-28.json)
+- [Historical vault upgrade candidates](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-historical-vault-upgrade-candidates-2026-11-28.json)
+
+Next action: decode proposal calldata for proxy-targeted grantRole actions and compare the granted roles with the implementation's upgrade authorization logic.
