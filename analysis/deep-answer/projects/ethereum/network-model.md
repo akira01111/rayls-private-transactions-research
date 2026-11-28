@@ -28,3 +28,17 @@ Status: reviewed against Ethereum's current official network and consensus docum
 
 ## Institutional relevance
 Ethereum Mainnet provides an established public settlement environment and broad public access. Privacy for financial transactions is not supplied by the base ledger itself; it must be added through applications or protocols with their own disclosure and governance models. An institutional example and its scope are recorded in [deployment status](deployment-status.md).
+
+## Evidence snapshot metadata retained from Codespaces retrieval
+
+### Ethereum Networks
+- Retrieval method: user-run Bash `curl` in GitHub Codespaces.
+- Retrieval date: 2026-11-28; HTTP 200; downloaded size: 444,383 bytes.
+- SHA-256: `835711ee4021bcac282813c361cb45cf980ef0112c4e4bfc28d4f9157e38c6b8`.
+- Page-reported last update: 2026-09-23; extracted from `article#main-content`.
+
+### Ethereum Proof of Stake
+- Retrieval method: user-run Bash `curl` in GitHub Codespaces.
+- Retrieval date: 2026-11-28; HTTP 200; downloaded size: 413,995 bytes.
+- SHA-256: `295eeabd5f951cce8e09f42ce23170eaa13167dbc18dfa2fb8d7df5d3e5082ef`.
+- Page-reported last update: 2026-10-07; extracted from `article#main-content`.

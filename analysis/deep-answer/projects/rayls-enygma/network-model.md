@@ -37,3 +37,12 @@ Enygma Sovereign is a distinct institutional edition that operates within Rayls 
 
 ## Institutional relevance
 Rayls demonstrates a hybrid boundary: a public-chain settlement layer, an institution-oriented private-network architecture, and a privacy application currently in a public testnet pilot. Enygma Public's deployment status must remain explicit in every comparison and article. See [deployment status](deployment-status.md).
+
+## Evidence snapshot metadata retained from Codespaces retrieval
+
+Source: [Who sees what in Enygma Public](https://docs.rayls.com/docs/enygma-public-who-sees-what)
+- Retrieval method: user-run Bash `curl` in GitHub Codespaces.
+- Retrieval date: 2026-11-28; HTTP 200; downloaded size: 196,863 bytes.
+- SHA-256: `17704cffaf946d917d32ec35d77b6b2c00acf2aa368b835903ca6aff9e04c0d2`.
+- Local snapshots: `/tmp/deep-answer-auditor/rayls.html` and `/tmp/deep-answer-transaction-privacy/rayls_who_sees_what.html`.
+- This snapshot supports the documented visibility matrix, but does not prove actual successful auditor decryption for a particular account or historical transaction.

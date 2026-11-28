@@ -29,3 +29,9 @@ Status: reviewed for Corda 5.2 application-network architecture. Corda Enterpris
 
 ## Institutional relevance
 Corda is a comparator for a permissioned, membership-governed DLT model. It demonstrates how institutions can control participation and use peer-to-peer transaction distribution, with corresponding interoperability and network-boundary trade-offs. See [deployment status](deployment-status.md).
+
+## Source access and version boundary
+
+- The cited Corda 5.2 pages were reviewed through official browser documentation.
+- User-terminal `curl` retrieval of selected R3 documentation pages returned HTTP 403; no local HTML snapshot was verified for those pages. The 403 response is an access limitation, not source evidence.
+- Network-model and transaction-privacy claims in this file refer to Corda 5.2. The observer-node/regulator example in the separate auditor-access file refers to Corda Enterprise 4.10.

@@ -30,3 +30,14 @@ Status: network-layer and application-layer distinctions reviewed against curren
 
 ## Institutional relevance
 Canton separates shared synchronization/interoperability from application-specific control over parties and data. This is relevant to institutions seeking interoperability without making every application's transaction data public. See [deployment status](deployment-status.md).
+
+## Evidence snapshot metadata retained from Codespaces retrieval
+
+### Topology
+- Retrieval: user-run Bash `curl` in GitHub Codespaces; 2026-11-28; HTTP 200; 344,748 bytes.
+- SHA-256: `751d0d31a8be00aa92105c759eeae0f5b0d18f5d1eca4f7ac72a3effc556b86e`.
+- Local snapshot: `/tmp/deep-answer-auditor/canton_topology_v2.html`.
+
+### Participant Node Architecture
+- Retrieval: user-run Bash `curl` in GitHub Codespaces; 2026-11-28; HTTP 200; 215,117 bytes.
+- SHA-256: `fd4a3a50fda68df83e22eca3a8d26dae768794dd808621135f04ac419ad1c47c`.
