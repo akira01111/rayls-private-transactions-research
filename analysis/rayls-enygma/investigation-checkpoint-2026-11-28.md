@@ -103,6 +103,7 @@ Repository: `akira01111/rayls-private-transactions-research`
 6. [Pre-transaction upgrade scan and RPC/Explorer discrepancy](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-pretransaction-upgrade-scan-2026-11-28.json)
 7. [Multisig-executed SharedVault upgrade actions](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-multisig-upgrade-actions-2026-11-28.json)
 8. [OwnerMultisig proposal structure and execution logs](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-structure-2026-11-28.json)
+9. [Proposal 10 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-10-execution-chronology-2026-11-28.json)
 
 The raw transaction archive and source repository have not been modified during this investigation.
 
@@ -243,6 +244,32 @@ New evidence record:
 [OwnerMultisig historical vault upgrade candidates](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-historical-vault-upgrade-candidates-2026-11-28.json)
 
 **Next action:** query OwnerMultisig's transaction index and paginate for outer `execute(5)` and `execute(10)`. Check index completeness against known `execute(13)` and `execute(16)` controls. Then retrieve transaction-specific logs to match `Executed(id)` and `Upgraded(address)` events.
+
+## 12. Proposal 10 execution chronology — implementation 0xad966...
+
+The first page of OwnerMultisig transaction history (50 items) contains:
+- `propose(SharedVaultProxy, 0, upgradeTo(0xad9667049f14d1757d147f652c41dc241c57091c))` at block **23,399,866**, `2026-11-11T21:23:54Z`.
+- `confirm(10)` at block **23,399,960**, `2026-11-11T21:24:51Z`.
+- `execute(10)` at block **23,399,976**, `2026-11-11T21:25:01Z`, tx `0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4`.
+
+The latest-state `proposals(10)` getter independently returned:
+- target = SharedVaultProxy
+- executed = true
+- calldata selector `0x3659cfe6` = `upgradeTo(address)`
+- implementation argument = `0xad9667049f14d1757d147f652c41dc241c57091c`.
+
+This execution is conclusively before the target transaction (block 24,825,928; 2026-11-21 09:40:42 UTC). It establishes that `0xad966...` was installed on 2026-11-11. It does **not yet establish** that it remained active on 2026-11-21 because proposal 5 is another executed direct SharedVaultProxy upgrade:
+- proposal ID 5 target = SharedVaultProxy
+- selector `0x4f1ef286` = `upgradeToAndCall(address,bytes)`
+- implementation argument = `0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39`
+- execution transaction/block/time still unknown.
+
+Proposal IDs represent creation order per current verified source, not execution order. The `executed=true` getter is current state only.
+
+New record:
+[Proposal 10 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-10-execution-chronology-2026-11-28.json)
+
+**Next action:** follow the exact multisig address transaction pagination cursor from page 1 (block 22,489,567; hash `0xa0d8d9fffe0c7d8a9d0d8e74974c90a715666651c58fc38716cea3a2c1583ec0`) to page 2 and locate `execute(5)`. Then check every OwnerMultisig execute transaction between block 23,399,976 and target block 24,825,928 for any direct SharedVaultProxy upgrade proposal.
 
 ## 8. Evidence discipline
 
