@@ -1,0 +1,274 @@
+{
+  "record_id": "DEEP-ANSWER-AUDITOR-ACCESS-COMPARISON-20261128",
+  "record_type": "comparative_evidence_review",
+  "title": "Auditor access models across Ethereum, Canton, Corda, and Rayls Enygma Public",
+  "created_date": "2026-11-28",
+  "status": "official_documentation_review_pending_independent_terminal_verification",
+  "research_question": "How can financial institutions make private transactions on a public blockchain while retaining auditability and institutional control?",
+  "scope": {
+    "included_systems": [
+      "Ethereum",
+      "Canton Network / Daml",
+      "R3 Corda",
+      "Rayls Enygma Public"
+    ],
+    "focus": "Who can read transaction data, what permission or mechanism provides access, and what the access boundary is.",
+    "exclusions": [
+      "This record does not prove the configuration of a specific production Canton or Corda network.",
+      "This record does not independently decrypt an Enygma account's escrowed view key or verify the current testnet auditor account.",
+      "This record does not establish that all auditors have equivalent rights across the four systems."
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "ETH-PUBLIC-NETWORKS",
+      "publisher": "ethereum.org",
+      "title": "Networks",
+      "url": "https://ethereum.org/developers/docs/networks/",
+      "source_type": "official_protocol_ecosystem_documentation",
+      "retrieved_date": "2026-11-28",
+      "version_or_scope": "Ethereum public networks; page describes public network access generally and identifies Ethereum Mainnet as the primary production network.",
+      "relevant_evidence": [
+        "Public networks are accessible to anyone with an internet connection.",
+        "Anyone can read or create transactions on a public blockchain and validate transactions."
+      ],
+      "supports": [
+        "Ethereum public read access"
+      ],
+      "does_not_support": [
+        "A separate auditor role or auditor-specific permission system at Ethereum base layer.",
+        "The proposition that all information in every privacy-enabled Ethereum application is publicly readable."
+      ]
+    },
+    {
+      "source_id": "CANTON-EXTERNAL-PARTIES-OPN",
+      "publisher": "Digital Asset",
+      "title": "Local and external parties",
+      "url": "https://docs.digitalasset.com/overview/3.4/explanations/canton/external-party.html",
+      "source_type": "official_platform_documentation",
+      "retrieved_date": "2026-11-28",
+      "version_or_scope": "Canton / Daml platform documentation 3.4.",
+      "relevant_evidence": [
+        "An Observing Participant Node (OPN) has observation permissions for a hosted party.",
+        "The party entrusts its OPNs to record and provide read access to transactions involving that party.",
+        "A node with only observation permissions cannot submit or confirm transactions on behalf of the hosted party."
+      ],
+      "supports": [
+        "Canton read-only observation permission scoped to a hosted party"
+      ],
+      "does_not_support": [
+        "A network-wide auditor with visibility into all Canton transactions.",
+        "Automatic access for a regulator that has not been granted the relevant party/participant relationship."
+      ]
+    },
+    {
+      "source_id": "CANTON-TOPOLOGY-PERMISSIONS",
+      "publisher": "Digital Asset",
+      "title": "Topology management",
+      "url": "https://docs.digitalasset.com/overview/3.4/explanations/canton/topology.html",
+      "source_type": "official_platform_documentation",
+      "retrieved_date": "2026-11-28",
+      "version_or_scope": "Canton / Daml platform documentation 3.4.",
+      "relevant_evidence": [
+        "Observation permission means the participant node is notified only of transactions in which the hosted party is a stakeholder.",
+        "Confirmation permission includes observation; submission permission includes confirmation."
+      ],
+      "supports": [
+        "Canton observation access is party-scoped and assigned through hosting topology"
+      ],
+      "does_not_support": [
+        "An auditor can inspect transactions unrelated to the party whose activity is observed.",
+        "Observation permission is globally read-only in every possible operational configuration beyond the documented permission semantics."
+      ]
+    },
+    {
+      "source_id": "CANTON-DAML-OBSERVER",
+      "publisher": "Digital Asset",
+      "title": "Glossary of concepts",
+      "url": "https://docs.digitalasset.com/build/3.4/reference/glossary.html",
+      "source_type": "official_platform_documentation",
+      "retrieved_date": "2026-11-28",
+      "version_or_scope": "Daml contract model documentation 3.4.",
+      "relevant_evidence": [
+        "A contract observer is a party on a contract that can see that contract instance and its information.",
+        "Participant nodes maintain a private contract store containing contracts the participant is privy to; there is no global contract store.",
+        "Sub-transaction privacy means participants learn only the subset of a transaction in which they are directly involved."
+      ],
+      "supports": [
+        "Canton contract-level observer semantics and participant-specific data visibility"
+      ],
+      "does_not_support": [
+        "A general-purpose regulatory auditor automatically sees every contract in a network."
+      ]
+    },
+    {
+      "source_id": "CORDA-OBSERVER-NODES-ENTERPRISE-410",
+      "publisher": "R3",
+      "title": "Posting transactions to observer nodes",
+      "url": "https://docs.r3.com/en/platform/corda/4.10/enterprise/get-started/tutorials/supplementary-tutorials/tutorial-observer-nodes.html",
+      "source_type": "official_product_documentation_and_tutorial",
+      "retrieved_date": "2026-11-28",
+      "version_or_scope": "Corda Enterprise 4.10 tutorial; do not silently generalize implementation details to all Corda versions.",
+      "relevant_evidence": [
+        "R3 describes observer nodes as a common finance requirement where regulators want reporting on actions taken.",
+        "A regulator can run its own node and receive digitally signed, deduplicated reports.",
+        "The tutorial's application flow explicitly sends a signed transaction to a regulator and records it using ALL_VISIBLE."
+      ],
+      "supports": [
+        "Corda Enterprise 4.10 application-integrated observer-node reporting to regulators"
+      ],
+      "does_not_support": [
+        "A Corda-wide auditor identity with automatic access to every transaction.",
+        "The assertion that every Corda application sends every transaction to every regulator by default."
+      ]
+    },
+    {
+      "source_id": "RAYLS-ENYGMA-WHO-SEES-WHAT",
+      "publisher": "Rayls",
+      "title": "Who sees what in Enygma Public",
+      "url": "https://docs.rayls.com/docs/enygma-public-who-sees-what",
+      "source_type": "official_product_documentation",
+      "retrieved_date": "2026-11-28",
+      "relevant_evidence": [
+        "The deployment auditor can read each shielded transaction, including sender, recipient, amount, and token.",
+        "At account registration, the wallet encrypts a copy of the view key to the deployment auditor key using ML-KEM-768 and stores it in the registry.",
+        "The auditor's view uses that key to open account view keys and display shielded transactions.",
+        "The view key does not provide spend authority; spending requires the account spend key.",
+        "The documentation says no Enygma Public contract can freeze, pause, or block funds, while also noting that the owner multisig can upgrade registry or shared-vault rules.",
+        "The page states that the Rayls team is the auditor on testnet."
+      ],
+      "supports": [
+        "Enygma Public's documented deployment-level auditor mechanism",
+        "Read/decrypt capability separated from spend capability",
+        "Testnet auditor identity as an official documentation claim"
+      ],
+      "does_not_support": [
+        "Independent proof that the current testnet auditor actually decrypted a specific account or transaction during this review.",
+        "An immutable guarantee that freeze-related behavior can never change, because owner-multisig upgrades can change relevant contract rules."
+      ]
+    },
+    {
+      "source_id": "RAYLS-ENYGMA-PUBLIC",
+      "publisher": "Rayls",
+      "title": "Enygma Public",
+      "url": "https://docs.rayls.com/docs/enygma-public",
+      "source_type": "official_product_documentation",
+      "retrieved_date": "2026-11-28",
+      "relevant_evidence": [
+        "The product is live on Rayls Public Chain testnet and uses test tokens with no value.",
+        "The deployment auditor can read shielded payments.",
+        "One auditor key is associated with each deployment; the page describes a deployment boundary, such as a country-level deployment.",
+        "The owner multisig can upgrade the registry and shared vault, register vaults, and add verifying keys."
+      ],
+      "supports": [
+        "Enygma Public testnet status",
+        "Deployment-scoped auditor architecture",
+        "Owner-multisig governance over relevant contracts"
+      ],
+      "does_not_support": [
+        "Historical testnet configuration at every prior block without historical state or deployment evidence."
+      ]
+    },
+    {
+      "source_id": "RAYLS-ENYGMA-WORKS",
+      "publisher": "Rayls",
+      "title": "How Enygma Public works",
+      "url": "https://docs.rayls.com/docs/how-enygma-public-works",
+      "source_type": "official_product_documentation",
+      "retrieved_date": "2026-11-28",
+      "relevant_evidence": [
+        "The account's view key is an ML-KEM-768 key pair.",
+        "The wallet encrypts a copy of the view key to the deployment auditor key during registration.",
+        "The account's notes are readable by the owner and auditor, while the spend key remains necessary to spend notes."
+      ],
+      "supports": [
+        "Technical explanation of view-key escrow and separation of read and spend authority"
+      ],
+      "does_not_support": [
+        "Independent cryptographic verification of the testnet auditor's private key custody or successful decryption."
+      ]
+    }
+  ],
+  "comparison_assessment": {
+    "ethereum": {
+      "auditor_access_model": "Public read access to public-chain data; no separate auditor-only access boundary is documented at the base network layer.",
+      "scope": "Publicly available ledger data.",
+      "classification": "official_documentation_fact_plus_limited_architectural_inference",
+      "caveat": "Applications and privacy layers may keep application data or plaintext outside public ledger visibility."
+    },
+    "canton": {
+      "auditor_access_model": "Party-scoped observation permission for participant nodes and contract-level observer rights in Daml.",
+      "scope": "Transactions/contracts in which the hosted party is a stakeholder or observer.",
+      "classification": "official_documentation_fact",
+      "caveat": "Do not label this a universal network-wide auditor. Access depends on party hosting permissions, contract stakeholders, and application design."
+    },
+    "corda": {
+      "auditor_access_model": "Application-integrated observer node; regulator node receives transactions explicitly reported by application flows.",
+      "scope": "Transactions sent to the observer through the CorDapp flow and the visibility/recording options used.",
+      "classification": "official_documentation_fact_for_corda_enterprise_4_10",
+      "caveat": "The cited observer tutorial is Corda Enterprise 4.10. It is not proof that every Corda version or CorDapp automatically reports every transaction."
+    },
+    "rayls_enygma_public": {
+      "auditor_access_model": "Deployment auditor key used to decrypt escrowed account view keys.",
+      "scope": "Every shielded transaction within the auditor's own deployment, according to current official product documentation.",
+      "classification": "official_product_claim",
+      "caveat": "A specific live decryption was not independently tested. Relevant contract rules are upgradeable by the owner multisig."
+    }
+  },
+  "corrected_comparison_table": [
+    {
+      "system": "Ethereum",
+      "concise_claim": "Public read access to on-chain data",
+      "auditor_access": "Anyone can read public ledger data; no auditor-specific role at base layer is evidenced here."
+    },
+    {
+      "system": "Canton",
+      "concise_claim": "Party- and contract-scoped observation",
+      "auditor_access": "OPN and Daml observers see only transactions/contracts within granted party or contract visibility."
+    },
+    {
+      "system": "R3 Corda Enterprise 4.10",
+      "concise_claim": "Application-integrated regulator observer node",
+      "auditor_access": "Regulator node receives signed transactions explicitly reported by application flow."
+    },
+    {
+      "system": "Rayls Enygma Public",
+      "concise_claim": "Deployment-level view-key auditor",
+      "auditor_access": "Auditor key opens escrowed account view keys to read shielded transactions in that deployment."
+    }
+  ],
+  "terminal_verification": {
+    "status": "not_completed_network_access_unavailable_in_this_runtime",
+    "attempt_date": "2026-11-28",
+    "command_attempted": "curl -sSI --max-time 12 https://docs.r3.com/en/platform/corda/4.10/enterprise/get-started/tutorials/supplementary-tutorials/tutorial-observer-nodes.html",
+    "observed_result": "curl: (6) Could not resolve host: docs.r3.com",
+    "interpretation": "The current terminal runtime could not resolve external hosts. This is an environment/network limitation, not evidence for or against any platform claim.",
+    "planned_independent_checks": [
+      "Re-fetch official documentation from a terminal with working network access; record HTTP status, final URL, retrieval timestamp, and SHA-256 of saved responses.",
+      "Inspect Canton public documentation or source code for party-to-participant observation topology and Daml observer semantics; do not claim live regulator access without a real configured Canton environment.",
+      "Inspect the Corda 4.10 observer tutorial sample CorDapp and the relevant API/flow code; a live end-to-end test would require a running Corda network and regulator observer node.",
+      "For Enygma, use read-only RPC calls and deployed contract/source inspection to identify auditor registry configuration and access-control pathways; an actual decryption test requires authorized auditor credentials and must not expose private keys.",
+      "For Ethereum, verify public read access against a public RPC/explorer by querying known public block and transaction data."
+    ],
+    "change_control": {
+      "repo_write": "This evidence record is intended for GitHub; no runtime configuration, contracts, accounts, or blockchain transactions are modified.",
+      "live_transactions": false,
+      "secrets_or_private_keys": false
+    }
+  },
+  "limitations_and_open_questions": [
+    "Canton and Corda are permissioned deployments. Public documentation proves described capabilities, not the configuration of a named bank, regulator, or production network.",
+    "The cited Corda observer evidence is version-specific to Enterprise 4.10; compatibility with Corda 5.x requires a separate version-specific source review.",
+    "Canton OPN access is party-scoped and should not be conflated with Daml contract observer rights; they operate at related but distinct layers.",
+    "Enygma documentation describes a deployment auditor key and escrow model, but no independent testnet decryption was performed in this review.",
+    "The fact that a view key cannot spend funds does not by itself prove that the auditor cannot correlate other public metadata or that governance rules cannot change.",
+    "The terminal runtime network request failed due DNS resolution, so no command-line retrieval or cryptographic hash verification of the live source pages is claimed."
+  ],
+  "next_steps": [
+    "Run independent terminal retrieval and source-hash checks once an internet-enabled terminal is available.",
+    "Inspect Canton and Corda open-source or sample implementation code relevant to observer permissions and transaction delivery.",
+    "Determine whether user-accessible public test environments exist for Canton and Corda; do not assume they do.",
+    "For Enygma, compare live registry and contract state with the current documentation, subject to read-only access.",
+    "Update the Deep Answer comparison matrix only after each claim has a source citation and an explicitly stated evidence class."
+  ]
+}
