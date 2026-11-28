@@ -311,3 +311,27 @@ New record:
 [Proposal 5 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-5-execution-chronology-2026-11-28.json)
 
 This section supersedes the previous checkpoint statements that proposal 5's execution block/time was unknown and the previous instruction to locate execute(5).
+
+
+## 14. Proposal 5 execution logs — installation confirmed
+
+Transaction-specific Explorer logs for proposal 5 execution transaction:
+`0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959`
+
+Endpoint: `https://testnet-explorer.rayls.com/api/v2/transactions/0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959/logs`
+
+Three logs were returned:
+
+1. Log index 0, emitted by SharedVaultProxy: topic0 `0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b` (`Upgraded(address)`); indexed implementation is `0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39`.
+2. Log index 1, emitted by SharedVaultProxy: topic0 `0x7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb3847402498`, data encodes value 2. Its semantic label is not needed for the implementation chronology.
+3. Log index 2, emitted by OwnerMultisig: topic0 `0x7271f8b3d48d26ccc839c0f424fe9e12fe4e058108b58c096c078659c7fbadf6` (`Executed(uint256,address)`); indexed action ID = 5, executor = `0x3bffb10f6f17f15164fbc0416f1bc42c56b2c191`.
+
+**Conclusion now supported by transaction-specific logs:** proposal/action ID 5 was successfully executed and SharedVaultProxy emitted `Upgraded(address)` pointing to `0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39` at block 22,380,723 on 2026-11-04 17:03:01 UTC. This confirms installation of the implementation encoded in proposal 5.
+
+**Historical target status:** proposal 10 executed later on 2026-11-11 and its current proposal getter encodes `upgradeTo(0xad966...)`. Its transaction-specific proxy `Upgraded(address)` log still needs confirmation. Until that check is complete, do not yet state the target-date implementation as final.
+
+Updated records:
+- [Proposal 5 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-5-execution-chronology-2026-11-28.json)
+- [Proposal 10 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-10-execution-chronology-2026-11-28.json)
+
+Next action: inspect logs for proposal 10 execution transaction `0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4`.
