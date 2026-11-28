@@ -1,0 +1,114 @@
+{
+  "record_id": "RAYLS-ENYGMA-SHAREDVAULT-MULTISIG-UPGRADE-ACTIONS-20261128",
+  "record_type": "multisig_upgrade_execution_transaction_review",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-28",
+  "scope": "Review the outer transactions corresponding to two previously observed SharedVault proxy Upgraded(address) events. Internal traces and the earlier multisig proposal history have not yet been inspected.",
+  "multisig": {
+    "address": "0xbf099175a241194c38e977735d59ccb22596d775",
+    "explorer_label": "not yet established by metadata",
+    "observed_method": "execute(uint256 id)",
+    "method_selector": "0xfe0d94c1"
+  },
+  "proxy": {
+    "address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "name": "SharedVaultProxy"
+  },
+  "upgrade_executions": [
+    {
+      "transaction_hash": "0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567",
+      "block": 25699353,
+      "timestamp_utc": "2026-11-26T22:08:28Z",
+      "outer_transaction": {
+        "from": "0x71af09966cbed4434cca97c40fa38b8083548b95",
+        "to": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "method": "execute(uint256 id)",
+        "selector": "0xfe0d94c1",
+        "action_id": 13,
+        "status": "ok",
+        "result": "success"
+      },
+      "correlated_proxy_event": {
+        "event": "Upgraded(address)",
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "new_implementation": "0x9644667cc096964bafb6a533d57873544fbfb956",
+        "log_index": 0
+      },
+      "classification": "direct_observation_transaction_metadata_and_correlated_proxy_log",
+      "internal_call_trace_status": "not_yet_retrieved"
+    },
+    {
+      "transaction_hash": "0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c",
+      "block": 25714062,
+      "timestamp_utc": "2026-11-27T00:22:17Z",
+      "outer_transaction": {
+        "from": "0x3bffb10f6f17f15164fbc0416f1bc42c56b2c191",
+        "to": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "method": "execute(uint256 id)",
+        "selector": "0xfe0d94c1",
+        "action_id": 16,
+        "status": "ok",
+        "result": "success"
+      },
+      "correlated_proxy_event": {
+        "event": "Upgraded(address)",
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "new_implementation": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+        "log_index": 0
+      },
+      "classification": "direct_observation_transaction_metadata_and_correlated_proxy_log",
+      "internal_call_trace_status": "not_yet_retrieved"
+    }
+  ],
+  "interpretation": {
+    "established": [
+      "Both outer transactions are successful contract calls to 0xbf099175a241194c38e977735d59ccb22596d775.",
+      "Explorer decodes both outer calls as execute(uint256 id), selector 0xfe0d94c1.",
+      "The first call has action id 13 and shares its transaction hash/block with the proxy Upgraded event setting implementation 0x9644667cc096964bafb6a533d57873544fbfb956.",
+      "The second call has action id 16 and shares its transaction hash/block with the proxy Upgraded event setting implementation 0x937471b6acdad0c77d6874d0546d6009e09cd3f0.",
+      "The proxy upgrade events are emitted by the SharedVaultProxy address while the outer transaction destination is the multisig address."
+    ],
+    "not_yet_established": [
+      "The internal call trace path and call data from the multisig to the proxy.",
+      "The multisig contract name, verified source, execution semantics, and proposal storage layout.",
+      "Whether action ids 13 and 16 are sequential proposals, how proposal ids are enumerated, and how to inspect older executions.",
+      "Whether an upgrade action was executed between proxy creation block 21568375 and target transaction block 24825928.",
+      "Which implementation was active during the historical 2026-11-21 transferV2 transaction."
+    ],
+    "inference_boundary": "The matching transaction hash/block and proxy-emitted Upgraded event strongly correlate each outer execute(id) transaction with an upgrade of this proxy. The internal execution route should still be confirmed from internal-transactions or raw-trace data."
+  },
+  "next_checks": [
+    "Query /api/v2/transactions/{hash}/internal-transactions and /raw-trace for both execution transactions to confirm the exact internal path to SharedVaultProxy and input selector.",
+    "Fetch Explorer metadata for multisig 0xbf099175a241194c38e977735d59ccb22596d775 and its verified source if available.",
+    "Inspect the multisig contract for proposal/action getters, executed proposal enumeration, creation timestamps, and proposal execution logs.",
+    "Use the multisig execution history or proposal registry to locate actions executed before block 24825928, then retrieve transaction-specific logs to identify any historical Upgraded(address) event.",
+    "Do not infer pre-transaction implementation from the current implementation or from the initial implementation alone."
+  ],
+  "sources": [
+    {
+      "id": "SRC-UPGRADE-TX-1",
+      "type": "explorer_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567"
+    },
+    {
+      "id": "SRC-UPGRADE-TX-2",
+      "type": "explorer_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c"
+    },
+    {
+      "id": "SRC-SHAREDVAULT-PROXY-ADDRESS",
+      "type": "explorer_address",
+      "url": "https://testnet-explorer.rayls.com/address/0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2"
+    },
+    {
+      "id": "SRC-OWNER-MULTISIG-ADDRESS",
+      "type": "explorer_address",
+      "url": "https://testnet-explorer.rayls.com/address/0xbf099175a241194c38e977735d59ccb22596d775"
+    }
+  ],
+  "change_control": {
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false
+  }
+}
