@@ -146,6 +146,37 @@ If address transactions are indexed:
 
 If that endpoint is empty or omits old records, stop relying on this Explorer address index and try block transaction listing, an independent archive RPC/indexer, or deployer/admin transaction history. Do not conclude no upgrade occurred.
 
+## 8. Explorer v2 address transaction index — page 1
+
+Endpoint:
+`/api/v2/addresses/0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2/transactions`
+
+Observed response:
+- items: 50
+- newest block in page: 25,683,008
+- oldest block in page: 24,560,687
+- target transaction `0x09edab2b...25bb` appears at block 24,825,928, item index 32.
+- creation transaction is not present in page 1.
+- the returned `next_page_params` cursor is:
+  - `index: 0`
+  - `value: "0"`
+  - `hash: 0xfa4ee432b2718f1f555d8c49ed0fcdfe3b930c0f93e5c39cb2171abb35013fa6`
+  - `inserted_at: 2026-11-19T17:22:13.207381Z`
+  - `block_number: 24560687`
+  - `fee: 61384656000000000`
+
+Important completeness warning:
+- The page contains ordinary proxy calls labelled `transferV2` and one `depositV2`.
+- The page's newest block (25,683,008) is earlier than known Upgraded event blocks 25,699,353 and 25,714,062.
+- The two upgrade transaction hashes already observed in RPC logs were not present on this page.
+- This suggests the endpoint's transaction index may omit some proxy-emitted upgrade transactions, or its indexing/order differs. Do not treat the address transaction list as a complete upgrade history until tested.
+- The target transaction appearing on page 1 does prove this endpoint can return that transaction.
+
+Immediate next action:
+- Follow the exact returned cursor parameters to fetch page 2.
+- Check whether pages move backward in block height and whether known upgrade transaction hashes ever appear.
+- Continue toward creation block only if pagination is stable. If it omits known upgrade transactions, use it only as supplementary evidence and seek block transaction lists or an independent indexer.
+
 ## 8. Evidence discipline
 
 Label conclusions as direct observation / verified fact, current verified source observation, official claim, inference, or unknown.
