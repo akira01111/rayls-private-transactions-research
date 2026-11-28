@@ -1,0 +1,121 @@
+{
+  "record_id": "RAYLS-ENYGMA-MULTISIG-PROPOSAL-10-EXECUTION-TIMELINE-20261128",
+  "record_type": "multisig_upgrade_execution_chronology",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-28",
+  "subject": {
+    "multisig": "0xbf099175a241194c38e977735d59ccb22596d775",
+    "proxy": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "historical_target_transaction": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "historical_target_block": 24825928,
+    "historical_target_timestamp_utc": "2026-11-21T09:40:42Z"
+  },
+  "multisig_transaction_index": {
+    "endpoint": "https://testnet-explorer.rayls.com/api/v2/addresses/0xbf099175a241194c38e977735d59ccb22596d775/transactions",
+    "page": 1,
+    "items_returned": 50,
+    "newest_block": 25800145,
+    "oldest_block": 22489567,
+    "next_page_params": {
+      "index": 0,
+      "value": "0",
+      "hash": "0xa0d8d9fffe0c7d8a9d0d8e74974c90a715666651c58fc38716cea3a2c1583ec0",
+      "inserted_at": "2026-11-05T11:30:43.420875Z",
+      "block_number": 22489567,
+      "fee": "7159248000000000"
+    },
+    "classification": "direct_observation_explorer_v2_api"
+  },
+  "proposal_10_execution": {
+    "proposal_id": 10,
+    "proposal_state_from_latest_eth_call": {
+      "target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed": true,
+      "value": "0",
+      "calldata": "0x3659cfe6000000000000000000000000ad9667049f14d1757d147f652c41dc241c57091c",
+      "selector": "0x3659cfe6",
+      "signature": "upgradeTo(address)",
+      "implementation_argument": "0xad9667049f14d1757d147f652c41dc241c57091c"
+    },
+    "proposal_transaction": {
+      "hash": "0xb9bcbe32dd31149552346aaee5e4b55ab95b2bea24fd993516cd53bbde543f89",
+      "block": 23399866,
+      "timestamp_utc": "2026-11-11T21:23:54Z",
+      "method": "propose",
+      "action_id": 10
+    },
+    "confirmation_transaction": {
+      "hash": "0x6bc3db49cf6fb7feff2fc349faf7d2622f2047de28aa715e1052ea90d85384c2",
+      "block": 23399960,
+      "timestamp_utc": "2026-11-11T21:24:51Z",
+      "method": "confirm",
+      "action_id": 10
+    },
+    "execution_transaction": {
+      "hash": "0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4",
+      "block": 23399976,
+      "timestamp_utc": "2026-11-11T21:25:01Z",
+      "method": "execute",
+      "selector": "0xfe0d94c1",
+      "action_id": 10,
+      "status": "successful as returned in Explorer transaction index"
+    },
+    "classification": "direct_observation_explorer_v2_transaction_index_plus_current_multisig_proposal_getter",
+    "chronology_conclusion": "Proposal 10 execution occurred before target transaction block 24825928. It set the SharedVaultProxy implementation to 0xad9667049f14d1757d147f652c41dc241c57091c. This establishes that implementation was installed before the target transaction, but does not yet prove it remained active at target time because proposal 5 is another executed direct proxy upgrade whose execution time is not yet known."
+  },
+  "proposal_5_remaining_uncertainty": {
+    "proposal_id": 5,
+    "target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "executed_latest_state": true,
+    "calldata": "0x4f1ef2860000000000000000000000003a3f95cf53d4a0bd99d9afb3c785cd969cefdf3900000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000024f40783cf000000000000000000000000f10de8503ab9e2aa1cf6eb8a7425250fcb14b05700000000000000000000000000000000000000000000000000000000",
+    "selector": "0x4f1ef286",
+    "signature": "upgradeToAndCall(address,bytes)",
+    "implementation_argument": "0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39",
+    "execution_transaction": "not yet located",
+    "execution_block_time": "unknown"
+  },
+  "interpretation": {
+    "established": [
+      "Proposal 10 targeted SharedVaultProxy with upgradeTo(address) and implementation argument 0xad9667049f14d1757d147f652c41dc241c57091c.",
+      "Explorer's OwnerMultisig address transaction index lists execute(10) at block 23399976, timestamp 2026-11-11T21:25:01Z.",
+      "Proposal 10 execution was before the historical target transaction at block 24825928.",
+      "The proposal 10 implementation address matches the earlier audit's previously associated implementation address."
+    ],
+    "not_established": [
+      "Whether proposal 5 was executed before or after proposal 10.",
+      "Whether another direct SharedVaultProxy upgrade happened after proposal 10 and before block 24825928.",
+      "The implementation active at the exact target transaction block."
+    ],
+    "important_ordering_caution": "Proposal IDs indicate proposal creation order under current verified OwnerMultisig source, not execution order. Current executed=true state does not provide execution chronology."
+  },
+  "next_checks": [
+    "Follow the exact Explorer pagination cursor from multisig transaction page 1 to page 2 and inspect older transactions.",
+    "Locate execute(5) and retrieve its timestamp/block and transaction-specific logs.",
+    "Search all multisig execute transactions between block 23399976 and 24825928 and check their proposal IDs; inspect any proposal targeting SharedVaultProxy with upgrade selectors.",
+    "If Explorer transaction pagination is incomplete, use OwnerMultisig Executed(id) transaction/event indexing as a secondary path.",
+    "Once proposal 5 timing is known and no intervening proxy upgrade exists before target block, conclude the active implementation at the historical transaction."
+  ],
+  "sources": [
+    {
+      "id": "SRC-MULTISIG-TRANSACTIONS-PAGE1",
+      "type": "explorer_address_transaction_index",
+      "url": "https://testnet-explorer.rayls.com/api/v2/addresses/0xbf099175a241194c38e977735d59ccb22596d775/transactions"
+    },
+    {
+      "id": "SRC-PROPOSAL-10-STATE",
+      "type": "read_only_multisig_proposal_getter",
+      "url": "https://testnet-rpc.rayls.com"
+    },
+    {
+      "id": "SRC-PROPOSAL-10-EXECUTION-TX",
+      "type": "explorer_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4"
+    }
+  ],
+  "change_control": {
+    "previous_records_modified": false,
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false
+  }
+}
