@@ -1,0 +1,225 @@
+{
+  "record_id": "RAYLS-ENYGMA-SHAREDVAULT-ID-AND-RECEIPT-CIRCUIT-20261128",
+  "record_type": "vault_identity_and_receipt_source_mapping",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-28",
+  "scope": "Identify the current SharedVault proxy configuration and compare the 2026-11-21 transferV2 receipt shape with the currently Explorer-verified SharedVault source. This record does not assert historical implementation attribution.",
+  "subject": {
+    "proxy_address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "transaction_hash": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "transaction_block": 24825928,
+    "transaction_timestamp_utc": "2026-11-21T09:40:42Z",
+    "current_implementation_reported_by_explorer": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0"
+  },
+  "current_proxy_state_observations": {
+    "retrieval": {
+      "method": "eth_call",
+      "rpc": "https://testnet-rpc.rayls.com",
+      "block_tag": "latest",
+      "retrieved_by": "user-run read-only RPC calls in Codespaces",
+      "retrieval_date": "2026-11-28"
+    },
+    "getVaultId": {
+      "selector": "0x4e2285f1",
+      "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000002",
+      "decoded_integer": 2,
+      "classification": "direct_observation_current_state"
+    },
+    "getAssetContractAddress": {
+      "selector": "0x32c9b183",
+      "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "decoded_address": "0x0000000000000000000000000000000000000000",
+      "classification": "direct_observation_current_state",
+      "interpretation_boundary": "This getter returns the stored _assetContractAddress value. A zero value does not prove that the SharedVault holds no assets or supports no ERC-20 tokens; the current SharedVault source uses token IDs to resolve ERC-20 addresses dynamically."
+    },
+    "getNumberOfAssetIdentifiers": {
+      "selector": "0x68e8093d",
+      "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000001",
+      "decoded_integer": 1,
+      "classification": "direct_observation_current_state",
+      "interpretation_boundary": "The reviewed AbstractCoinVault source stores and exposes _numberOfIdentifiers. No runtime use beyond initialization/getter was found in the three reviewed files SharedVault.sol, AbstractCoinVault.sol, and Erc20CoinVault.sol. This does not establish that the field is unused by other contracts or tooling."
+    },
+    "historical_scope_warning": "These eth_call results were requested with block tag latest. They do not establish the proxy state or implementation at block 24825928."
+  },
+  "current_verified_source": {
+    "contract": "SharedVault",
+    "implementation_address": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+    "proxy_address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "source_verification_status": "verified_on_explorer",
+    "source_verification_timestamp_utc": "2026-11-27T00:02:55.444785Z",
+    "compiler": "0.8.28",
+    "is_changed_bytecode": false,
+    "relevant_source_files": [
+      "project/src/SharedVault.sol",
+      "project/src/Erc20CoinVault.sol",
+      "project/src/AbstractCoinVault.sol",
+      "project/src/generated/PaymentStatementLayout.sol",
+      "project/src/CiphertextHash.sol"
+    ],
+    "source_metadata_url": "https://testnet-explorer.rayls.com/api/v2/smart-contracts/0x937471B6aCDaD0c77d6874D0546d6009e09CD3f0",
+    "source_code_url": "https://testnet-explorer.rayls.com/address/0x937471B6aCDaD0c77d6874D0546d6009e09CD3f0#code",
+    "historical_attribution_warning": "The source was verified on 2026-11-27, six days after the examined transaction. The earlier audit recorded a different implementation address, 0xad9667049f14d1757d147f652c41dc241c57091c. The implementation active at block 24825928 remains unresolved."
+  },
+  "vault_design_observations_from_current_source": [
+    {
+      "file": "project/src/SharedVault.sol",
+      "location": "header comments and _tokenOf()",
+      "observation": "The source describes SharedVault as one shielded vault for every ERC-20 in one Merkle tree. An ERC-20 note's token ID is the token contract address. _tokenOf(uint256 tokenId) rejects tokenId == 0 and tokenId > type(uint160).max, then returns address(uint160(tokenId)).",
+      "classification": "current_verified_source_observation",
+      "implication": "The zero _assetContractAddress getter is consistent with this dynamic token-address design and is not evidence that the vault is empty."
+    },
+    {
+      "file": "project/src/SharedVault.sol",
+      "location": "header comments and depositNftV2()/ _payOut()",
+      "observation": "The current source also describes ERC-721 and ERC-1155 assets in the same tree through NftCustody; NFT asset IDs are hashes above 160 bits and are distinguished from ERC-20 token-address IDs.",
+      "classification": "current_verified_source_observation",
+      "implication": "vaultId and tokenId are different identifiers. vaultId=2 identifies the current vault/tree; it does not mean ERC-1155."
+    },
+    {
+      "file": "project/src/AbstractCoinVault.sol",
+      "location": "getNumberOfAssetIdentifiers(), initializeVault()",
+      "observation": "_numberOfIdentifiers is set from the initializeVault numberOfAssetIdentifiers argument and returned by getNumberOfAssetIdentifiers().",
+      "classification": "current_verified_source_observation",
+      "limitation": "No additional runtime use was found in the three locally reviewed Solidity files. Broader repository/deployment usage has not been excluded."
+    }
+  ],
+  "transaction_receipt_to_current_source_comparison": {
+    "historical_transaction_observed_receipt_shape": {
+      "function": "transferV2",
+      "number_of_inputs": 1,
+      "number_of_outputs": 3,
+      "statement_length": 10
+    },
+    "current_SharedVault_verification_key_dispatch": {
+      "source_file": "project/src/SharedVault.sol",
+      "logic": "if (m == 3 && n == 1 && len == 10) return VK_ID_ERC20_JOINSPLIT_RELAYER;",
+      "source_location": "SharedVault.sol around lines 151-178",
+      "resulting_key_id": 3,
+      "constant_definition": {
+        "source_file": "project/src/Erc20CoinVault.sol",
+        "constant": "VK_ID_ERC20_JOINSPLIT_RELAYER",
+        "value": 3,
+        "source_location": "Erc20CoinVault.sol around line 91"
+      },
+      "classification": "exact_shape_match_to_current_verified_source"
+    },
+    "current_source_receipt_validation": {
+      "source_file": "project/src/Erc20CoinVault.sol",
+      "function": "checkReceiptConditions",
+      "source_location": "around lines 712-773",
+      "one_input_three_output_layout": {
+        "jCommitmentsIndex": "1 + 3 * numberOfInputs = 4",
+        "contract_address_index": "jCommitmentsIndex + numberOfOutputs = 7",
+        "last_statement_index": 9,
+        "observed_transaction_statement_index_7_hex_address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "comparison": "Statement[7] was previously decoded and shown to convert exactly to the transaction destination/proxy address.",
+        "checks_in_current_source": [
+          "For a vault-bound receipt, statement[contract_address_index] must equal uint256(uint160(address(this))).",
+          "The final statement element must equal the computed ciphertext hash.",
+          "The verifier is called with _verificationKeyId(receipt), receipt.proof, and receipt.statement."
+        ],
+        "classification": "current_source_layout_matches_observed_historical_statement_value"
+      }
+    },
+    "transferV2_current_source_flow": {
+      "source_file": "project/src/Erc20CoinVault.sol",
+      "source_location": "around lines 429-454",
+      "observations": [
+        "transferV2 checks ciphertext array counts against numberOfOutputs.",
+        "It calls _requireStandaloneTransfer(), then checkReceiptConditions(), nullifies input notes, inserts commitments, emits EncryptedNote for outputs, and calls _afterSpend().",
+        "Current SharedVault _requireStandaloneTransfer() requires statement[0] == 0."
+      ],
+      "important_distinction": "The one-input/three-output PaymentRelayerFeePublic shape is not classified as a current _isTransfer() receipt, because _isTransfer() recognizes input counts 2, 4, or 8. Therefore the _afterSpend() branch that pays a public Transfer-circuit fee does not run for this one-input/three-output receipt."
+    },
+    "classification": "current_source_mapping_and_historical_shape_match; historical deployed circuit attribution unresolved"
+  },
+  "fee_and_output_ownership_boundaries": {
+    "current_source_generated_layout": {
+      "source_file": "project/src/generated/PaymentStatementLayout.sol",
+      "payment_relayer_fee_length": 10,
+      "commitments_offset": 4,
+      "commitments_size": 3,
+      "contract_address_offset": 7,
+      "fee_offset": 8,
+      "ciphertext_hash_offset": 9
+    },
+    "historical_statement_index_8": {
+      "observed_integer": "4416000000000000000",
+      "current_layout_candidate": "fee",
+      "classification": "observed_integer_with_current_source_field_candidate",
+      "unproven": [
+        "historical semantic assignment as StFee",
+        "token denomination and decimals",
+        "whether it is total fee, relayer fee, or another fee measure",
+        "whether output note 3 belongs to the relayer"
+      ]
+    },
+    "important_caveat": "The transaction calls transferV2, not partialWithdrawWithRelayerFee. The current source's comments for that separate withdrawal function must not be used as proof of how this historical transfer's third output was owned or settled."
+  },
+  "evidence_classification": {
+    "direct_observations": [
+      "Current latest-state RPC getter getVaultId() returns 2.",
+      "Current latest-state RPC getter getAssetContractAddress() returns the zero address.",
+      "Current latest-state RPC getter getNumberOfAssetIdentifiers() returns 1.",
+      "The historical transaction's decoded receipt has one input, three outputs, and ten statement elements.",
+      "Historical statement[7] converts to the proxy/transaction destination address."
+    ],
+    "current_verified_source_observations": [
+      "Current SharedVault source implements a shared Merkle tree for ERC-20 assets, resolving an ERC-20 token address from the note's token ID.",
+      "Current SharedVault source also routes ERC-721/ERC-1155 custody through NftCustody using IDs above 160 bits.",
+      "Current SharedVault source maps receipt shape (1 input, 3 outputs, statement length 10) to VK_ID_ERC20_JOINSPLIT_RELAYER, whose current constant value is 3.",
+      "Current checkReceiptConditions() validates the vault address at statement index 7 for this shape and compares the last statement element to the ciphertext hash."
+    ],
+    "inferences_not_upgraded": [
+      "The historical transaction used verifier key slot 3.",
+      "The historical transaction was proven under the currently verified PaymentRelayerFeePublic circuit implementation.",
+      "Statement[8] was historically StFee with the same interpretation and denomination as the current generated layout.",
+      "The third output note was owned by or paid to the relayer."
+    ],
+    "unknowns": [
+      "The implementation address active at block 24825928.",
+      "Whether current Explorer-verified source corresponds to the historical implementation.",
+      "The exact deployed verification key contents at the historical block.",
+      "The specific ERC-20 token address/token ID used by the notes in this transaction.",
+      "The decrypted values and owners of the three output notes.",
+      "The broader purpose of numberOfAssetIdentifiers=1 outside the reviewed Solidity files."
+    ]
+  },
+  "next_checks": [
+    "Recover a trustworthy implementation/proxy upgrade history or historical implementation-slot value at block 24825928.",
+    "Compare historical deployed bytecode with verified source/build metadata if historical bytecode is available.",
+    "Inspect the verifier registry and key slot 3 deployment history before asserting historical circuit attribution.",
+    "Inspect wallet/circuit public-input construction and encrypted-note schema to determine the token ID committed inside the notes.",
+    "Do not infer the ERC-20 token address from vaultId=2 or assetContractAddress=0."
+  ],
+  "sources": [
+    {
+      "id": "SRC-SHAREDVAULT-EXPLORER-CODE",
+      "type": "explorer_verified_source",
+      "url": "https://testnet-explorer.rayls.com/address/0x937471B6aCDaD0c77d6874D0546d6009e09CD3f0#code"
+    },
+    {
+      "id": "SRC-SHAREDVAULT-EXPLORER-METADATA",
+      "type": "explorer_contract_metadata",
+      "url": "https://testnet-explorer.rayls.com/api/v2/smart-contracts/0x937471B6aCDaD0c77d6874D0546d6009e09CD3f0"
+    },
+    {
+      "id": "SRC-TRANSACTION-09EDAB2B",
+      "type": "historical_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb"
+    },
+    {
+      "id": "SRC-PREVIOUS-TRANSACTION-RECORD",
+      "type": "repository_analysis_record",
+      "url": "https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-public-transfer-v2-relayer-fee-2026-11-27.json"
+    }
+  ],
+  "change_control": {
+    "prior_transaction_record_modified": false,
+    "official_documentation_record_modified": false,
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false,
+    "note": "This is a separate analysis record. It supplements prior evidence while preserving the historical implementation and token-identity unknowns."
+  }
+}
