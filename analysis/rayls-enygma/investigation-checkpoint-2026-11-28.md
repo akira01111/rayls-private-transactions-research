@@ -201,6 +201,28 @@ The first page does not include the known upgrade transactions at blocks 25,699,
 
 **Next action:** fetch internal calls and raw traces for both multisig execution transactions, then inspect multisig metadata/source and determine whether its action history can reveal upgrades before the target transaction.
 
+## 10. OwnerMultisig proposal structure and execution logs
+
+Explorer metadata identifies `0xbf099175a241194c38e977735d59ccb22596d775` as verified `OwnerMultisig`, compiler `v0.8.28+commit.7893614a`, verified at `2026-11-11T11:15:18.672196Z`.
+
+Verified ABI exposes:
+- `proposalCount() -> uint256`
+- `proposals(uint256 id) -> (address target, bool executed, uint256 value, bytes data)`
+- `propose(address target,uint256 value,bytes data)`
+- `confirm(uint256 id)`
+- `execute(uint256 id)`
+- events `Proposed(id, proposer, target, value, data)`, `Confirmed(id, owner)`, `Revoked(id, owner)`, `Executed(id, executor)`.
+
+Current verified source comments say proposal IDs count upward from 0 and `proposalCount` is the next ID. Proposal struct holds target, executed flag, native value, and calldata. Source comments state proposal submission counts as the proposer's confirmation; any owner may execute after the current threshold is met. Owner set and threshold change only through multisig proposals targeting itself.
+
+The two upgrade transaction logs include multisig `Executed(uint256,address)` with matching proposal/action IDs and executor:
+- 2026-11-26 tx `0xc2a566...`: action ID 13, executor `0x71af09966cbed4434cca97c40fa38b8083548b95`.
+- 2026-11-27 tx `0xa8d762...`: action ID 16, executor `0x3bffb10f6f17f15164fbc0416f1bc42c56b2c191`.
+
+Both outer transactions call `execute(uint256 id)` on the OwnerMultisig. Both transaction-specific log endpoints also show the corresponding SharedVaultProxy `Upgraded(address)` event. Internal-transactions API returned zero items for both, so internal call traces remain unavailable.
+
+**High-value next action:** use read-only `eth_call` on `proposalCount()` and `proposals(id)` for IDs 13 and 16, then enumerate IDs 0 through current proposalCount-1. Identify proposals whose target equals SharedVaultProxy (or an intermediary), decode proposal calldata, and find historical upgrade proposals executed before target block 24,825,928.
+
 ## 8. Evidence discipline
 
 Label conclusions as direct observation / verified fact, current verified source observation, official claim, inference, or unknown.
