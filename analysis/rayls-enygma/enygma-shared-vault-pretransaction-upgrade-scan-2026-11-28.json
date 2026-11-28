@@ -54,11 +54,11 @@
     ]
   },
   "next_checks": [
-    "Use the Explorer legacy logs API with fromBlock, toBlock, address, and topic0 filters to retrieve the pre-transaction Upgraded(address) events.",
-    "If the legacy logs API hits its result cap, split the block range into smaller intervals and preserve complete pagination.",
-    "Alternatively inspect Explorer address logs pagination and filter the returned logs by the Upgraded(address) topic.",
-    "If Explorer cannot supply a complete range, use a second independent archive RPC provider or deployment/upgrade transaction index.",
-    "Only after a complete upgrade timeline is obtained, infer the last implementation active before transaction 0x09edab... at block 24825928, transaction index 0."
+    "Query /api/v2/addresses/{proxy}/transactions and inspect its items and next_page_params to establish whether the address-level transaction index is usable.",
+    "If address transactions are indexed, page through proxy interactions from creation to block 24825928 and inspect calldata selectors for UUPS upgrade calls (including upgradeTo(address) and upgradeToAndCall(address,bytes)) and other admin actions.",
+    "Fetch transaction-specific logs/receipts for any candidate upgrade transactions to verify the Upgraded(address) event and new implementation address.",
+    "If address transactions also omit known creation or upgrade records, use Explorer's block transaction listing or an independent archive data source instead.",
+    "Do not infer that implementation 0x0a3a... remained active at the target transaction until a complete upgrade timeline or historical slot proof is obtained."
   ],
   "sources": [
     {
@@ -121,5 +121,21 @@
       }
     ],
     "assessment": "The RPC endpoint returns no logs for the exact proxy creation block even without a topic filter, while it returns the two known later upgrade logs at their exact blocks. This localizes the discrepancy to historical log availability/indexing for the creation block or older data, but does not establish the precise cause or prove no intermediate upgrades."
+  },
+  "explorer_v2_address_logs_check": {
+    "endpoint": "https://testnet-explorer.rayls.com/api/v2/addresses/0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2/logs",
+    "retrieval_date": "2026-11-28",
+    "response_observations": {
+      "total_logs_in_page": 0,
+      "next_page_params": null,
+      "newest_block": null,
+      "oldest_block": null,
+      "upgraded_events_in_page": 0
+    },
+    "classification": "direct_observation_explorer_api_v2_response",
+    "comparison": "The endpoint returned no items and no pagination cursor, while the Explorer transaction-specific endpoint for the proxy creation transaction returned an Upgraded(address) event at creation block 21568375.",
+    "conclusion": "The address-level logs endpoint cannot be used to reconstruct the pre-transaction upgrade history from its returned first page. This does not establish that no proxy logs or upgrades occurred.",
+    "api_reference": "https://github.com/blockscout/blockscout-api-v2-swagger/blob/main/swagger.yaml",
+    "note": "The documented Blockscout v2 endpoint shape includes items and next_page_params. In this Rayls response both were empty/null."
   }
 }
