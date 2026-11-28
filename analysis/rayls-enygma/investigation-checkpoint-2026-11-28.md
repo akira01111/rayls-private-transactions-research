@@ -404,3 +404,23 @@ Updated records:
 - [Historical vault upgrade candidates](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-historical-vault-upgrade-candidates-2026-11-28.json)
 
 Next action: decode proposal calldata for proxy-targeted grantRole actions and compare the granted roles with the implementation's upgrade authorization logic.
+
+
+## 17. Historical slot read result and next role-authorization review
+
+The user ran an `eth_getStorageAt` request against the EIP-1967 implementation slot at block 24,825,927 (block immediately preceding target block 24,825,928). The shell dynamically built the block tag using `printf '0x%x' 24825927`, which yields `0x17ad047`. The Rayls testnet RPC returned JSON-RPC error `-32603`: `state at block #24825928 is pruned`.
+
+No storage value was returned. This is an RPC historical-state availability failure, not a zero slot and not evidence of a different implementation. The block-tag hexadecimal annotation in the evidence record has been checked and corrected to `0x17ad047`.
+
+Current best-supported chronology remains:
+- Proposal 5 installed `0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39` at block 22,380,723 (2026-11-04 17:03:01 UTC), confirmed by same-transaction `Upgraded(address)` and `Executed(id=5)` logs.
+- Proposal 10 installed `0xad9667049f14d1757d147f652c41dc241c57091c` at block 23,399,976 (2026-11-11 21:25:01 UTC), confirmed by same-transaction `Upgraded(address)` and `Executed(id=10)` logs.
+- Target transferV2 occurred at block 24,825,928 (2026-11-21 09:40:42 UTC).
+- Enumerated direct proxy upgrade proposals 13 and 16 executed later, at blocks 25,699,353 and 25,714,062.
+
+Before finalizing this as a high-confidence chronology reconstruction, inspect proxy-targeted `grantRole(bytes32,address)` proposals 3, 4, 14, 17, 21, and 22. The selector does not reveal which role was granted or to whom. In particular, determine whether proposals 3 and 4 (pre-target candidates) granted a role capable of authorizing an independent UUPS upgrade. Timestamp proposals 14, 17, 21, and 22 before treating them as relevant or irrelevant to the target window.
+
+Next action: use read-only `eth_call` to decode each `proposals(id)` return value for IDs 3, 4, 14, 17, 21, and 22, extract the nested `grantRole` calldata, role hash, and grantee. Compare role hashes with the verified implementation's upgrade authorization logic.
+
+Related evidence record:
+[Historical implementation slot pruned result](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-historical-implementation-slot-pruned-2026-11-28.json)
