@@ -153,12 +153,13 @@
     "contract": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
     "eip1967_implementation_slot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
     "requested_block": 24825927,
-    "requested_block_hex": "0x17accff",
+    "requested_block_hex": "0x17ad047",
     "response_error": {
       "code": -32603,
       "message": "state at block #24825928 is pruned"
     },
     "classification": "direct_observation_rpc_error_historical_state_unavailable",
-    "interpretation": "The RPC cannot serve the requested historical state. This does not indicate an empty slot, zero implementation, or a conflicting implementation."
+    "interpretation": "The RPC cannot serve the requested historical state. This does not indicate an empty slot, zero implementation, or a conflicting implementation.",
+    "data_quality_note": "Corrected from an earlier mistaken annotation; the user's shell command used printf conversion, so the actual RPC request was correctly encoded for block 24825927."
   }
 }
