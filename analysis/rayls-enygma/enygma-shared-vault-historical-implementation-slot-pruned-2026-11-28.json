@@ -16,7 +16,7 @@
     "slot_name": "EIP-1967 implementation slot",
     "slot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
     "queried_block": 24825927,
-    "queried_block_hex": "0x17accff"
+    "queried_block_hex": "0x17ad047"
   },
   "response": {
     "rpc_error_code": -32603,
@@ -73,5 +73,6 @@
       "type": "official_network_reference",
       "url": "https://docs.rayls.com/docs/public-chain-reference"
     }
-  ]
+  ],
+  "data_quality_note": "The shell command computed the block tag using printf '0x%x' 24825927. Correct hexadecimal encoding is 0x17ad047. An earlier draft of this JSON record contained an incorrect hexadecimal annotation (0x17accff); that annotation is superseded here. The user's actual shell command used dynamic printf conversion, so the RPC request itself was not affected by the record typo."
 }
