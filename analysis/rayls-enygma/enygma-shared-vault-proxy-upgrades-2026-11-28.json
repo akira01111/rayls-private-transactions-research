@@ -1,0 +1,116 @@
+{
+  "record_id": "RAYLS-ENYGMA-SHAREDVAULT-PROXY-UPGRADE-HISTORY-20261128",
+  "record_type": "proxy_upgrade_event_investigation",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-28",
+  "scope": "Record the post-transaction ERC-1967 implementation slot and Upgraded(address) events returned by Rayls Testnet RPC. This investigation does not yet identify the implementation active at the 2026-11-21 transaction block.",
+  "subject": {
+    "proxy_address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "historical_transaction_hash": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "historical_transaction_block": 24825928,
+    "historical_transaction_timestamp_utc": "2026-11-21T09:40:42Z"
+  },
+  "rpc_methodology": {
+    "rpc_endpoint": "https://testnet-rpc.rayls.com",
+    "transport": "curl",
+    "retrieval_date": "2026-11-28",
+    "erc1967_implementation_slot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+    "upgraded_event_topic0": "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+    "log_query": {
+      "address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "from_block": 24825928,
+      "to_block": 25879057,
+      "chunk_size_blocks": 5000,
+      "scan_completed": true,
+      "scan_errors": [],
+      "events_returned": 2
+    },
+    "transport_note": "A previous urllib.request call received HTTP 403 on eth_blockNumber. The same JSON-RPC method succeeded using curl; the subsequent scan used curl."
+  },
+  "implementation_slot_observations": {
+    "latest": {
+      "method": "eth_getStorageAt",
+      "block_tag": "latest",
+      "raw_value": "0x000000000000000000000000937471b6acdad0c77d6874d0546d6009e09cd3f0",
+      "decoded_implementation": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+      "classification": "direct_observation_current_state"
+    },
+    "historical_transaction_block": {
+      "method": "eth_getStorageAt",
+      "requested_block": 24825928,
+      "result": "RPC error: state at block #24825929 is pruned",
+      "classification": "unavailable_due_to_pruned_state",
+      "interpretation": "No historical implementation address was obtained from this request."
+    }
+  },
+  "observed_upgrade_events_after_transaction": [
+    {
+      "block_number": 25699353,
+      "timestamp_utc": "2026-11-26T22:08:28Z",
+      "new_implementation": "0x9644667cc096964bafb6a533d57873544fbfb956",
+      "transaction_hash": "0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567",
+      "log_index": 0,
+      "classification": "direct_observation_rpc_log"
+    },
+    {
+      "block_number": 25714062,
+      "timestamp_utc": "2026-11-27T00:22:17Z",
+      "new_implementation": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+      "transaction_hash": "0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c",
+      "log_index": 0,
+      "classification": "direct_observation_rpc_log"
+    }
+  ],
+  "interpretation": {
+    "established": [
+      "The proxy's current ERC-1967 implementation slot points to 0x937471b6acdad0c77d6874d0546d6009e09cd3f0.",
+      "The RPC returned two Upgraded(address) events for this proxy after the historical transaction block in the scanned interval.",
+      "At block 25699353 the event recorded new implementation 0x9644667cc096964bafb6a533d57873544fbfb956.",
+      "At block 25714062 the event recorded new implementation 0x937471b6acdad0c77d6874d0546d6009e09cd3f0.",
+      "The current implementation was set again by an observed event on 2026-11-27."
+    ],
+    "not_established": [
+      "Which implementation was active at block 24825928.",
+      "Whether 0x937471b6acdad0c77d6874d0546d6009e09cd3f0 was already active before the 2026-11-21 transaction.",
+      "Whether the 2026-11-26 upgrade replaced 0x937471... or another implementation; the pre-upgrade address has not yet been established.",
+      "Whether the two returned events are the complete lifetime upgrade history of the proxy; the scan began at the historical transaction block, not at proxy deployment."
+    ],
+    "important_alternative": "The current implementation 0x937471... may have been active before the historical transaction, then replaced by 0x964466... on 2026-11-26 and restored on 2026-11-27. The observed post-transaction events alone cannot distinguish this from a first-time installation of 0x937471... on 2026-11-27.",
+    "previous_audit_context": "An earlier audit artifact recorded implementation address 0xad9667049f14d1757d147f652c41dc241c57091c as the then-associated implementation, but its exact observation block/time and direct storage-slot evidence must be independently reconciled before treating it as historical proof."
+  },
+  "next_checks": [
+    "Retrieve the proxy address metadata from the Explorer API to identify its creation transaction and creation block.",
+    "Scan Upgraded(address) logs from proxy creation through block 24825928, using chunked eth_getLogs queries.",
+    "Inspect the two upgrade transactions and their receipts, including emitters and implementation contract creation/verification metadata.",
+    "Reconcile the earlier audit's 0xad9667049f14d1757d147f652c41dc241c57091c reference with a dated source or slot observation."
+  ],
+  "sources": [
+    {
+      "id": "SRC-RAYLS-PROXY-LATEST-SLOT",
+      "type": "direct_rpc_observation",
+      "url": "https://testnet-rpc.rayls.com"
+    },
+    {
+      "id": "SRC-ERC1967-UPGRADE-EVENT-TRANSACTION-1",
+      "type": "upgrade_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567"
+    },
+    {
+      "id": "SRC-ERC1967-UPGRADE-EVENT-TRANSACTION-2",
+      "type": "upgrade_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c"
+    },
+    {
+      "id": "SRC-PREVIOUS-TRANSACTION-ANALYSIS",
+      "type": "repository_analysis_record",
+      "url": "https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-public-transfer-v2-relayer-fee-2026-11-27.json"
+    }
+  ],
+  "change_control": {
+    "previous_analysis_records_modified": false,
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false,
+    "note": "This is a separate dated evidence record. It intentionally does not assign a historical implementation to the 2026-11-21 transaction."
+  }
+}
