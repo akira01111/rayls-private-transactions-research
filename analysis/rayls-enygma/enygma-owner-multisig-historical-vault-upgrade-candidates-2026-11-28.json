@@ -99,17 +99,19 @@
   ],
   "chronology_assessment": {
     "verified_source_rule": "The currently verified OwnerMultisig source says proposal IDs increment from 0 and proposalCount is the next ID.",
-    "safe_conclusion": "Transaction-specific logs confirm that proposal 5 installed 0x3a3f95... at block 22380723 on 2026-11-04 and proposal 10 later installed 0xad966... at block 23399976 on 2026-11-11. Both predate target block 24825928 on 2026-11-21. Among the enumerated direct SharedVaultProxy upgrade proposals, IDs 13 and 16 are post-target (blocks 25699353 and 25714062), making 0xad966... the best-supported implementation for the target date. A historical EIP-1967 slot read at target block is the remaining independent check; the known log-index inconsistencies must remain disclosed.",
+    "safe_conclusion": "Transaction-specific logs confirm proposal 5 installed 0x3a3f95... at block 22380723 and proposal 10 later installed 0xad966... at block 23399976. Both predate target block 24825928. Among the enumerated direct proxy-upgrade proposals, IDs 13 and 16 execute after the target. Therefore 0xad966... is the best-supported implementation at the target date by confirmed upgrade chronology. A direct historical EIP-1967 slot read was attempted at block 24825927 but the RPC returned a pruned-state error. The conclusion remains a chronology reconstruction pending review of proxy-targeted grantRole proposals and any possible independent upgrade authority.",
     "not_established": [
-      "The historical EIP-1967 implementation-slot value at block 24825928 has not yet been queried successfully.",
-      "The prior RPC/Explorer range-log queries were incomplete/inconsistent; no-event results cannot prove the absence of all other upgrade paths.",
-      "No direct evidence yet excludes every possible indirect or non-multisig administrative upgrade path."
+      "Historical EIP-1967 implementation storage at block 24825927; RPC returned state-pruned error.",
+      "Exact roles and grantees in proxy-targeted grantRole proposals 3, 4, 14, 17, 21, and 22.",
+      "Whether any such grantee had authority to execute an upgrade independently of OwnerMultisig.",
+      "Any other non-enumerated or indirect upgrade path."
     ],
     "important_caution": "The executed=true flag is read from current state. It does not by itself reveal when the proposal was executed. Proposal IDs reflect proposal creation order under the verified source, not necessarily execution order."
   },
   "next_checks": [
-    "Call eth_getStorageAt for the EIP-1967 implementation slot at historical block 24825928; compare the returned low 20 bytes with 0xad9667049f14d1757d147f652c41dc241c57091c.",
-    "If historical state is unavailable, state the result as a high-confidence chronology reconstruction, not a direct historical storage observation."
+    "Read/decode proposals 3, 4, 14, 17, 21, and 22 to identify grantRole(bytes32,address) role hashes and grantees.",
+    "Inspect the verified implementation's upgrade authorization logic to determine whether any granted role can authorize upgradeTo/upgradeToAndCall.",
+    "If the role review rules out any independent upgrade authority, finalize 0xad966... as the high-confidence implementation reconstruction for target block 24825928, explicitly noting historical storage was pruned."
   ],
   "sources": [
     {
@@ -133,5 +135,18 @@
     "raw_transaction_archive_modified": false,
     "source_repository_modified": false,
     "onchain_transactions_signed_or_sent": false
+  },
+  "historical_implementation_slot_check": {
+    "method": "eth_getStorageAt",
+    "rpc": "https://testnet-rpc.rayls.com",
+    "proxy": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "slot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+    "requested_block": 24825927,
+    "response_error": {
+      "code": -32603,
+      "message": "state at block #24825928 is pruned"
+    },
+    "classification": "direct_observation_rpc_error_historical_state_unavailable",
+    "conclusion_boundary": "No historical slot value was returned. This is not evidence for zero storage or a conflicting implementation."
   }
 }
