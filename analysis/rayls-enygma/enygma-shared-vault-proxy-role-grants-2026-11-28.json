@@ -1,0 +1,76 @@
+{
+  "record_id": "RAYLS-ENYGMA-SHAREDVAULT-PROXY-ROLE-GRANTS-20261128",
+  "record_type": "proxy_access_control_role_grants_review",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-28",
+  "subject": {
+    "proxy": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "owner_multisig": "0xbf099175a241194c38e977735d59ccb22596d775",
+    "historical_target_transaction": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "historical_target_block": 24825928
+  },
+  "decode_method": {
+    "rpc_method": "eth_call",
+    "getter": "proposals(uint256)",
+    "selector": "0x013cf08b",
+    "call_style": "curl POST to https://testnet-rpc.rayls.com",
+    "output_decode": "ABI tuple (address target,bool executed,uint256 value,bytes data); nested bytes decoded as selector + 32-byte role + 32-byte address",
+    "classification": "direct_observation_return_data_supplied_by_user"
+  },
+  "observations": [
+    {
+      "proposal_id": 3,
+      "proposal_target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed_latest_state": true,
+      "proposal_value": "0",
+      "nested_selector": "0x2f2ff15d",
+      "nested_signature": "grantRole(bytes32,address)",
+      "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+      "grantee": "0xc725e02a9466985e4f6a3def109d347472601b20",
+      "grant_role_execution_transaction_from_multisig_index": {
+        "hash": "0x85a54f65b3534531185fa7ddbed406e3b007c6f3e31d04a094c7e6b14ccaa1ac",
+        "block": 21680527,
+        "timestamp_utc": "2026-10-30T19:04:39Z",
+        "action_id": 3,
+        "method": "execute(uint256 id)"
+      },
+      "transaction_specific_role_granted_log": "not yet inspected",
+      "role_name": "unknown",
+      "role_capabilities": "unknown",
+      "classification": "direct_observation_current_proposal_getter_output_plus_multisig_transaction_index_observation",
+      "interpretation_boundary": [
+        "The proposal target is the SharedVaultProxy and its nested calldata is grantRole(bytes32,address).",
+        "The role hash and grantee can be decoded from the returned proposal bytes.",
+        "The nonzero role hash is not sufficient to assign a semantic role name or infer upgrade authority.",
+        "Proposal 3 is shown executed=true in latest proposal state; the transaction index lists execute(3), but the transaction-specific RoleGranted log has not yet been inspected."
+      ]
+    }
+  ],
+  "next_checks": [
+    "Inspect transaction-specific logs for execute(3) tx 0x85a54f65b3534531185fa7ddbed406e3b007c6f3e31d04a094c7e6b14ccaa1ac and confirm the proxy RoleGranted event.",
+    "Decode proposal 4 and then proposals 14, 17, 21, 22 with the same ABI layout.",
+    "Retrieve verified source for historical implementation 0xad966... and determine the actual upgrade authorization check and AccessControl role semantics.",
+    "Compare the role hash in proposal 3 (and later proposals) with the role enforced by upgradeTo/upgradeToAndCall."
+  ],
+  "sources": [
+    {
+      "id": "SRC-MULTISIG-PROPOSALS-3",
+      "type": "read_only_eth_call_output_supplied_by_user",
+      "url": "https://testnet-rpc.rayls.com"
+    },
+    {
+      "id": "SRC-EXECUTE-PROPOSAL-3-TRANSACTION",
+      "type": "explorer_address_transaction_index",
+      "url": "https://testnet-explorer.rayls.com/api/v2/addresses/0xbf099175a241194c38e977735d59ccb22596d775/transactions"
+    }
+  ],
+  "caveats": [
+    "The Rayls docs found during external research describe the separate RaylsAccessManagerV1 access-control architecture for Sovereign networks; that documentation is not assumed to govern this Enygma Public SharedVaultProxy.",
+    "Role names and capabilities must be established from this deployed implementation's verified source or authoritative on-chain behavior, not inferred from generic AccessControl conventions."
+  ],
+  "change_control": {
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false
+  }
+}
