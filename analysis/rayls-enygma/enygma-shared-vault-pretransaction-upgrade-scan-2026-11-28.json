@@ -41,23 +41,24 @@
     "finding": "The RPC eth_getLogs scan returned zero Upgraded events over a range that includes the proxy creation block, even though Explorer reports an Upgraded(address) event in the creation transaction at that block.",
     "conclusion": "The zero-event RPC scan is not a complete or reconcilable historical log record. It cannot be used to infer that no upgrades occurred between deployment and the target transaction.",
     "possible_explanations_not_yet_tested": [
-      "The RPC log index may not expose the oldest logs or may have an indexing/retention boundary.",
-      "The RPC endpoint may return inconsistent results for broad-range log requests.",
-      "The creation transaction/Explorer log and RPC log query may be served from different data/indexing backends.",
-      "A request/filter mismatch or endpoint-specific behavior may explain the discrepancy."
+      "Historical log indexing or retention gap for old blocks in the RPC endpoint.",
+      "A difference between the RPC log backend and Explorer indexed logs.",
+      "An endpoint-specific query/index issue for the creation block.",
+      "Other provider-side archival limitations."
     ],
     "explicitly_not_concluded": [
       "No upgrade occurred between deployment and 2026-11-21.",
       "Implementation 0x0a3a... remained active until the target transaction.",
-      "The implementation active at block 24825928."
+      "The implementation active at block 24825928.",
+      "The exact root cause of the RPC-versus-Explorer log discrepancy."
     ]
   },
   "next_checks": [
-    "Query eth_getLogs for exactly block 21568375 with the proxy address and Upgraded topic.",
-    "Query eth_getLogs for exactly block 25699353 and 25714062 as positive controls, since those two events were returned in the successful post-transaction scan.",
-    "Query eth_getLogs for block 21568375 using only the proxy address and no topics, then compare with Explorer's creation transaction logs.",
-    "If exact-block RPC queries still omit the creation event, treat this RPC endpoint as unsuitable for complete pre-transaction upgrade reconstruction and use Explorer's block/transaction/log APIs or a second independent RPC provider.",
-    "Obtain receipts or block transaction indexes through an endpoint that can retrieve historical receipts, if available."
+    "Use the Explorer legacy logs API with fromBlock, toBlock, address, and topic0 filters to retrieve the pre-transaction Upgraded(address) events.",
+    "If the legacy logs API hits its result cap, split the block range into smaller intervals and preserve complete pagination.",
+    "Alternatively inspect Explorer address logs pagination and filter the returned logs by the Upgraded(address) topic.",
+    "If Explorer cannot supply a complete range, use a second independent archive RPC provider or deployment/upgrade transaction index.",
+    "Only after a complete upgrade timeline is obtained, infer the last implementation active before transaction 0x09edab... at block 24825928, transaction index 0."
   ],
   "sources": [
     {
@@ -85,6 +86,40 @@
     "prior_records_modified": false,
     "raw_transaction_archive_modified": false,
     "source_repository_modified": false,
-    "onchain_transactions_signed_or_sent": false
+    "onchain_transactions_signed_or_sent": false,
+    "prior_transaction_record_modified": false
+  },
+  "scan_exact_block_controls": {
+    "rpc_endpoint": "https://testnet-rpc.rayls.com",
+    "retrieval_method": "eth_getLogs with exact fromBlock and toBlock",
+    "results": [
+      {
+        "block": 21568375,
+        "filter": "proxy address + Upgraded(address) topic0",
+        "log_count": 0,
+        "classification": "direct_observation_rpc_query_result"
+      },
+      {
+        "block": 21568375,
+        "filter": "proxy address only, without topic filter",
+        "log_count": 0,
+        "classification": "direct_observation_rpc_query_result"
+      },
+      {
+        "block": 25699353,
+        "filter": "proxy address + Upgraded(address) topic0",
+        "log_count": 1,
+        "implementation": "0x9644667cc096964bafb6a533d57873544fbfb956",
+        "classification": "positive_control_rpc_query_result"
+      },
+      {
+        "block": 25714062,
+        "filter": "proxy address + Upgraded(address) topic0",
+        "log_count": 1,
+        "implementation": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+        "classification": "positive_control_rpc_query_result"
+      }
+    ],
+    "assessment": "The RPC endpoint returns no logs for the exact proxy creation block even without a topic filter, while it returns the two known later upgrade logs at their exact blocks. This localizes the discrepancy to historical log availability/indexing for the creation block or older data, but does not establish the precise cause or prove no intermediate upgrades."
   }
 }
