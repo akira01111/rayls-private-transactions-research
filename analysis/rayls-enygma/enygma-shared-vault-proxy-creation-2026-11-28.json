@@ -20,11 +20,22 @@
   "creation_transaction_observations": {
     "source": "Rayls Testnet Explorer API",
     "endpoint": "https://testnet-explorer.rayls.com/api/v2/transactions/0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7",
-    "transaction_types": ["contract_creation"],
+    "transaction_types": [
+      "contract_creation"
+    ],
     "result": "success",
     "gas_used": 255797,
-    "block_number": "not included in the selected fields from the retrieved Explorer response; exact block to be obtained from RPC transaction receipt",
-    "created_contract": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2"
+    "block_number": 21568375,
+    "created_contract": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "block_number_hex": "0x1491b77",
+    "transaction_index": 0,
+    "block_number_provenance": {
+      "rpc_method": "eth_getTransactionByHash",
+      "rpc_endpoint": "https://testnet-rpc.rayls.com",
+      "returned_block_number": "0x1491b77",
+      "explorer_cross_check": "Explorer transaction endpoint returned block_number 21568375",
+      "classification": "cross_checked_direct_observation"
+    }
   },
   "creation_log_observations": {
     "source": "Rayls Testnet Explorer API",
@@ -83,8 +94,7 @@
     ]
   },
   "next_checks": [
-    "Use eth_getTransactionReceipt for the proxy creation transaction to obtain the exact creation block number.",
-    "Scan Upgraded(address) logs from the creation block through block 24825928, inclusive, in bounded chunks.",
+    "Scan Upgraded(address) logs from block 21568375 through block 24825928, inclusive, in bounded chunks.",
     "Inspect implementation 0x0a3a9f0e41937d330a8734c3276557f1ec9ad62f metadata and source/bytecode if available.",
     "Reconcile any pre-transaction upgrade events with the previously recorded 0xad9667049f14d1757d147f652c41dc241c57091c reference."
   ],
