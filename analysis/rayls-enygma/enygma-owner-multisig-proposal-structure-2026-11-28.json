@@ -1,0 +1,163 @@
+{
+  "record_id": "RAYLS-ENYGMA-OWNER-MULTISIG-ABI-SOURCE-AND-EXECUTION-LOGS-20261128",
+  "record_type": "multisig_source_abi_and_execution_log_review",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-28",
+  "subject": {
+    "contract": "OwnerMultisig",
+    "address": "0xbf099175a241194c38e977735d59ccb22596d775",
+    "verified": true,
+    "compiler_version": "v0.8.28+commit.7893614a",
+    "verified_at_utc": "2026-11-11T11:15:18.672196Z"
+  },
+  "source_and_abi_observations": {
+    "proposal_structure": {
+      "struct": "Proposal",
+      "fields": [
+        "address target",
+        "bool executed",
+        "uint256 value",
+        "bytes data"
+      ],
+      "classification": "current_verified_source_observation"
+    },
+    "proposal_id_sequence": {
+      "source_comment": "Ids count up from 0; proposalCount is the next one.",
+      "storage": "uint256 public proposalCount",
+      "mapping": "mapping(uint256 id => Proposal) public proposals",
+      "classification": "current_verified_source_observation"
+    },
+    "proposal_flow_comment": "An owner proposes a call (target, value, data); proposing counts as their confirmation. Once threshold owners have confirmed, any owner can execute it, once. Confirmations are counted at execution against the current owners and threshold.",
+    "owner_threshold_control_comment": "The owners and threshold change only through the multisig's own proposals (target = this contract), so the same M-of-N guards the owner set.",
+    "abi_functions": [
+      "propose(address target,uint256 value,bytes data) returns (uint256)",
+      "confirm(uint256 id)",
+      "execute(uint256 id) returns (bytes)",
+      "confirmations(uint256 id) view returns (uint256)",
+      "isConfirmed(uint256 id,address owner) view returns (bool)",
+      "proposalCount() view returns (uint256)",
+      "proposals(uint256 id) view returns (address,bool,uint256,bytes)",
+      "owners() view returns (address[])",
+      "threshold() view returns (uint256)"
+    ],
+    "abi_events": [
+      "Proposed(uint256 indexed id,address indexed proposer,address indexed target,uint256 value,bytes data)",
+      "Confirmed(uint256 indexed id,address indexed owner)",
+      "Revoked(uint256 indexed id,address indexed owner)",
+      "Executed(uint256 indexed id,address indexed executor)",
+      "OwnerAdded(address indexed owner)",
+      "OwnerRemoved(address indexed owner)",
+      "ThresholdChanged(uint256 threshold)",
+      "Received(address indexed sender,uint256 value)"
+    ],
+    "important_capability": "Because proposals(id) and proposalCount() are public view getters, prior proposal targets and calldata can be inspected with read-only eth_call without relying on internal transaction traces."
+  },
+  "execution_transactions": [
+    {
+      "transaction_hash": "0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567",
+      "block": 25699353,
+      "timestamp_utc": "2026-11-26T22:08:28Z",
+      "outer_call": {
+        "from": "0x71af09966cbed4434cca97c40fa38b8083548b95",
+        "to": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "method": "execute(uint256 id)",
+        "action_id": 13
+      },
+      "proxy_upgrade_event": {
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "new_implementation": "0x9644667cc096964bafb6a533d57873544fbfb956"
+      },
+      "multisig_log": {
+        "topic0": "0x7271f8b3d48d26ccc839c0f424fe9e12fe4e058108b58c096c078659c7fbadf6",
+        "topic1_action_id": 13,
+        "topic2_executor": "0x71af09966cbed4434cca97c40fa38b8083548b95",
+        "interpretation": "Matches ABI event Executed(uint256 indexed id,address indexed executor)."
+      },
+      "internal_transactions_endpoint_items": 0
+    },
+    {
+      "transaction_hash": "0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c",
+      "block": 25714062,
+      "timestamp_utc": "2026-11-27T00:22:17Z",
+      "outer_call": {
+        "from": "0x3bffb10f6f17f15164fbc0416f1bc42c56b2c191",
+        "to": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "method": "execute(uint256 id)",
+        "action_id": 16
+      },
+      "proxy_upgrade_event": {
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "new_implementation": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0"
+      },
+      "multisig_log": {
+        "topic0": "0x7271f8b3d48d26ccc839c0f424fe9e12fe4e058108b58c096c078659c7fbadf6",
+        "topic1_action_id": 16,
+        "topic2_executor": "0x3bffb10f6f17f15164fbc0416f1bc42c56b2c191",
+        "interpretation": "Matches ABI event Executed(uint256 indexed id,address indexed executor)."
+      },
+      "internal_transactions_endpoint_items": 0
+    }
+  ],
+  "other_log_observations": {
+    "first_upgrade_tx": {
+      "log_count": 6,
+      "proxy_role_granted_signature_topic0": "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d",
+      "proxy_role_granted_count": 3,
+      "additional_proxy_event_topic0": "0x7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb3847402498",
+      "additional_proxy_event_data": "0x0000000000000000000000000000000000000000000000000000000000000003",
+      "additional_event_semantics": "unresolved"
+    },
+    "second_upgrade_tx": {
+      "log_count": 4,
+      "proxy_role_granted_signature_topic0": "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d",
+      "proxy_role_granted_count": 1,
+      "additional_proxy_event_topic0": "0x7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb3847402498",
+      "additional_proxy_event_data": "0x0000000000000000000000000000000000000000000000000000000000000004",
+      "additional_event_semantics": "unresolved"
+    }
+  },
+  "interpretation": {
+    "established": [
+      "OwnerMultisig is Explorer-verified and its ABI exposes proposalCount() and proposals(uint256).",
+      "Current verified source says proposal IDs begin at zero and proposalCount is the next ID.",
+      "The two later outer transactions call execute(13) and execute(16), respectively.",
+      "Their logs include an Executed event with matching action ID and executor, consistent with the verified ABI.",
+      "The same transactions include SharedVaultProxy Upgraded(address) events with the new implementation addresses recorded above."
+    ],
+    "not_established": [
+      "Exact internal call trace path; Explorer internal-transactions endpoint returned zero items for both.",
+      "The historical proposal IDs that targeted SharedVaultProxy before block 24825928.",
+      "Whether current proposals mapping preserves every earlier proposal and whether the source ABI/storage semantics have changed since deployment.",
+      "Which implementation was active at block 24825928."
+    ]
+  },
+  "next_checks": [
+    "Call proposalCount() and proposals(13), proposals(16) through read-only eth_call; decode target, executed, value and bytes data.",
+    "Read proposals(id) for proposal IDs 0 through the current proposalCount-1 and identify targets equal to SharedVaultProxy or any intermediary that later calls it.",
+    "Inspect Proposed(uint256,address,address,uint256,bytes) logs or proposal getter records for the identified candidate actions, including target, calldata selector and embedded implementation address.",
+    "Determine proposal creation and execution block/timestamp for any upgrade-targeting action before the 2026-11-21 transaction.",
+    "Do not infer implementation-at-target from action IDs 13 or 16 alone."
+  ],
+  "sources": [
+    {
+      "id": "SRC-OWNER-MULTISIG-METADATA",
+      "type": "explorer_verified_contract_metadata",
+      "url": "https://testnet-explorer.rayls.com/api/v2/smart-contracts/0xbf099175a241194c38e977735d59ccb22596d775"
+    },
+    {
+      "id": "SRC-MULTISIG-EXECUTION-TX-13",
+      "type": "explorer_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567"
+    },
+    {
+      "id": "SRC-MULTISIG-EXECUTION-TX-16",
+      "type": "explorer_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c"
+    }
+  ],
+  "change_control": {
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false
+  }
+}
