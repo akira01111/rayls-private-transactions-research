@@ -329,6 +329,66 @@
         "Assuming all observers have no other contract rights: the documented example explicitly notes that owner is also controller for Transfer."
       ],
       "important_limitation": "The MDX lines for the headings 'Auditor as Observer' and 'Selective Audit Rights' contain component references rather than the component body content. The evidence above relies on the explicit prose in Pattern 2 and Best Practices, not on unseen component content."
+    },
+    {
+      "source_id": "CANTON-OPN-EXTERNAL-PARTY-2026",
+      "publisher": "Digital Asset / Canton Network",
+      "title": "Local and external parties — Observing participant node",
+      "url": "https://docs.digitalasset.com/overview/3.4/explanations/canton/external-party.html",
+      "canonical_current_url": "https://docs.canton.network/overview/reference/external-party",
+      "source_type": "official_platform_documentation",
+      "retrieved_date": "2026-11-28",
+      "evidence_status": "official_page_content_retrieved_via_web_search; current URL also downloaded in user Codespace but body extraction only showed section navigation",
+      "relevant_evidence": [
+        "A node with observation permissions is called an Observing Participant Node (OPN).",
+        "A party entrusts its OPNs to faithfully record and provide read access to transactions involving that party on the ledger.",
+        "Nodes with only observation permissions cannot submit nor confirm transactions on behalf of the parties they host."
+      ],
+      "supports": [
+        "Canton OPN offers read access for transactions involving the party it hosts.",
+        "Observation-only OPNs cannot submit or confirm transactions for that party."
+      ],
+      "does_not_support": [
+        "An OPN has network-wide visibility into transactions unrelated to its hosted party.",
+        "A regulator automatically becomes an OPN without party hosting permission."
+      ],
+      "terminal_snapshot_reference": {
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/reference/external-party",
+        "downloaded_bytes": 297586,
+        "sha256": "18accaa70e6edba54de748899c9c1621dcbe6b598b671ef6e54ec92f17179020",
+        "local_file": "/tmp/deep-answer-auditor/canton_external_party.html"
+      }
+    },
+    {
+      "source_id": "CORDA-OBSERVER-NODES-ENTERPRISE-410-DETAIL",
+      "publisher": "R3",
+      "title": "Posting transactions to observer nodes — Corda Enterprise 4.10",
+      "url": "https://docs.r3.com/en/platform/corda/4.10/enterprise/get-started/tutorials/supplementary-tutorials/tutorial-observer-nodes.html",
+      "source_type": "official_product_documentation_and_tutorial",
+      "retrieved_date": "2026-11-28",
+      "terminal_access": {
+        "http_status": 403,
+        "interpretation": "The user's Codespace curl request was denied. This is a retrieval limitation; it does not negate the browser-accessible official documentation."
+      },
+      "relevant_evidence": [
+        "R3 says posting transactions to observer nodes is a common finance requirement where regulators may want comprehensive reporting; a regulator can run its own node and receive digitally signed, de-duplicated reports.",
+        "The TradeAndReport sample flow distributes a signed transaction to the buyer and state regulator through FinalityFlow.",
+        "The sample separately reports the transaction to the national regulator through an application flow that sends the SignedTransaction.",
+        "The regulator responder records all of the transaction's states using recordTransactions with StatesToRecord.ALL_VISIBLE.",
+        "R3 cautions that default vault queries do not distinguish states recorded as participant/owner from states recorded as observer, so custom queries should be written to return only participant/owner states where required.",
+        "When ALL_VISIBLE is used, an observer node may record all states in a transaction history that it has not already received; nodes can also contain both ALL_VISIBLE and only relevant states depending on how transactions were received."
+      ],
+      "supports": [
+        "Corda Enterprise 4.10 supports application-integrated regulator reporting through observer nodes.",
+        "Regulator access is delivered through explicit transaction distribution flows rather than automatic universal visibility."
+      ],
+      "does_not_support": [
+        "Every Corda application automatically reports every transaction to regulators.",
+        "A universal Corda auditor role with automatic access to all network transactions."
+      ],
+      "implementation_detail": "The tutorial's Kotlin and Java examples explicitly show initiateFlow(regulator), sending the signed transaction, and recordTransactions(StatesToRecord.ALL_VISIBLE, ...).",
+      "evidence_lines_from_browser_open": "Lines 401-409, 414-459, and 543-547 in the official R3 page."
     }
   ],
   "comparison_assessment": {
@@ -339,28 +399,30 @@
       "caveat": "Applications and privacy layers may keep application data or plaintext outside public ledger visibility."
     },
     "canton": {
-      "auditor_access_model": "Application-defined, contract-level Daml observers can provide selective audit visibility; Participant Node Observation permission is a separate party-scoped hosting permission.",
-      "scope": "At contract level, an observer sees the specific contract instance and its information under Daml visibility rules. At participant-hosting level, an Observation-permission node is notified only of transactions in which its hosted party is a stakeholder.",
+      "auditor_access_model": "Two related but distinct mechanisms: (1) Daml contract observers can be explicitly assigned for selected contract-level audit visibility; (2) a party may entrust an Observing Participant Node (OPN) with Observation permission to record and provide read access to transactions involving that hosted party.",
+      "scope": "Daml observer: the particular contract instance and information visible under contract stakeholder rules. OPN: transactions involving the party hosted by that participant node. An Observation-only OPN cannot submit or confirm for the hosted party.",
       "classification": "official_documentation_fact_with_terminal_source_snapshot",
       "supported_patterns": [
         "The official privacy-model MDX says specific parties can be added as observers when they need visibility but not control.",
         "It explicitly identifies compliance, audit, and information purposes, with regulator as an observer in its example.",
         "Best practices include explicit auditor parties, non-consuming audit choices, separate audit contracts, and time-bounded workflow access.",
-        "The topology page defines Observation, Confirmation, and Submission as distinct permissions assigned by the party owner."
+        "The topology page defines Observation, Confirmation, and Submission as distinct permissions assigned by the party owner.",
+        "The official OPN page states that observation-only nodes cannot submit or confirm transactions for the parties they host."
       ],
       "caveats": [
         "Do not describe Canton as having an automatic network-wide auditor.",
         "Daml contract observer rights and Participant Node Observation permission are related but distinct mechanisms.",
         "The documentation describes capabilities and design patterns; it does not prove a named financial institution has deployed them.",
         "The owner in the example is also a controller for Transfer; do not generalize the no-control property of the regulator observer to every observer party.",
-        "The detailed text beneath the 'Auditor as Observer' and 'Selective Audit Rights' component placeholders was not recovered from the raw MDX; do not attribute unseen details to those headings."
+        "The detailed text beneath the 'Auditor as Observer' and 'Selective Audit Rights' component placeholders was not recovered from the raw MDX; do not attribute unseen details to those headings.",
+        "OPN is a party-to-participant hosting permission; do not treat it as identical to adding a Daml observer party to an individual contract."
       ]
     },
     "corda": {
-      "auditor_access_model": "Application-integrated observer node; regulator node receives transactions explicitly reported by application flows.",
-      "scope": "Transactions sent to the observer through the CorDapp flow and the visibility/recording options used.",
-      "classification": "official_documentation_fact_for_corda_enterprise_4_10",
-      "caveat": "The cited observer tutorial is Corda Enterprise 4.10. It is not proof that every Corda version or CorDapp automatically reports every transaction."
+      "auditor_access_model": "Application-integrated observer node and explicit transaction reporting flows to regulator nodes.",
+      "scope": "The transactions and states explicitly distributed to the regulator by CorDapp flows. The R3 Corda Enterprise 4.10 tutorial demonstrates FinalityFlow distribution to a state regulator and a separate flow that sends a signed transaction to a national regulator, whose node records states using ALL_VISIBLE.",
+      "classification": "official_documentation_and_code_example_for_corda_enterprise_4_10",
+      "caveat": "This is an application pattern, not automatic network-wide regulator visibility. The tutorial also warns that vault queries do not automatically distinguish participant/owner-recorded states from observer-recorded states."
     },
     "rayls_enygma_public": {
       "auditor_access_model": "Deployment auditor key used to decrypt escrowed account view keys.",
@@ -382,8 +444,8 @@
     },
     {
       "system": "R3 Corda Enterprise 4.10",
-      "concise_claim": "Application-integrated regulator observer node",
-      "auditor_access": "Regulator node receives signed transactions explicitly reported by application flow."
+      "concise_claim": "Application-integrated observer node with explicit regulator reporting",
+      "auditor_access": "CorDapp flows distribute signed transactions to regulator nodes; the documented responder records transaction states using ALL_VISIBLE. Not automatic network-wide access."
     },
     {
       "system": "Rayls Enygma Public",
@@ -392,7 +454,7 @@
     }
   ],
   "terminal_verification": {
-    "status": "partial_terminal_retrieval_completed_from_user_codespace",
+    "status": "partial_terminal_retrieval_completed_from_user_codespace_plus_browser_verified_official_documentation",
     "attempt_date": "2026-11-28",
     "retrievals": [
       {
@@ -487,27 +549,26 @@
         "result": "R3 server denied curl request; saved response is an HTTP error page, not documentation content."
       }
     ],
-    "interpretation": "Terminal retrieval and hashing were performed in the user's Codespace. HTTP 200 and SHA-256 establish successful retrieval and identify local snapshots, but do not alone establish semantic claims. Canton claims above are additionally based on extracted page text and raw MDX lines. Corda remains supported by official documentation accessed through browser research, while terminal retrieval of the R3 pages is blocked by HTTP 403.",
+    "interpretation": "Terminal retrieval and hashing were performed in the user's Codespace. HTTP 200 and SHA-256 identify local snapshots but do not alone establish semantic claims. Canton claims are additionally supported by extracted page text and raw MDX. Corda Enterprise 4.10 observer behavior is supported by browser-accessed official R3 documentation and its Kotlin/Java code example; R3 curl remains blocked with HTTP 403, whose response bodies are error pages, not documentation.",
     "live_transactions": false,
     "secrets_or_private_keys": false,
     "repo_configuration_changed": false
   },
   "limitations_and_open_questions": [
     "Canton and Corda are permissioned deployments. Public documentation proves described capabilities, not the configuration of a named bank, regulator, or production network.",
-    "The cited Corda observer evidence is version-specific; the 4.10 and 4.14 terminal endpoints returned HTTP 403 and the downloaded bodies were error pages, not documentation.",
     "Canton contract-level Daml observer rights and Participant Node Observation hosting permission are related but distinct mechanisms.",
     "The Canton privacy-model raw MDX contains explicit audit-pattern prose at lines 140-148 and 172-179. The body text behind the 'Auditor as Observer' and 'Selective Audit Rights' component placeholders was not retrieved, so no claims are attributed to that unseen content.",
     "The Canton source documents a design pattern; no specific production institution's configuration or actual auditor node was independently tested.",
     "Enygma documentation describes a deployment auditor key and escrow model, but no independent testnet decryption was performed in this review.",
     "The fact that a view key cannot spend funds does not by itself prove that the auditor cannot correlate other public metadata or that governance rules cannot change.",
-    "Terminal hashes identify downloaded snapshots; they do not independently validate all semantic claims contained in those snapshots."
+    "Terminal hashes identify downloaded snapshots; they do not independently validate all semantic claims contained in those snapshots.",
+    "Corda Enterprise 4.10 observer-node behavior is documented by R3; terminal curl to the page returns HTTP 403, so the source was checked through browser-accessible official documentation rather than a local terminal snapshot.",
+    "The Corda tutorial illustrates explicit application-flow reporting to regulator nodes. It does not establish that all CorDapps or all Corda deployments report every transaction to a regulator by default."
   ],
   "next_steps": [
-    "Inspect the current Canton external-party page body around the Observing Participant Node section, not only its table of contents.",
-    "If needed, retrieve the Canton Daml observer API or code example that backs the privacy-model patterns.",
-    "For Corda, retain official-documentation claims with browser-accessed sources but record terminal HTTP 403 as a retrieval limitation; do not treat the error body as source evidence.",
-    "For Enygma, compare live registry and contract state with current documentation using read-only RPC calls; do not expose private keys or perform unauthorized decryption.",
-    "For Ethereum, if the experiment requires independent confirmation beyond docs, query a public RPC for a known block or transaction.",
-    "Update the Deep Answer comparison matrix only after each claim has a source citation and an explicitly stated evidence class."
+    "Proceed to the next Stage 2 comparison criterion: transaction privacy, using primary documentation for Ethereum, Canton, Corda, and Rayls.",
+    "Keep the current auditor-access conclusions as documented design capabilities, not proof of any named institution's live production configuration.",
+    "For Enygma, independently compare the current deployment's auditor registry configuration with the documentation using read-only RPC calls; do not expose keys or attempt unauthorized decryption.",
+    "For Ethereum, verify public read access through RPC if a live demonstration is needed; the current official network documentation already supports the general public-read claim."
   ]
 }
