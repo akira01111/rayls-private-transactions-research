@@ -442,3 +442,24 @@ New record:
 [SharedVault proxy role grants](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-proxy-role-grants-2026-11-28.json)
 
 Next action: decode proposal 4, then proposals 14, 17, 21, and 22; inspect transaction-specific RoleGranted logs and compare granted role hashes to the actual upgrade authorization in the deployed implementation.
+
+## 19. Proxy role grant — proposal 4 decoded
+
+Read-only `eth_call` to `proposals(4)` returned a tuple targeting SharedVaultProxy with `executed=true`, value 0, and nested selector `0x2f2ff15d` (`grantRole(bytes32,address)`).
+
+Decoded arguments:
+- role hash: `0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91`
+- grantee: `0x20df5ba54349a4b88a9ec036506ab962f8b93e0e`.
+
+Explorer OwnerMultisig transaction index lists execute(4) at block 21,804,717, timestamp 2026-10-31 16:08:54 UTC, tx `0xf0a7beb9ae422c18ab22e1ea15c278481f290d0d3922777d01a8f9fcb6fc0aa8`.
+
+Proposal 3 and 4 grant the **same role hash** to different grantees:
+- Proposal 3 grantee: `0xc725e02a9466985e4f6a3def109d347472601b20`.
+- Proposal 4 grantee: `0x20df5ba54349a4b88a9ec036506ab962f8b93e0e`.
+
+Role name and authority remain unknown. The nonzero hash cannot be classified as an upgrade role from its value alone. Transaction-specific RoleGranted event confirmation remains pending for both execute transactions.
+
+Updated record:
+[SharedVault proxy role grants](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-proxy-role-grants-2026-11-28.json)
+
+Next action: inspect transaction-specific logs for execute(3) and execute(4), then decode proxy-targeted grantRole proposals 14, 17, 21, and 22.
