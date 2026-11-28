@@ -1,0 +1,90 @@
+{
+  "record_id": "RAYLS-ENYGMA-SHAREDVAULT-PRETX-UPGRADE-SCAN-20261128",
+  "record_type": "historical_proxy_upgrade_log_scan",
+  "status": "blocked_by_rpc_explorer_inconsistency",
+  "recorded_at_utc": "2026-11-28",
+  "subject": {
+    "proxy_address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "creation_block": 21568375,
+    "target_transaction_hash": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "target_transaction_block": 24825928,
+    "target_transaction_index": 0
+  },
+  "scan": {
+    "rpc": "https://testnet-rpc.rayls.com",
+    "method": "eth_getLogs",
+    "address_filter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "topic0": "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+    "from_block": 21568375,
+    "to_block": 24825928,
+    "chunk_size": 50000,
+    "chunks_completed": 66,
+    "scan_completed_without_rpc_error": true,
+    "events_returned": 0,
+    "classification": "direct_observation_rpc_query_result"
+  },
+  "conflicting_existing_evidence": {
+    "source": "Rayls Testnet Explorer transaction logs endpoint",
+    "creation_transaction_hash": "0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7",
+    "creation_block": 21568375,
+    "known_creation_event": {
+      "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "topic0": "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+      "topic1": "0x0000000000000000000000000a3a9f0e41937d330a8734c3276557f1ec9ad62f",
+      "decoded_implementation": "0x0a3a9f0e41937d330a8734c3276557f1ec9ad62f",
+      "log_index": 0
+    },
+    "explorer_logs_endpoint": "https://testnet-explorer.rayls.com/api/v2/transactions/0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7/logs",
+    "classification": "direct_observation_explorer_api"
+  },
+  "assessment": {
+    "finding": "The RPC eth_getLogs scan returned zero Upgraded events over a range that includes the proxy creation block, even though Explorer reports an Upgraded(address) event in the creation transaction at that block.",
+    "conclusion": "The zero-event RPC scan is not a complete or reconcilable historical log record. It cannot be used to infer that no upgrades occurred between deployment and the target transaction.",
+    "possible_explanations_not_yet_tested": [
+      "The RPC log index may not expose the oldest logs or may have an indexing/retention boundary.",
+      "The RPC endpoint may return inconsistent results for broad-range log requests.",
+      "The creation transaction/Explorer log and RPC log query may be served from different data/indexing backends.",
+      "A request/filter mismatch or endpoint-specific behavior may explain the discrepancy."
+    ],
+    "explicitly_not_concluded": [
+      "No upgrade occurred between deployment and 2026-11-21.",
+      "Implementation 0x0a3a... remained active until the target transaction.",
+      "The implementation active at block 24825928."
+    ]
+  },
+  "next_checks": [
+    "Query eth_getLogs for exactly block 21568375 with the proxy address and Upgraded topic.",
+    "Query eth_getLogs for exactly block 25699353 and 25714062 as positive controls, since those two events were returned in the successful post-transaction scan.",
+    "Query eth_getLogs for block 21568375 using only the proxy address and no topics, then compare with Explorer's creation transaction logs.",
+    "If exact-block RPC queries still omit the creation event, treat this RPC endpoint as unsuitable for complete pre-transaction upgrade reconstruction and use Explorer's block/transaction/log APIs or a second independent RPC provider.",
+    "Obtain receipts or block transaction indexes through an endpoint that can retrieve historical receipts, if available."
+  ],
+  "sources": [
+    {
+      "id": "SRC-RPC-PRETX-LOG-SCAN",
+      "type": "direct_rpc_eth_getLogs_scan",
+      "url": "https://testnet-rpc.rayls.com"
+    },
+    {
+      "id": "SRC-EXPLORER-CREATION-LOGS",
+      "type": "explorer_transaction_logs",
+      "url": "https://testnet-explorer.rayls.com/api/v2/transactions/0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7/logs"
+    },
+    {
+      "id": "SRC-EXPLORER-CREATION-TX",
+      "type": "explorer_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7"
+    },
+    {
+      "id": "SRC-PROXY-CREATION-RECORD",
+      "type": "repository_analysis_record",
+      "url": "https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-proxy-creation-2026-11-28.json"
+    }
+  ],
+  "change_control": {
+    "prior_records_modified": false,
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false
+  }
+}
