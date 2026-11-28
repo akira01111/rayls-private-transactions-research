@@ -3,7 +3,7 @@
   "record_type": "comparative_evidence_review",
   "title": "Auditor access models across Ethereum, Canton, Corda, and Rayls Enygma Public",
   "created_date": "2026-11-28",
-  "status": "official_documentation_review_pending_independent_terminal_verification",
+  "status": "official_documentation_review_with_terminal_snapshot_verification_partial",
   "research_question": "How can financial institutions make private transactions on a public blockchain while retaining auditability and institutional control?",
   "scope": {
     "included_systems": [
@@ -187,6 +187,148 @@
       "does_not_support": [
         "Independent cryptographic verification of the testnet auditor's private key custody or successful decryption."
       ]
+    },
+    {
+      "source_id": "CANTON-CURRENT-TOPOLOGY-2026",
+      "publisher": "Canton Network",
+      "title": "Topology",
+      "url": "https://docs.canton.network/overview/reference/topology",
+      "source_type": "official_network_documentation",
+      "retrieved_date": "2026-11-28",
+      "terminal_retrieval": {
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/reference/topology",
+        "downloaded_bytes": 344748,
+        "sha256": "751d0d31a8be00aa92105c759eeae0f5b0d18f5d1eca4f7ac72a3effc556b86e",
+        "local_file": "/tmp/deep-answer-auditor/canton_topology_v2.html"
+      },
+      "relevant_evidence": [
+        "A party owner and Participant Node must consent to the hosting relationship through the relevant PartyToParticipant topology transaction.",
+        "Observation permission means the Participant Node is notified only of transactions in which the hosted party is a stakeholder.",
+        "Confirmation permission includes Observation; Submission permission includes Confirmation.",
+        "The documented topology text warns that a malicious Participant Node with Confirmation permission may submit Daml transactions in the party's name, so parties delegating Confirmation permission should sufficiently trust that node."
+      ],
+      "supports": [
+        "Observation permission is party-scoped and tied to party hosting.",
+        "Observation is distinct from Confirmation and Submission.",
+        "The party owner assigns the Participant Node permission through topology."
+      ],
+      "does_not_support": [
+        "A universal regulator or auditor that can read all network transactions.",
+        "Treating all observer-related permission as risk-free or equivalent to read-only."
+      ],
+      "evidence_location": "Terminal-extracted page text from the downloaded HTML; the exact Observation, Confirmation, and Submission definitions were returned in the user's terminal output."
+    },
+    {
+      "source_id": "CANTON-CURRENT-PARTICIPANT-2026",
+      "publisher": "Canton Network",
+      "title": "Participant Node Architecture",
+      "url": "https://docs.canton.network/overview/reference/participant-overview",
+      "source_type": "official_network_documentation",
+      "retrieved_date": "2026-11-28",
+      "terminal_retrieval": {
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/reference/participant-overview",
+        "downloaded_bytes": 215117,
+        "sha256": "fd4a3a50fda68df83e22eca3a8d26dae768794dd808621135f04ac419ad1c47c",
+        "local_file": "/tmp/deep-answer-auditor/canton_participant.html"
+      },
+      "relevant_evidence": [
+        "A Canton Participant maintains a localized private view of ledger state.",
+        "It stores data for Daml contracts whose signatories and observers are hosted on that Participant."
+      ],
+      "supports": [
+        "Participant-level data visibility is localized rather than a full global contract store."
+      ],
+      "does_not_support": [
+        "A participant node automatically sees all transactions on Canton."
+      ]
+    },
+    {
+      "source_id": "CANTON-CURRENT-PRIVACY-2026",
+      "publisher": "Canton Network",
+      "title": "Privacy Model Explained",
+      "url": "https://docs.canton.network/overview/learn/privacy-model",
+      "source_type": "official_network_documentation",
+      "retrieved_date": "2026-11-28",
+      "terminal_retrieval": {
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/learn/privacy-model",
+        "downloaded_bytes": 339780,
+        "sha256": "3ea9c653a2289a8b6b06b37fab46356f4c9a70f5ef20ce4e6a7234ff5e80af4e",
+        "local_file": "/tmp/deep-answer-auditor/canton_privacy.html"
+      },
+      "relevant_evidence": [
+        "The page's navigation identifies sections titled Auditor as Observer, Selective Audit Rights, Best Practices for Auditability, and Selective Disclosure via Observers."
+      ],
+      "supports": [
+        "The current Canton documentation explicitly has a section structure dedicated to privacy versus auditability."
+      ],
+      "does_not_support": [
+        "The presence of a heading alone is not evidence of the full text or implementation details beneath that heading."
+      ],
+      "limitation": "HTML extraction exposed a page-of-contents / component references for some subsections. The raw MDX was separately fetched and inspected; only its explicit text is treated as claim evidence."
+    },
+    {
+      "source_id": "CANTON-CURRENT-EXTERNAL-PARTY-2026",
+      "publisher": "Canton Network",
+      "title": "Local and External Parties",
+      "url": "https://docs.canton.network/overview/reference/external-party",
+      "source_type": "official_network_documentation",
+      "retrieved_date": "2026-11-28",
+      "terminal_retrieval": {
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/reference/external-party",
+        "downloaded_bytes": 297586,
+        "sha256": "18accaa70e6edba54de748899c9c1621dcbe6b598b671ef6e54ec92f17179020",
+        "local_file": "/tmp/deep-answer-auditor/canton_external_party.html"
+      },
+      "relevant_evidence": [
+        "The page navigation lists distinct sections for Submitting Participant Node, Confirming Participant Node, and Observing Participant Node."
+      ],
+      "supports": [
+        "Canton documentation treats observing, confirming, and submitting participant nodes as distinct concepts."
+      ],
+      "does_not_support": [
+        "A specific claim about exact OPN runtime behavior beyond what is established by the separately inspected topology page."
+      ],
+      "limitation": "The user's extracted HTML output showed the table-of-contents entries but did not provide the body text under Observing Participant Node."
+    },
+    {
+      "source_id": "CANTON-PRIVACY-MDX-2026",
+      "publisher": "Canton Network",
+      "title": "Privacy Model Explained — raw MDX source",
+      "url": "https://raw.githubusercontent.com/canton-network/cf-docs/main/docs-main/overview/learn/privacy-model.mdx",
+      "source_type": "official_documentation_source_file",
+      "retrieved_date": "2026-11-28",
+      "terminal_retrieval": {
+        "retrieval_method": "curl -L -sS --fail",
+        "http_status": "not separately printed by command",
+        "downloaded_bytes": 9347,
+        "sha256": "6835dc9452f97f273fa33d39b449976401c09ee0b3b7c8dca04a5d3519bc72f1",
+        "local_file": "/tmp/deep-answer-auditor/canton_privacy.mdx"
+      },
+      "relevant_evidence": [
+        {
+          "lines": "140-148",
+          "text": "Pattern 2: Selective Disclosure via Observers. Add specific parties as observers when they need visibility but not control. The pattern is for third parties needing visibility for compliance, audit, or information purposes. The example visibility is issuer as signatory and owner and regulator as observers; the owner is also the controller for Transfer and can execute that choice unilaterally."
+        },
+        {
+          "lines": "172-179",
+          "text": "Best practices include explicit auditor parties (add auditors as observers where an audit trail is required), non-consuming audit choices that return audit information, separate audit trail contracts when full visibility is not needed, and workflow patterns for temporary audit access."
+        }
+      ],
+      "supports": [
+        "Canton/Daml officially documents selective observer disclosure for compliance, audit, or information purposes.",
+        "A regulator is explicitly included as an observer in the documented example.",
+        "The documentation recommends explicit auditor parties, audit choices, separate audit contracts, and time-bounded access patterns."
+      ],
+      "does_not_support": [
+        "Automatic network-wide auditor access.",
+        "Proof that a particular institution has deployed these patterns in production.",
+        "Assuming all observers have no other contract rights: the documented example explicitly notes that owner is also controller for Transfer."
+      ],
+      "important_limitation": "The MDX lines for the headings 'Auditor as Observer' and 'Selective Audit Rights' contain component references rather than the component body content. The evidence above relies on the explicit prose in Pattern 2 and Best Practices, not on unseen component content."
     }
   ],
   "comparison_assessment": {
@@ -197,10 +339,22 @@
       "caveat": "Applications and privacy layers may keep application data or plaintext outside public ledger visibility."
     },
     "canton": {
-      "auditor_access_model": "Party-scoped observation permission for participant nodes and contract-level observer rights in Daml.",
-      "scope": "Transactions/contracts in which the hosted party is a stakeholder or observer.",
-      "classification": "official_documentation_fact",
-      "caveat": "Do not label this a universal network-wide auditor. Access depends on party hosting permissions, contract stakeholders, and application design."
+      "auditor_access_model": "Application-defined, contract-level Daml observers can provide selective audit visibility; Participant Node Observation permission is a separate party-scoped hosting permission.",
+      "scope": "At contract level, an observer sees the specific contract instance and its information under Daml visibility rules. At participant-hosting level, an Observation-permission node is notified only of transactions in which its hosted party is a stakeholder.",
+      "classification": "official_documentation_fact_with_terminal_source_snapshot",
+      "supported_patterns": [
+        "The official privacy-model MDX says specific parties can be added as observers when they need visibility but not control.",
+        "It explicitly identifies compliance, audit, and information purposes, with regulator as an observer in its example.",
+        "Best practices include explicit auditor parties, non-consuming audit choices, separate audit contracts, and time-bounded workflow access.",
+        "The topology page defines Observation, Confirmation, and Submission as distinct permissions assigned by the party owner."
+      ],
+      "caveats": [
+        "Do not describe Canton as having an automatic network-wide auditor.",
+        "Daml contract observer rights and Participant Node Observation permission are related but distinct mechanisms.",
+        "The documentation describes capabilities and design patterns; it does not prove a named financial institution has deployed them.",
+        "The owner in the example is also a controller for Transfer; do not generalize the no-control property of the regulator observer to every observer party.",
+        "The detailed text beneath the 'Auditor as Observer' and 'Selective Audit Rights' component placeholders was not recovered from the raw MDX; do not attribute unseen details to those headings."
+      ]
     },
     "corda": {
       "auditor_access_model": "Application-integrated observer node; regulator node receives transactions explicitly reported by application flows.",
@@ -223,8 +377,8 @@
     },
     {
       "system": "Canton",
-      "concise_claim": "Party- and contract-scoped observation",
-      "auditor_access": "OPN and Daml observers see only transactions/contracts within granted party or contract visibility."
+      "concise_claim": "Application-defined Daml observers for selective audit visibility; separate party-scoped Participant Node Observation permission",
+      "auditor_access": "A regulator can be explicitly added as observer to selected contracts for audit visibility; this is not network-wide automatic access. Participant Node Observation is separately scoped to transactions involving its hosted party."
     },
     {
       "system": "R3 Corda Enterprise 4.10",
@@ -238,37 +392,122 @@
     }
   ],
   "terminal_verification": {
-    "status": "not_completed_network_access_unavailable_in_this_runtime",
+    "status": "partial_terminal_retrieval_completed_from_user_codespace",
     "attempt_date": "2026-11-28",
-    "command_attempted": "curl -sSI --max-time 12 https://docs.r3.com/en/platform/corda/4.10/enterprise/get-started/tutorials/supplementary-tutorials/tutorial-observer-nodes.html",
-    "observed_result": "curl: (6) Could not resolve host: docs.r3.com",
-    "interpretation": "The current terminal runtime could not resolve external hosts. This is an environment/network limitation, not evidence for or against any platform claim.",
-    "planned_independent_checks": [
-      "Re-fetch official documentation from a terminal with working network access; record HTTP status, final URL, retrieval timestamp, and SHA-256 of saved responses.",
-      "Inspect Canton public documentation or source code for party-to-participant observation topology and Daml observer semantics; do not claim live regulator access without a real configured Canton environment.",
-      "Inspect the Corda 4.10 observer tutorial sample CorDapp and the relevant API/flow code; a live end-to-end test would require a running Corda network and regulator observer node.",
-      "For Enygma, use read-only RPC calls and deployed contract/source inspection to identify auditor registry configuration and access-control pathways; an actual decryption test requires authorized auditor credentials and must not expose private keys.",
-      "For Ethereum, verify public read access against a public RPC/explorer by querying known public block and transaction data."
+    "retrievals": [
+      {
+        "system": "Ethereum",
+        "url": "https://ethereum.org/developers/docs/networks/",
+        "http_status": 200,
+        "final_url": "https://ethereum.org/developers/docs/networks/",
+        "downloaded_bytes": 444383,
+        "sha256": "835711ee4021bcac282813c361cb45cf980ef0112c4e4bfc28d4f9157e38c6b8",
+        "result": "Public networks text extracted; anyone can read or create transactions and validate transactions."
+      },
+      {
+        "system": "Canton legacy external-party URL",
+        "url": "https://docs.digitalasset.com/overview/3.4/explanations/canton/external-party.html",
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/understand/what-is-canton",
+        "downloaded_bytes": 229067,
+        "sha256": "eab2a4d7ec4cc5632a22d47bc9ea9f0deaf3136122b276a59fec645178b90a2f",
+        "result": "Redirected to a general Canton overview; not sufficient for OPN verification."
+      },
+      {
+        "system": "Canton legacy glossary URL",
+        "url": "https://docs.digitalasset.com/build/3.4/reference/glossary.html",
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/shared/legacy-docs-moved",
+        "downloaded_bytes": 431546,
+        "sha256": "4c7fc8b179d35b78b5d79841a7af8ddb8508d5d803c3f49503b612163c5d1e74",
+        "result": "Migration page exposed replacement URLs, including current topology, external-party, participant overview, and privacy model pages."
+      },
+      {
+        "system": "Canton external-party",
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/reference/external-party",
+        "downloaded_bytes": 297586,
+        "sha256": "18accaa70e6edba54de748899c9c1621dcbe6b598b671ef6e54ec92f17179020",
+        "result": "Downloaded; extracted navigation distinguishes observing, confirming, and submitting Participant Nodes."
+      },
+      {
+        "system": "Canton topology",
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/reference/topology",
+        "downloaded_bytes": 344748,
+        "sha256": "751d0d31a8be00aa92105c759eeae0f5b0d18f5d1eca4f7ac72a3effc556b86e",
+        "result": "Downloaded; extracted direct definitions of Observation, Confirmation, Submission and party-owner assignment."
+      },
+      {
+        "system": "Canton participant overview",
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/reference/participant-overview",
+        "downloaded_bytes": 215117,
+        "sha256": "fd4a3a50fda68df83e22eca3a8d26dae768794dd808621135f04ac419ad1c47c",
+        "result": "Downloaded; extracted private participant contract-store scope based on hosted signatories and observers."
+      },
+      {
+        "system": "Canton privacy model",
+        "http_status": 200,
+        "final_url": "https://docs.canton.network/overview/learn/privacy-model",
+        "downloaded_bytes": 339780,
+        "sha256": "3ea9c653a2289a8b6b06b37fab46356f4c9a70f5ef20ce4e6a7234ff5e80af4e",
+        "result": "Downloaded; HTML extraction exposed headings and components. Raw MDX source was fetched separately to inspect explicit audit-related prose."
+      },
+      {
+        "system": "Canton privacy model raw MDX",
+        "url": "https://raw.githubusercontent.com/canton-network/cf-docs/main/docs-main/overview/learn/privacy-model.mdx",
+        "downloaded_bytes": 9347,
+        "sha256": "6835dc9452f97f273fa33d39b449976401c09ee0b3b7c8dca04a5d3519bc72f1",
+        "result": "Inspected source lines 140-148 and 172-179."
+      },
+      {
+        "system": "Rayls Enygma who-sees-what",
+        "url": "https://docs.rayls.com/docs/enygma-public-who-sees-what",
+        "http_status": 200,
+        "final_url": "https://docs.rayls.com/docs/enygma-public-who-sees-what",
+        "downloaded_bytes": 196863,
+        "sha256": "17704cffaf946d917d32ec35d77b6b2c00acf2aa368b835903ca6aff9e04c0d2",
+        "result": "Auditor and view-key text extracted, including the documented ML-KEM-768 escrow and read-not-spend distinction."
+      },
+      {
+        "system": "Corda Enterprise 4.10 observer tutorial",
+        "url": "https://docs.r3.com/en/platform/corda/4.10/enterprise/get-started/tutorials/supplementary-tutorials/tutorial-observer-nodes.html",
+        "http_status": 403,
+        "downloaded_bytes": 5822,
+        "sha256": "8fafcd43dce67f0e6b55315f732f651111804e13352effdcf91f2da105f806f7",
+        "result": "R3 server denied curl request; saved response is an HTTP error page, not documentation content."
+      },
+      {
+        "system": "Corda Enterprise 4.14 observer tutorial",
+        "url": "https://docs.r3.com/en/platform/corda/4.14/enterprise/get-started/tutorials/supplementary-tutorials/tutorial-observer-nodes.html",
+        "http_status": 403,
+        "downloaded_bytes": 5822,
+        "sha256": "4481d6c7eda7a797500d279ff9291366845861c0911ac972f9bc650a4223bcce",
+        "result": "R3 server denied curl request; saved response is an HTTP error page, not documentation content."
+      }
     ],
-    "change_control": {
-      "repo_write": "This evidence record is intended for GitHub; no runtime configuration, contracts, accounts, or blockchain transactions are modified.",
-      "live_transactions": false,
-      "secrets_or_private_keys": false
-    }
+    "interpretation": "Terminal retrieval and hashing were performed in the user's Codespace. HTTP 200 and SHA-256 establish successful retrieval and identify local snapshots, but do not alone establish semantic claims. Canton claims above are additionally based on extracted page text and raw MDX lines. Corda remains supported by official documentation accessed through browser research, while terminal retrieval of the R3 pages is blocked by HTTP 403.",
+    "live_transactions": false,
+    "secrets_or_private_keys": false,
+    "repo_configuration_changed": false
   },
   "limitations_and_open_questions": [
     "Canton and Corda are permissioned deployments. Public documentation proves described capabilities, not the configuration of a named bank, regulator, or production network.",
-    "The cited Corda observer evidence is version-specific to Enterprise 4.10; compatibility with Corda 5.x requires a separate version-specific source review.",
-    "Canton OPN access is party-scoped and should not be conflated with Daml contract observer rights; they operate at related but distinct layers.",
+    "The cited Corda observer evidence is version-specific; the 4.10 and 4.14 terminal endpoints returned HTTP 403 and the downloaded bodies were error pages, not documentation.",
+    "Canton contract-level Daml observer rights and Participant Node Observation hosting permission are related but distinct mechanisms.",
+    "The Canton privacy-model raw MDX contains explicit audit-pattern prose at lines 140-148 and 172-179. The body text behind the 'Auditor as Observer' and 'Selective Audit Rights' component placeholders was not retrieved, so no claims are attributed to that unseen content.",
+    "The Canton source documents a design pattern; no specific production institution's configuration or actual auditor node was independently tested.",
     "Enygma documentation describes a deployment auditor key and escrow model, but no independent testnet decryption was performed in this review.",
     "The fact that a view key cannot spend funds does not by itself prove that the auditor cannot correlate other public metadata or that governance rules cannot change.",
-    "The terminal runtime network request failed due DNS resolution, so no command-line retrieval or cryptographic hash verification of the live source pages is claimed."
+    "Terminal hashes identify downloaded snapshots; they do not independently validate all semantic claims contained in those snapshots."
   ],
   "next_steps": [
-    "Run independent terminal retrieval and source-hash checks once an internet-enabled terminal is available.",
-    "Inspect Canton and Corda open-source or sample implementation code relevant to observer permissions and transaction delivery.",
-    "Determine whether user-accessible public test environments exist for Canton and Corda; do not assume they do.",
-    "For Enygma, compare live registry and contract state with the current documentation, subject to read-only access.",
+    "Inspect the current Canton external-party page body around the Observing Participant Node section, not only its table of contents.",
+    "If needed, retrieve the Canton Daml observer API or code example that backs the privacy-model patterns.",
+    "For Corda, retain official-documentation claims with browser-accessed sources but record terminal HTTP 403 as a retrieval limitation; do not treat the error body as source evidence.",
+    "For Enygma, compare live registry and contract state with current documentation using read-only RPC calls; do not expose private keys or perform unauthorized decryption.",
+    "For Ethereum, if the experiment requires independent confirmation beyond docs, query a public RPC for a known block or transaction.",
     "Update the Deep Answer comparison matrix only after each claim has a source citation and an explicitly stated evidence class."
   ]
 }
