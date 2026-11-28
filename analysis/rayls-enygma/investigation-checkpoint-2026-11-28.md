@@ -101,6 +101,7 @@ Repository: `akira01111/rayls-private-transactions-research`
 4. [SharedVault post-transaction upgrade events](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-proxy-upgrades-2026-11-28.json)
 5. [SharedVault proxy creation and initial implementation](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-proxy-creation-2026-11-28.json)
 6. [Pre-transaction upgrade scan and RPC/Explorer discrepancy](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-pretransaction-upgrade-scan-2026-11-28.json)
+7. [Multisig-executed SharedVault upgrade actions](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-multisig-upgrade-actions-2026-11-28.json)
 
 The raw transaction archive and source repository have not been modified during this investigation.
 
