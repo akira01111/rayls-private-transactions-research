@@ -1,0 +1,77 @@
+{
+  "record_id": "RAYLS-ENYGMA-HISTORICAL-IMPLEMENTATION-SLOT-PRUNED-20261128",
+  "record_type": "historical_proxy_implementation_storage_read",
+  "status": "historical_state_unavailable",
+  "recorded_at_utc": "2026-11-28",
+  "subject": {
+    "proxy": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "target_transaction": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "target_block": 24825928,
+    "target_transaction_index": 0
+  },
+  "request": {
+    "rpc": "https://testnet-rpc.rayls.com",
+    "method": "eth_getStorageAt",
+    "contract": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "slot_name": "EIP-1967 implementation slot",
+    "slot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+    "queried_block": 24825927,
+    "queried_block_hex": "0x17accff"
+  },
+  "response": {
+    "rpc_error_code": -32603,
+    "rpc_error_message": "state at block #24825928 is pruned",
+    "returned_result": null,
+    "classification": "direct_observation_rpc_error"
+  },
+  "interpretation": {
+    "established": [
+      "The tested Rayls testnet RPC did not return the historical storage value at requested block 24825927.",
+      "The reason reported by the RPC is that state at block 24825928 is pruned."
+    ],
+    "not_established": [
+      "The EIP-1967 implementation-slot value at block 24825927.",
+      "Whether another archive endpoint can serve this historical state."
+    ],
+    "do_not_infer": [
+      "Do not interpret the error as a zero storage slot.",
+      "Do not interpret the error as evidence of a different implementation.",
+      "Do not present the value 0xad966... as a direct historical slot read."
+    ]
+  },
+  "related_verified_upgrade_events": [
+    {
+      "tx": "0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959",
+      "block": 22380723,
+      "timestamp_utc": "2026-11-04T17:03:01Z",
+      "proposal_id": 5,
+      "implementation": "0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39",
+      "transaction_specific_proxy_upgraded_event": true
+    },
+    {
+      "tx": "0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4",
+      "block": 23399976,
+      "timestamp_utc": "2026-11-11T21:25:01Z",
+      "proposal_id": 10,
+      "implementation": "0xad9667049f14d1757d147f652c41dc241c57091c",
+      "transaction_specific_proxy_upgraded_event": true
+    }
+  ],
+  "remaining_checks": [
+    "Decode proxy-targeted grantRole proposals 3, 4, 14, 17, 21, and 22 to identify role hashes and grantees.",
+    "Inspect upgrade authorization in the implementation and determine whether any granted role could authorize an independent proxy upgrade.",
+    "Seek an independent archive-state endpoint only if one is publicly available for Rayls testnet."
+  ],
+  "sources": [
+    {
+      "id": "SRC-RAYLS-TESTNET-RPC",
+      "type": "direct_json_rpc_response_supplied_by_user",
+      "url": "https://testnet-rpc.rayls.com"
+    },
+    {
+      "id": "SRC-RAYLS-TESTNET-NETWORK-DOCS",
+      "type": "official_network_reference",
+      "url": "https://docs.rayls.com/docs/public-chain-reference"
+    }
+  ]
+}
