@@ -1,0 +1,86 @@
+{
+  "record_id": "RAYLS-ENYGMA-MULTISIG-PROPOSAL-5-EXECUTION-TIMELINE-20261128",
+  "record_type": "multisig_upgrade_execution_chronology",
+  "status": "verification_pending_transaction_logs",
+  "recorded_at_utc": "2026-11-28",
+  "subject": {
+    "multisig": "0xbf099175a241194c38e977735d59ccb22596d775",
+    "proxy": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "historical_target_transaction": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "historical_target_block": 24825928,
+    "historical_target_timestamp_utc": "2026-11-21T09:40:42Z"
+  },
+  "owner_multisig_transaction_index_page_2": {
+    "endpoint": "https://testnet-explorer.rayls.com/api/v2/addresses/0xbf099175a241194c38e977735d59ccb22596d775/transactions",
+    "items_returned": 19,
+    "next_page_params": null,
+    "oldest_block": 21376989,
+    "execute_transaction_observation": {
+      "action_id": "5",
+      "block": 22380723,
+      "timestamp_utc": "2026-11-04T17:03:01Z",
+      "hash": "0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959",
+      "decoded_method": "execute(uint256 id)"
+    },
+    "classification": "direct_observation_from_user_returned_explorer_v2_address_transaction_index_output"
+  },
+  "proposal_5_current_state": {
+    "target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "executed": true,
+    "value": "0",
+    "calldata": "0x4f1ef2860000000000000000000000003a3f95cf53d4a0bd99d9afb3c785cd969cefdf3900000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000024f40783cf000000000000000000000000f10de8503ab9e2aa1cf6eb8a7425250fcb14b05700000000000000000000000000000000000000000000000000000000",
+    "selector": "0x4f1ef286",
+    "signature": "upgradeToAndCall(address,bytes)",
+    "implementation_argument": "0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39",
+    "classification": "direct_observation_from_latest_eth_call_to_proposals_5"
+  },
+  "chronology": {
+    "proposal_5_execute_transaction": {
+      "block": 22380723,
+      "timestamp_utc": "2026-11-04T17:03:01Z",
+      "hash": "0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959",
+      "action_id": 5
+    },
+    "proposal_10_execute_transaction": {
+      "block": 23399976,
+      "timestamp_utc": "2026-11-11T21:25:01Z",
+      "hash": "0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4",
+      "action_id": 10,
+      "implementation_argument": "0xad9667049f14d1757d147f652c41dc241c57091c"
+    },
+    "historical_target_transaction": {
+      "block": 24825928,
+      "timestamp_utc": "2026-11-21T09:40:42Z",
+      "hash": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb"
+    },
+    "safe_ordering_conclusion": "The multisig transaction index lists execute(5) before execute(10), and execute(10) before the historical target transaction. The current proposals(5) getter shows that proposal 5 targeted SharedVaultProxy with upgradeToAndCall(0x3a3f95...). The current proposals(10) getter shows that proposal 10 targeted the same proxy with upgradeTo(0xad966...). This establishes the ordered execution calls and their proposed implementation arguments; transaction-specific logs for execute(5) and/or a direct block-state check are still needed to independently confirm successful emission of the corresponding Upgraded event.",
+    "active_implementation_at_target": "0xad9667049f14d1757d147f652c41dc241c57091c is the leading candidate based on the ordered upgrade actions identified so far, but final historical attribution remains pending confirmation of proposal 5 execution logs and exclusion of any additional upgrade path."
+  },
+  "next_checks": [
+    "Retrieve transaction-specific logs for execute(5) transaction 0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959.",
+    "Check whether its logs contain OwnerMultisig Executed(id=5) and SharedVaultProxy Upgraded(address) with implementation 0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39.",
+    "Cross-check execute(10) transaction-specific logs for the same event pattern and implementation 0xad966....",
+    "Review all enumerated proposals 0 through 23 for any further proxy upgrade proposal or indirect upgrade target that could affect SharedVaultProxy before block 24825928."
+  ],
+  "limitations": [
+    "The Explorer transaction index listing of execute(5) plus current executed=true state is not, by itself, the same as inspecting the emitted Upgraded event.",
+    "No transaction was signed or sent by this investigation."
+  ],
+  "sources": [
+    {
+      "id": "SRC-MULTISIG-TRANSACTIONS-PAGE2",
+      "type": "explorer_v2_address_transaction_index",
+      "url": "https://testnet-explorer.rayls.com/api/v2/addresses/0xbf099175a241194c38e977735d59ccb22596d775/transactions"
+    },
+    {
+      "id": "SRC-PROPOSAL-5-STATE",
+      "type": "read_only_multisig_proposal_getter",
+      "url": "https://testnet-rpc.rayls.com"
+    },
+    {
+      "id": "SRC-EXECUTE-5-TRANSACTION",
+      "type": "explorer_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959"
+    }
+  ]
+}
