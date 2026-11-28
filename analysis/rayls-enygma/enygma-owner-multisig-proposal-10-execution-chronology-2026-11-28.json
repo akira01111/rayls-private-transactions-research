@@ -1,7 +1,7 @@
 {
   "record_id": "RAYLS-ENYGMA-MULTISIG-PROPOSAL-10-EXECUTION-TIMELINE-20261128",
   "record_type": "multisig_upgrade_execution_chronology",
-  "status": "execution_and_upgrade_event_verified",
+  "status": "execution_and_upgrade_event_verified_historical_slot_unavailable",
   "recorded_at_utc": "2026-11-28",
   "subject": {
     "multisig": "0xbf099175a241194c38e977735d59ccb22596d775",
@@ -61,7 +61,7 @@
       "status": "successful as returned in Explorer transaction index"
     },
     "classification": "direct_observation_explorer_v2_transaction_index_plus_current_multisig_proposal_getter",
-    "chronology_conclusion": "Proposal 5 installed implementation 0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39 at block 22380723 on 2026-11-04; this is confirmed by transaction-specific Upgraded(address) and Executed(id=5) logs. Proposal 10 then installed implementation 0xad9667049f14d1757d147f652c41dc241c57091c at block 23399976 on 2026-11-11; this is independently confirmed by transaction-specific Upgraded(address) and Executed(id=10) logs. Both upgrades precede target block 24825928 on 2026-11-21. Among the enumerated direct SharedVaultProxy upgrade proposals (IDs 5, 10, 13, and 16), ID 10 is the last one before the target; IDs 13 and 16 execute after the target. Thus 0xad966... is the best-supported implementation active at the target date. A historical EIP-1967 implementation-slot read at block 24825928 is the next independent cross-check, if the RPC retains historical state.",
+    "chronology_conclusion": "Proposal 5 installed implementation 0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39 at block 22380723 on 2026-11-04; transaction-specific logs confirm both OwnerMultisig Executed(id=5) and SharedVaultProxy Upgraded(address). Proposal 10 then installed implementation 0xad9667049f14d1757d147f652c41dc241c57091c at block 23399976 on 2026-11-11; transaction-specific logs confirm both OwnerMultisig Executed(id=10) and SharedVaultProxy Upgraded(address). Both upgrades precede target block 24825928 on 2026-11-21. Among the enumerated direct SharedVaultProxy upgrade proposals (IDs 5, 10, 13, and 16), IDs 13 and 16 execute after the target. Thus 0xad966... is the best-supported implementation at the target date based on the verified upgrade chronology. A direct historical EIP-1967 storage read could not be obtained because the Rayls testnet RPC reports that state at block 24825928 is pruned. Other proposal grantRole actions targeting the proxy still require role-level review before treating the chronology as exhaustive.",
     "transaction_specific_logs": {
       "endpoint": "https://testnet-explorer.rayls.com/api/v2/transactions/0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4/logs",
       "log_count": 2,
@@ -99,16 +99,16 @@
       "The enumerated direct SharedVaultProxy upgrade proposals are IDs 5, 10, 13, and 16; IDs 13 and 16 execute after the target block."
     ],
     "not_established": [
-      "The exact EIP-1967 implementation-slot value at block 24825928 has not yet been independently queried.",
-      "The RPC and Explorer range-log indexes previously tested were incomplete/inconsistent, so the absence of other upgrade events in those indexes cannot by itself prove no other upgrade path existed.",
-      "Whether any unenumerated indirect administrative path could upgrade the proxy independently of the proposals already inspected."
+      "The historical EIP-1967 implementation-slot value at block 24825927 has not been directly observed because the RPC reports pruned state.",
+      "Whether proxy-targeted grantRole proposals granted an upgrade-authorizing role to an external account or contract.",
+      "Whether any indirect or non-multisig administrative path could have upgraded the proxy after proposal 10 and before target block 24825928."
     ],
     "important_ordering_caution": "Proposal IDs indicate proposal creation order under current verified OwnerMultisig source, not execution order. Current executed=true state does not provide execution chronology."
   },
   "next_checks": [
-    "Read the EIP-1967 implementation storage slot at historical block 24825928 with eth_getStorageAt; if the RPC returns historical state, compare it with 0xad9667049f14d1757d147f652c41dc241c57091c.",
-    "If historical eth_getStorageAt is unavailable or pruned, report the implementation as the best-supported chronology reconstruction rather than a direct historical slot observation.",
-    "Keep the RPC/Explorer log-index completeness caveat explicit."
+    "Decode proposal IDs 3, 4, 14, 17, 21, and 22 because they target SharedVaultProxy with grantRole(bytes32,address); identify the exact role hashes and grantees.",
+    "Inspect the verified implementation's upgrade authorization logic and compare the role hashes with the role granted by those proposals.",
+    "If role review rules out an independent upgrade path, classify 0xad966... as a high-confidence chronology reconstruction at the target block, while retaining the historical-state-pruned limitation."
   ],
   "sources": [
     {
@@ -146,5 +146,19 @@
       "confirmed": true,
       "endpoint": "https://testnet-explorer.rayls.com/api/v2/transactions/0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959/logs"
     }
+  },
+  "historical_storage_check": {
+    "method": "eth_getStorageAt",
+    "rpc": "https://testnet-rpc.rayls.com",
+    "contract": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "eip1967_implementation_slot": "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+    "requested_block": 24825927,
+    "requested_block_hex": "0x17accff",
+    "response_error": {
+      "code": -32603,
+      "message": "state at block #24825928 is pruned"
+    },
+    "classification": "direct_observation_rpc_error_historical_state_unavailable",
+    "interpretation": "The RPC cannot serve the requested historical state. This does not indicate an empty slot, zero implementation, or a conflicting implementation."
   }
 }
