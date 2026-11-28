@@ -32,7 +32,15 @@
       "inner_method_signature": "upgradeToAndCall(address,bytes)",
       "implementation_argument": "0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39",
       "classification": "direct_observation_current_multisig_proposal_state_with_calldata_selector_interpretation",
-      "execution_time_and_block": "unknown from proposals(id) getter"
+      "execution_time_and_block": "Observed execute(5) at block 22380723, 2026-11-04T17:03:01Z; transaction-specific proxy Upgraded event confirmation pending.",
+      "execution_transaction": {
+        "hash": "0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959",
+        "block": 22380723,
+        "timestamp_utc": "2026-11-04T17:03:01Z",
+        "action_id": 5,
+        "method": "execute(uint256 id)",
+        "source": "Explorer OwnerMultisig address transaction index page 2"
+      }
     },
     {
       "proposal_id": 10,
@@ -44,8 +52,15 @@
       "inner_method_signature": "upgradeTo(address)",
       "implementation_argument": "0xad9667049f14d1757d147f652c41dc241c57091c",
       "classification": "direct_observation_current_multisig_proposal_state_with_calldata_selector_interpretation",
-      "execution_time_and_block": "unknown from proposals(id) getter",
-      "cross_reference": "This implementation address matches the implementation address recorded in the earlier transaction audit as the prior associated implementation."
+      "execution_time_and_block": "Observed execute(10) at block 23399976, 2026-11-11T21:25:01Z.",
+      "cross_reference": "This implementation address matches the implementation address recorded in the earlier transaction audit as the prior associated implementation.",
+      "execution_transaction": {
+        "hash": "0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4",
+        "block": 23399976,
+        "timestamp_utc": "2026-11-11T21:25:01Z",
+        "action_id": 10,
+        "method": "execute(uint256 id)"
+      }
     },
     {
       "proposal_id": 13,
@@ -74,21 +89,18 @@
   ],
   "chronology_assessment": {
     "verified_source_rule": "The currently verified OwnerMultisig source says proposal IDs increment from 0 and proposalCount is the next ID.",
-    "safe_conclusion": "Proposal 5 and proposal 10 were assigned before proposal 13 in the multisig's sequential proposal-ID order.",
+    "safe_conclusion": "The address transaction index shows execute(5) on 2026-11-04 at block 22380723 and execute(10) on 2026-11-11 at block 23399976. Both are before the historical target transaction at block 24825928. Current proposals(5) and proposals(10) getters show they both targeted SharedVaultProxy with upgrade selectors and implementation arguments 0x3a3f95... then 0xad966.... This makes 0xad966... the leading implementation candidate on the target date, pending transaction-specific log confirmation and exclusion of another upgrade path.",
     "not_established": [
-      "The execution block/time of proposal 5.",
-      "The execution block/time of proposal 10.",
-      "Whether proposal 5 or proposal 10 executed before, at, or after the historical transaction at block 24825928.",
-      "Whether another earlier proposal also upgraded the proxy and was later superseded."
+      "Whether the execute(5) transaction emitted the expected SharedVaultProxy Upgraded(address) event; transaction-specific logs have not yet been inspected.",
+      "Whether an indirect or unenumerated upgrade path affected the proxy after proposal 10 and before the historical target block.",
+      "The implementation active at exact block 24825928."
     ],
     "important_caution": "The executed=true flag is read from current state. It does not by itself reveal when the proposal was executed. Proposal IDs reflect proposal creation order under the verified source, not necessarily execution order."
   },
   "next_checks": [
-    "Query OwnerMultisig address transaction index and paginate to identify outer execute(5) and execute(10) transactions; verify whether the endpoint includes known execute(13) and execute(16) control transactions.",
-    "Query Explorer address logs for OwnerMultisig and/or scan its transaction-specific Proposed and Executed logs; address log endpoint completeness must be tested.",
-    "Read transaction-specific logs of candidate execute(5) and execute(10) transactions and match Executed(id) with proxy Upgraded(address) event in the same transaction.",
-    "Once execution time is established, reconstruct which implementation was active at block 24825928.",
-    "Do not treat proposal ID 10's implementation address as proof it was active on the target date until execution chronology is confirmed."
+    "Inspect transaction-specific logs for execute(5) and confirm OwnerMultisig Executed(id=5) plus SharedVaultProxy Upgraded(address) with implementation 0x3a3f95....",
+    "Inspect transaction-specific logs for execute(10) and confirm the corresponding proxy Upgraded(address) event with implementation 0xad966....",
+    "Review the enumerated proposals 0 through 23 for any other direct or indirect upgrade path affecting SharedVaultProxy before block 24825928."
   ],
   "sources": [
     {
