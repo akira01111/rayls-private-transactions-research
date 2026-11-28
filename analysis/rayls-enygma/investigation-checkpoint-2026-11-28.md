@@ -278,3 +278,36 @@ Label conclusions as direct observation / verified fact, current verified source
 Never assert historical implementation, token identity, verifier key slot, fee denomination, or output note ownership without specific evidence.
 
 All RPC operations described so far were read-only. No transaction has been signed or sent.
+
+
+## 13. Proposal 5 execution chronology — page 2 resolved the ordering question
+
+The OwnerMultisig transaction-index page 2 returned 19 items and no further pagination cursor. Among its decoded execute(uint256 id) entries:
+
+- Proposal/action ID **5**: tx `0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959`, block **22,380,723**, timestamp **2026-11-04T17:03:01Z**.
+- Proposal/action ID **10**: tx `0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4`, block **23,399,976**, timestamp **2026-11-11T21:25:01Z**.
+- Historical target transaction: block **24,825,928**, timestamp **2026-11-21T09:40:42Z**.
+
+Latest-state proposals(5) getter:
+- target = SharedVaultProxy
+- executed = true
+- selector = `0x4f1ef286` (upgradeToAndCall(address,bytes))
+- implementation argument = `0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39`.
+
+Latest-state proposals(10) getter:
+- target = SharedVaultProxy
+- executed = true
+- selector = `0x3659cfe6` (upgradeTo(address))
+- implementation argument = `0xad9667049f14d1757d147f652c41dc241c57091c`.
+
+**Updated chronology assessment:** the observed execute transaction order is ID 5 first, then ID 10, then the target transaction. This resolves the previous uncertainty about which proposal was executed first. If these two actions emitted their expected proxy upgrade events, ID 10's implementation `0xad966...` superseded ID 5's `0x3a3f95...` seven days before the target transaction. It is now the leading candidate for the active implementation at block 24,825,928.
+
+**Still pending before historical attribution is final:**
+1. Inspect execute(5) transaction-specific logs for OwnerMultisig Executed(id=5) and proxy Upgraded(address) with `0x3a3f95...`.
+2. Inspect execute(10) transaction-specific logs for the matching proxy Upgraded(address) with `0xad966...`.
+3. Check the enumerated proposal set (IDs 0–23) for any other direct or indirect upgrade path affecting SharedVaultProxy before block 24,825,928.
+
+New record:
+[Proposal 5 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-5-execution-chronology-2026-11-28.json)
+
+This section supersedes the previous checkpoint statements that proposal 5's execution block/time was unknown and the previous instruction to locate execute(5).
