@@ -147,6 +147,8 @@
       "message": "state at block #24825928 is pruned"
     },
     "classification": "direct_observation_rpc_error_historical_state_unavailable",
-    "conclusion_boundary": "No historical slot value was returned. This is not evidence for zero storage or a conflicting implementation."
+    "conclusion_boundary": "No historical slot value was returned. This is not evidence for zero storage or a conflicting implementation.",
+    "queried_block_hex": "0x17ad047",
+    "data_quality_note": "The shell command dynamically converted block 24825927 using printf; correct hexadecimal value is 0x17ad047. An earlier record draft's 0x17accff was a transcription error and is superseded."
   }
 }
