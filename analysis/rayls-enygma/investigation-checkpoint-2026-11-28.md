@@ -424,3 +424,21 @@ Next action: use read-only `eth_call` to decode each `proposals(id)` return valu
 
 Related evidence record:
 [Historical implementation slot pruned result](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-historical-implementation-slot-pruned-2026-11-28.json)
+
+
+## 18. Proxy role-grant review — proposal 3 decoded
+
+Read-only `eth_call` to `proposals(3)` succeeded when sent via curl (Python urllib had returned HTTP 403). The returned tuple shows target SharedVaultProxy, executed=true, value=0, nested selector `0x2f2ff15d` (`grantRole(bytes32,address)`).
+
+Decoded arguments:
+- role hash: `0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91`
+- grantee: `0xc725e02a9466985e4f6a3def109d347472601b20`.
+
+The multisig address transaction index previously listed execute(3) at block 21,680,527, timestamp 2026-10-30 19:04:39 UTC, tx `0x85a54f65b3534531185fa7ddbed406e3b007c6f3e31d04a094c7e6b14ccaa1ac`. Transaction-specific logs have not yet been inspected for RoleGranted.
+
+The role name and capability remain unknown. A nonzero role hash alone is insufficient to identify it or conclude it can authorize upgrades. Do not assume the separate Rayls Sovereign RaylsAccessManagerV1 documentation describes this Enygma Public SharedVaultProxy.
+
+New record:
+[SharedVault proxy role grants](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-proxy-role-grants-2026-11-28.json)
+
+Next action: decode proposal 4, then proposals 14, 17, 21, and 22; inspect transaction-specific RoleGranted logs and compare granted role hashes to the actual upgrade authorization in the deployed implementation.
