@@ -224,6 +224,26 @@ Both outer transactions call `execute(uint256 id)` on the OwnerMultisig. Both tr
 
 **High-value next action:** use read-only `eth_call` on `proposalCount()` and `proposals(id)` for IDs 13 and 16, then enumerate IDs 0 through current proposalCount-1. Identify proposals whose target equals SharedVaultProxy (or an intermediary), decode proposal calldata, and find historical upgrade proposals executed before target block 24,825,928.
 
+## 11. Historical implementation candidates from OwnerMultisig proposals
+
+A latest-state read-only call to `proposalCount()` returned **24**. The public getter `proposals(id)` was read for IDs 0–23. Important direct SharedVaultProxy targets:
+
+| Proposal ID | Executed (latest state) | Inner selector | Implementation argument | Execution block/time |
+|---:|---|---|---|---|
+| 5 | true | `0x4f1ef286` (`upgradeToAndCall(address,bytes)`) | `0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39` | Unknown |
+| 10 | true | `0x3659cfe6` (`upgradeTo(address)`) | `0xad9667049f14d1757d147f652c41dc241c57091c` | Unknown |
+| 13 | true | `0x4f1ef286` | `0x9644667cc096964bafb6a533d57873544fbfb956` | Block 25,699,353; 26 Nov 2026 22:08:28 UTC |
+| 16 | true | `0x4f1ef286` | `0x937471b6acdad0c77d6874d0546d6009e09cd3f0` | Block 25,714,062; 27 Nov 2026 00:22:17 UTC |
+
+The implementation address in proposal 10 matches the address recorded in the earlier audit as the prior associated implementation (`0xad966704...`). This is an important candidate, but the `executed=true` getter is current state and does not reveal when proposal 5 or proposal 10 executed.
+
+The currently verified OwnerMultisig source says IDs increment from zero and `proposalCount` is the next ID. Therefore IDs 5 and 10 were proposed earlier than ID 13, but **proposal creation order is not execution order**. Their execution block/time must be obtained from `Executed(id)` events or corresponding `execute(id)` transactions before concluding which implementation was active at target block 24,825,928.
+
+New evidence record:
+[OwnerMultisig historical vault upgrade candidates](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-historical-vault-upgrade-candidates-2026-11-28.json)
+
+**Next action:** query OwnerMultisig's transaction index and paginate for outer `execute(5)` and `execute(10)`. Check index completeness against known `execute(13)` and `execute(16)` controls. Then retrieve transaction-specific logs to match `Executed(id)` and `Upgraded(address)` events.
+
 ## 8. Evidence discipline
 
 Label conclusions as direct observation / verified fact, current verified source observation, official claim, inference, or unknown.
