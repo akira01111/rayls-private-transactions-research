@@ -335,3 +335,31 @@ Updated records:
 - [Proposal 10 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-10-execution-chronology-2026-11-28.json)
 
 Next action: inspect logs for proposal 10 execution transaction `0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4`.
+
+
+## 15. Proposal 10 execution logs — second installation confirmed
+
+Transaction-specific Explorer logs for proposal 10 execute transaction:
+`0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4`
+
+Endpoint: `https://testnet-explorer.rayls.com/api/v2/transactions/0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4/logs`
+
+Two logs were returned:
+
+1. Log index 0, emitted by SharedVaultProxy: topic0 `0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b` (`Upgraded(address)`); indexed implementation = `0xad9667049f14d1757d147f652c41dc241c57091c`.
+2. Log index 1, emitted by OwnerMultisig: topic0 `0x7271f8b3d48d26ccc839c0f424fe9e12fe4e058108b58c096c078659c7fbadf6` (`Executed(uint256,address)`); indexed action ID = 10; executor = `0x3bffb10f6f17f15164fbc0416f1bc42c56b2c191`.
+
+**Confirmed chronology:**
+- 2026-11-04 17:03:01 UTC, block 22,380,723: Proposal 5 installed `0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39`.
+- 2026-11-11 21:25:01 UTC, block 23,399,976: Proposal 10 installed `0xad9667049f14d1757d147f652c41dc241c57091c`.
+- 2026-11-21 09:40:42 UTC, block 24,825,928: historical target transaction occurred.
+
+Among the enumerated direct SharedVaultProxy upgrade proposals (IDs 5, 10, 13, 16), IDs 13 and 16 are after the target transaction (blocks 25,699,353 and 25,714,062). Therefore `0xad966...` is the best-supported implementation at the target date based on confirmed upgrade execution chronology.
+
+**Remaining independent check:** request the EIP-1967 implementation storage slot at historical block 24,825,928. If historical state is available, the result should match `0xad966...`. The earlier range-log index inconsistencies remain a limitation; do not claim that the absence of other events in those indexes proves no other upgrade path existed.
+
+Updated records:
+- [Proposal 10 execution chronology](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-proposal-10-execution-chronology-2026-11-28.json)
+- [Historical vault upgrade candidates](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-owner-multisig-historical-vault-upgrade-candidates-2026-11-28.json)
+
+Next action: query historical EIP-1967 implementation storage at block 24825928.
