@@ -463,3 +463,56 @@ Updated record:
 [SharedVault proxy role grants](https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-shared-vault-proxy-role-grants-2026-11-28.json)
 
 Next action: inspect transaction-specific logs for execute(3) and execute(4), then decode proxy-targeted grantRole proposals 14, 17, 21, and 22.
+
+## 20. Batch 01 — complete proxy-target proposal and role authorization review
+
+### Scope and method
+
+A read-only RPC scan returned `proposalCount() = 24`; `proposals(id)` was inspected for every ID from 0 through 23. Exactly ten current proposal records had `target == SharedVaultProxy` (`0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2`). All ten showed `executed = true` in the latest getter state. This completes the direct-target scan for the current 24-entry OwnerMultisig proposal mapping; it does not test every conceivable indirect or non-multisig route.
+
+### Direct SharedVaultProxy actions found
+
+| Proposal | Action | Role / implementation | Execution (UTC) |
+|---:|---|---|---|
+| 3 | `grantRole` | `DEFAULT_DVP_ROLE` → `0xc725e02a9466985e4f6a3def109d347472601b20` | 2026-10-30 19:04:39 |
+| 4 | `grantRole` | `DEFAULT_DVP_ROLE` → `0x20df5ba54349a4b88a9ec036506ab962f8b93e0e` | 2026-10-31 16:08:54 |
+| 5 | `upgradeToAndCall` | `0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39` | 2026-11-04 17:03:01 |
+| 10 | `upgradeTo` | `0xad9667049f14d1757d147f652c41dc241c57091c` | 2026-11-11 21:25:01 |
+| 13 | `upgradeToAndCall` | `0x9644667cc096964bafb6a533d57873544fbfb956` | 2026-11-26 22:08:28 |
+| 14 | `grantRole` | `SETTLER_ROLE` → `0x5ebaac853450aaff2e00da7715dd9449492c1013` | 2026-11-26 23:31:12 |
+| 16 | `upgradeToAndCall` | `0x937471b6acdad0c77d6874d0546d6009e09cd3f0` | 2026-11-27 00:22:17 |
+| 17 | `grantRole` | `DEFAULT_DVP_ROLE` → `0x2b9212d4ed97cc39476cf5b8b952b2dc3f4f78a3` | 2026-11-27 00:22:54 |
+| 21 | `grantRole` | `DEFAULT_DVP_ROLE` → `0x6980b68ba0e43636deca7335360a8c2915acdd40` | 2026-11-27 13:25:49 |
+| 22 | `grantRole` | `SETTLER_ROLE` → `0x114761f4b156c8c351684c4d749b4b481f29343e` | 2026-11-27 13:26:03 |
+
+### Role mapping and authorization
+
+Read-only getters on implementation `0xad9667049f14d1757d147f652c41dc241c57091c` returned:
+
+- `DEFAULT_OWNER_ROLE()` = `0xef9601d24635ad31384c7350515a0fc1278494eeac14501e1be3d265f369a3be`
+- `DEFAULT_DVP_ROLE()` = `0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91`
+- `DEFAULT_ADMIN_ROLE()` = `0x0000000000000000000000000000000000000000000000000000000000000000`
+
+The verified source for `0xad966...` implements `_authorizeUpgrade(address)` with `onlyRole(DEFAULT_OWNER_ROLE)`. Therefore proposals 3 and 4, the only direct proxy `grantRole` actions executed before the historical 2026-11-21 transfer, granted DVP Role rather than Owner Role. They do not show a grant of the role required by this implementation's UUPS upgrade authorization.
+
+The role hash in proposals 14 and 22 is `0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa`. Direct `SETTLER_ROLE()` getter calls against later verified implementations `0x9644667cc096964bafb6a533d57873544fbfb956` and `0x937471b6acdad0c77d6874d0546d6009e09cd3f0` returned this exact hash. Those proposals executed after the historical target transaction. The later sources use Settler Role in a settler/trusted-forwarder gate; their `_authorizeUpgrade` functions still require `DEFAULT_OWNER_ROLE`.
+
+Transaction-specific Explorer logs for all six grant proposals returned a `RoleGranted` event emitted by SharedVaultProxy. Each event's role hash and account matched the decoded proposal calldata; sender was OwnerMultisig `0xbf099175a241194c38e977735d59ccb22596d775`. Latest-state `hasRole` calls returned true for all six grantees; `getRoleAdmin` returned `DEFAULT_ADMIN_ROLE` (zero hash) for each queried role. These latest-state checks do not reconstruct role membership at the historical target block.
+
+### Historical implementation assessment
+
+The best-supported implementation reconstruction for transaction `0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb` at block 24,825,928 (2026-11-21 09:40:42 UTC) remains `0xad9667049f14d1757d147f652c41dc241c57091c`: proposal 10 installed it on 2026-11-11, and the complete current proposal getter scan found no other direct SharedVaultProxy upgrade proposal between proposal 10 and the target; proposals 13 and 16 upgraded the proxy after the target.
+
+**Evidence boundary:** the historical EIP-1967 storage read at block 24,825,927 failed because RPC state was pruned. The conclusion is a chronology- and authorization-based reconstruction, not a direct historical storage observation. The proposal scan covers all 24 current OwnerMultisig proposal IDs and all direct SharedVaultProxy targets; it does not exclude every indirect or non-multisig upgrade path. Retain the earlier RPC/Explorer log-index completeness caveat.
+
+### Evidence references
+
+- Historical transfer review: `analysis/rayls-enygma/enygma-public-transfer-v2-relayer-fee-2026-11-27.json`
+- Role grant record: `analysis/rayls-enygma/enygma-shared-vault-proxy-role-grants-2026-11-28.json`
+- Historical implementation candidates: `analysis/rayls-enygma/enygma-owner-multisig-historical-vault-upgrade-candidates-2026-11-28.json`
+- Verified source metadata: `https://testnet-explorer.rayls.com/api/v2/smart-contracts/0xad9667049f14d1757d147f652c41dc241c57091c`, `https://testnet-explorer.rayls.com/api/v2/smart-contracts/0x9644667cc096964bafb6a533d57873544fbfb956`, `https://testnet-explorer.rayls.com/api/v2/smart-contracts/0x937471b6acdad0c77d6874d0546d6009e09cd3f0`
+
+### Change-control status
+
+This commit updates only the three evidence/analysis files named above. The raw transaction archive is unchanged. No on-chain transaction was signed or sent.
+

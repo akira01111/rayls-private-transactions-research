@@ -1,7 +1,7 @@
 {
   "record_id": "RAYLS-ENYGMA-OWNER-MULTISIG-HISTORICAL-VAULT-UPGRADE-CANDIDATES-20261128",
   "record_type": "multisig_proposal_state_read_review",
-  "status": "in_progress",
+  "status": "reviewed_with_historical_scope_limitations",
   "recorded_at_utc": "2026-11-28",
   "subject": {
     "multisig": "0xbf099175a241194c38e977735d59ccb22596d775",
@@ -99,19 +99,23 @@
   ],
   "chronology_assessment": {
     "verified_source_rule": "The currently verified OwnerMultisig source says proposal IDs increment from 0 and proposalCount is the next ID.",
-    "safe_conclusion": "Transaction-specific logs confirm proposal 5 installed 0x3a3f95... at block 22380723 and proposal 10 later installed 0xad966... at block 23399976. Both predate target block 24825928. Among the enumerated direct proxy-upgrade proposals, IDs 13 and 16 execute after the target. Therefore 0xad966... is the best-supported implementation at the target date by confirmed upgrade chronology. A direct historical EIP-1967 slot read was attempted at block 24825927 but the RPC returned a pruned-state error. The conclusion remains a chronology reconstruction pending review of proxy-targeted grantRole proposals and any possible independent upgrade authority.",
+    "safe_conclusion": "Confirmed transaction chronology shows proposal 5 installed 0x3a3f95... on 2026-11-04 and proposal 10 installed 0xad966... on 2026-11-11. Proposals 13 and 16 installed later implementations after the 2026-11-21 target. The complete current OwnerMultisig proposal getter scan (IDs 0–23) found only two pre-target direct proxy grantRole actions, both DVP-role grants, not Owner-role grants. Therefore 0xad966... is the best-supported implementation reconstruction at the target date by confirmed direct OwnerMultisig proposal chronology and reviewed authorization. Historical storage is pruned; indirect/non-multisig paths remain outside this scan.",
     "not_established": [
       "Historical EIP-1967 implementation storage at block 24825927; RPC returned state-pruned error.",
       "Exact roles and grantees in proxy-targeted grantRole proposals 3, 4, 14, 17, 21, and 22.",
       "Whether any such grantee had authority to execute an upgrade independently of OwnerMultisig.",
-      "Any other non-enumerated or indirect upgrade path."
+      "Any other non-enumerated or indirect upgrade path.",
+      "Historical EIP-1967 implementation storage at block 24825927; RPC returned a pruned-state error.",
+      "Indirect or non-multisig upgrade paths outside the 24 enumerated direct OwnerMultisig proposal targets.",
+      "Direct historical role-membership state at block 24825928; latest-state role checks are not a historical snapshot."
     ],
-    "important_caution": "The executed=true flag is read from current state. It does not by itself reveal when the proposal was executed. Proposal IDs reflect proposal creation order under the verified source, not necessarily execution order."
+    "important_caution": "The executed=true flag is read from current state. It does not by itself reveal when the proposal was executed. Proposal IDs reflect proposal creation order under the verified source, not necessarily execution order.",
+    "completed_role_review": "All six identified direct proxy grantRole proposals were decoded; transaction-specific RoleGranted events matched each role/account pair; role hashes were compared with implementation getters and _authorizeUpgrade source."
   },
   "next_checks": [
-    "Read/decode proposals 3, 4, 14, 17, 21, and 22 to identify grantRole(bytes32,address) role hashes and grantees.",
-    "Inspect the verified implementation's upgrade authorization logic to determine whether any granted role can authorize upgradeTo/upgradeToAndCall.",
-    "If the role review rules out any independent upgrade authority, finalize 0xad966... as the high-confidence implementation reconstruction for target block 24825928, explicitly noting historical storage was pruned."
+    "Use 0xad966... only as the best-supported historical implementation reconstruction, with explicit notice that the historical storage slot was pruned.",
+    "Do not claim a direct historical EIP-1967 implementation-slot read.",
+    "Do not claim the direct OwnerMultisig proposal scan excludes every indirect or non-multisig upgrade path."
   ],
   "sources": [
     {
@@ -133,8 +137,9 @@
   "change_control": {
     "prior_records_modified": false,
     "raw_transaction_archive_modified": false,
-    "source_repository_modified": false,
-    "onchain_transactions_signed_or_sent": false
+    "source_repository_modified": true,
+    "onchain_transactions_signed_or_sent": false,
+    "latest_evidence_update_utc": "2026-11-28"
   },
   "historical_implementation_slot_check": {
     "method": "eth_getStorageAt",
@@ -150,5 +155,204 @@
     "conclusion_boundary": "No historical slot value was returned. This is not evidence for zero storage or a conflicting implementation.",
     "queried_block_hex": "0x17ad047",
     "data_quality_note": "The shell command dynamically converted block 24825927 using printf; correct hexadecimal value is 0x17ad047. An earlier record draft's 0x17accff was a transcription error and is superseded."
+  },
+  "complete_proxy_target_proposal_scan": {
+    "proposal_count": 24,
+    "ids_scanned": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "direct_proxy_target_ids": [
+      3,
+      4,
+      5,
+      10,
+      13,
+      14,
+      16,
+      17,
+      21,
+      22
+    ],
+    "grant_role_actions": [
+      {
+        "proposal_id": 3,
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "role_name": "DEFAULT_DVP_ROLE",
+        "grantee": "0xc725e02a9466985e4f6a3def109d347472601b20",
+        "execution_tx": "0x85a54f65b3534531185fa7ddbed406e3b007c6f3e31d04a094c7e6b14ccaa1ac",
+        "block": 21680527,
+        "timestamp_utc": "2026-10-30T19:04:39Z"
+      },
+      {
+        "proposal_id": 4,
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "role_name": "DEFAULT_DVP_ROLE",
+        "grantee": "0x20df5ba54349a4b88a9ec036506ab962f8b93e0e",
+        "execution_tx": "0xf0a7beb9ae422c18ab22e1ea15c278481f290d0d3922777d01a8f9fcb6fc0aa8",
+        "block": 21804717,
+        "timestamp_utc": "2026-10-31T16:08:54Z"
+      },
+      {
+        "proposal_id": 14,
+        "role_hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+        "role_name": "SETTLER_ROLE (later verified implementations)",
+        "grantee": "0x5ebaac853450aaff2e00da7715dd9449492c1013",
+        "execution_tx": "0xc086d7fdec5154bcd7f43bb711087d803676436feef2aec968b48151d6a6974e",
+        "block": 25708446,
+        "timestamp_utc": "2026-11-26T23:31:12Z"
+      },
+      {
+        "proposal_id": 17,
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "role_name": "DEFAULT_DVP_ROLE",
+        "grantee": "0x2b9212d4ed97cc39476cf5b8b952b2dc3f4f78a3",
+        "execution_tx": "0x6b99c175a8e17b03087f01b40159198331f701d45d2778e4a38f1b9dc0262f5a",
+        "block": 25714130,
+        "timestamp_utc": "2026-11-27T00:22:54Z"
+      },
+      {
+        "proposal_id": 21,
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "role_name": "DEFAULT_DVP_ROLE",
+        "grantee": "0x6980b68ba0e43636deca7335360a8c2915acdd40",
+        "execution_tx": "0xe514acf488c1cd41ca8aa02b595740eb2abef90ea2e381be14876faf03794472",
+        "block": 25800077,
+        "timestamp_utc": "2026-11-27T13:25:49Z"
+      },
+      {
+        "proposal_id": 22,
+        "role_hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+        "role_name": "SETTLER_ROLE (later verified implementations)",
+        "grantee": "0x114761f4b156c8c351684c4d749b4b481f29343e",
+        "execution_tx": "0x139c749b893c3d231f5d144d8a6c2016e3d34ca74e30d2f253930a38d0e6d423",
+        "block": 25800102,
+        "timestamp_utc": "2026-11-27T13:26:03Z"
+      }
+    ],
+    "upgrade_actions": [
+      {
+        "proposal_id": 5,
+        "selector": "0x4f1ef286",
+        "method": "upgradeToAndCall(address,bytes)",
+        "implementation": "0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39",
+        "tx": "0xa9409e70a24ac6898cc0213b1f1e0f0617923f47e3be3781e08c01c143fdd959",
+        "block": 22380723,
+        "time": "2026-11-04T17:03:01Z"
+      },
+      {
+        "proposal_id": 10,
+        "selector": "0x3659cfe6",
+        "method": "upgradeTo(address)",
+        "implementation": "0xad9667049f14d1757d147f652c41dc241c57091c",
+        "tx": "0xc841126f7cf05d937967743f7db5cb80d04cf32ed1dca929aac23d952e97f3c4",
+        "block": 23399976,
+        "time": "2026-11-11T21:25:01Z"
+      },
+      {
+        "proposal_id": 13,
+        "selector": "0x4f1ef286",
+        "method": "upgradeToAndCall(address,bytes)",
+        "implementation": "0x9644667cc096964bafb6a533d57873544fbfb956",
+        "tx": "0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567",
+        "block": 25699353,
+        "time": "2026-11-26T22:08:28Z"
+      },
+      {
+        "proposal_id": 16,
+        "selector": "0x4f1ef286",
+        "method": "upgradeToAndCall(address,bytes)",
+        "implementation": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+        "tx": "0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c",
+        "block": 25714062,
+        "time": "2026-11-27T00:22:17Z"
+      }
+    ],
+    "classification": "Direct observation of current proposal getter scan; execution chronology and grant events were separately checked against Explorer transaction-specific outputs.",
+    "limitation": "Does not exclude indirect or non-multisig upgrade paths; historical storage is pruned and the tested RPC/Explorer range-log endpoints showed indexing discrepancies."
+  },
+  "role_authorization_review": {
+    "implementation_at_target_best_supported_candidate": "0xad9667049f14d1757d147f652c41dc241c57091c",
+    "source_verified_at_utc": "2026-11-11T20:43:50.814690Z",
+    "upgrade_authorization": "_authorizeUpgrade(address) internal override onlyRole(DEFAULT_OWNER_ROLE) {}",
+    "role_constants_from_read_only_eth_call": {
+      "DEFAULT_OWNER_ROLE": "0xef9601d24635ad31384c7350515a0fc1278494eeac14501e1be3d265f369a3be",
+      "DEFAULT_DVP_ROLE": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+      "DEFAULT_ADMIN_ROLE": "0x0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "pre_target_role_grants": [
+      {
+        "proposal_id": 3,
+        "role": "DEFAULT_DVP_ROLE",
+        "grantee": "0xc725e02a9466985e4f6a3def109d347472601b20",
+        "execution_block": 21680527,
+        "execution_time_utc": "2026-10-30T19:04:39Z"
+      },
+      {
+        "proposal_id": 4,
+        "role": "DEFAULT_DVP_ROLE",
+        "grantee": "0x20df5ba54349a4b88a9ec036506ab962f8b93e0e",
+        "execution_block": 21804717,
+        "execution_time_utc": "2026-10-31T16:08:54Z"
+      }
+    ],
+    "post_target_role_grants": [
+      {
+        "proposal_id": 14,
+        "role": "SETTLER_ROLE (later verified implementations)",
+        "role_hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+        "grantee": "0x5ebaac853450aaff2e00da7715dd9449492c1013",
+        "execution_block": 25708446,
+        "execution_time_utc": "2026-11-26T23:31:12Z"
+      },
+      {
+        "proposal_id": 17,
+        "role": "DEFAULT_DVP_ROLE",
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "grantee": "0x2b9212d4ed97cc39476cf5b8b952b2dc3f4f78a3",
+        "execution_block": 25714130,
+        "execution_time_utc": "2026-11-27T00:22:54Z"
+      },
+      {
+        "proposal_id": 21,
+        "role": "DEFAULT_DVP_ROLE",
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "grantee": "0x6980b68ba0e43636deca7335360a8c2915acdd40",
+        "execution_block": 25800077,
+        "execution_time_utc": "2026-11-27T13:25:49Z"
+      },
+      {
+        "proposal_id": 22,
+        "role": "SETTLER_ROLE (later verified implementations)",
+        "role_hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+        "grantee": "0x114761f4b156c8c351684c4d749b4b481f29343e",
+        "execution_block": 25800102,
+        "execution_time_utc": "2026-11-27T13:26:03Z"
+      }
+    ],
+    "finding": "Among all 24 current OwnerMultisig proposal IDs, the only direct SharedVaultProxy grantRole actions executed before the 2026-11-21 target are proposals 3 and 4; both grant DEFAULT_DVP_ROLE. The reviewed 0xad966... implementation authorizes upgrades with DEFAULT_OWNER_ROLE. None of the six direct proxy grantRole actions grants DEFAULT_OWNER_ROLE.",
+    "safe_conclusion": "Confirmed transaction chronology shows proposal 5 installed 0x3a3f95... on 2026-11-04 and proposal 10 installed 0xad966... on 2026-11-11. Proposals 13 and 16 installed later implementations after the 2026-11-21 target. The complete current OwnerMultisig proposal getter scan (IDs 0–23) found only two pre-target direct proxy grantRole actions, both DVP-role grants, not Owner-role grants. Therefore 0xad966... is the best-supported implementation reconstruction at the target date by confirmed direct OwnerMultisig proposal chronology and reviewed authorization. Historical storage is pruned; indirect/non-multisig paths remain outside this scan."
   }
 }

@@ -1,7 +1,7 @@
 {
   "record_id": "RAYLS-ENYGMA-SHAREDVAULT-PROXY-ROLE-GRANTS-20261128",
   "record_type": "proxy_access_control_role_grants_review",
-  "status": "in_progress",
+  "status": "reviewed_with_historical_scope_limitations",
   "recorded_at_utc": "2026-11-28",
   "subject": {
     "proxy": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
@@ -34,16 +34,38 @@
         "action_id": 3,
         "method": "execute(uint256 id)"
       },
-      "transaction_specific_role_granted_log": "not yet inspected",
-      "role_name": "unknown",
-      "role_capabilities": "unknown",
-      "classification": "direct_observation_current_proposal_getter_output_plus_multisig_transaction_index_observation",
+      "transaction_specific_role_granted_log": {
+        "logs_returned": 2,
+        "event": "RoleGranted(bytes32,address,address)",
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "account": "0xc725e02a9466985e4f6a3def109d347472601b20",
+        "sender": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "log_index": 0,
+        "match": "Role hash and account match decoded proposal calldata."
+      },
+      "role_name": "DEFAULT_DVP_ROLE",
+      "role_capabilities": "DVP-gated vault operations. In verified 0xad966... source this is not the role checked by _authorizeUpgrade.",
+      "classification": "direct_observation_read_only_proposal_getter_plus_transaction_specific_event_and_latest_state_eth_call",
       "interpretation_boundary": [
         "The proposal target is the SharedVaultProxy and its nested calldata is grantRole(bytes32,address).",
         "The role hash and grantee can be decoded from the returned proposal bytes.",
         "The nonzero role hash is not sufficient to assign a semantic role name or infer upgrade authority.",
         "Proposal 3 is shown executed=true in latest proposal state; the transaction index lists execute(3), but the transaction-specific RoleGranted log has not yet been inspected."
-      ]
+      ],
+      "grant_role_execution_transaction": {
+        "hash": "0x85a54f65b3534531185fa7ddbed406e3b007c6f3e31d04a094c7e6b14ccaa1ac",
+        "block": 21680527,
+        "timestamp_utc": "2026-10-30T19:04:39Z",
+        "action_id": 3,
+        "method": "execute(uint256 id)"
+      },
+      "latest_state_role_check": {
+        "has_role": true,
+        "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "role_admin": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "temporal_boundary": "Executed before the 2026-11-21 target transaction."
     },
     {
       "proposal_id": 4,
@@ -61,24 +83,188 @@
         "action_id": 4,
         "method": "execute(uint256 id)"
       },
-      "transaction_specific_role_granted_log": "not yet inspected",
-      "role_name": "unknown",
-      "role_capabilities": "unknown",
-      "classification": "direct_observation_current_proposal_getter_output_plus_multisig_transaction_index_observation",
+      "transaction_specific_role_granted_log": {
+        "logs_returned": 2,
+        "event": "RoleGranted(bytes32,address,address)",
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "account": "0x20df5ba54349a4b88a9ec036506ab962f8b93e0e",
+        "sender": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "log_index": 0,
+        "match": "Role hash and account match decoded proposal calldata."
+      },
+      "role_name": "DEFAULT_DVP_ROLE",
+      "role_capabilities": "DVP-gated vault operations. In verified 0xad966... source this is not the role checked by _authorizeUpgrade.",
+      "classification": "direct_observation_read_only_proposal_getter_plus_transaction_specific_event_and_latest_state_eth_call",
       "interpretation_boundary": [
         "The proposal target is SharedVaultProxy and its nested calldata is grantRole(bytes32,address).",
         "The role hash matches proposal 3 exactly.",
         "The grantee differs from proposal 3.",
         "The role hash alone does not identify the role name or establish upgrade authority.",
         "Proposal 4 is executed=true in latest proposal state; the transaction index lists execute(4), but the transaction-specific RoleGranted log has not yet been inspected."
-      ]
+      ],
+      "grant_role_execution_transaction": {
+        "hash": "0xf0a7beb9ae422c18ab22e1ea15c278481f290d0d3922777d01a8f9fcb6fc0aa8",
+        "block": 21804717,
+        "timestamp_utc": "2026-10-31T16:08:54Z",
+        "action_id": 4,
+        "method": "execute(uint256 id)"
+      },
+      "latest_state_role_check": {
+        "has_role": true,
+        "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "role_admin": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "temporal_boundary": "Executed before the 2026-11-21 target transaction."
+    },
+    {
+      "proposal_id": 14,
+      "proposal_target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed_latest_state": true,
+      "proposal_value": "0",
+      "nested_selector": "0x2f2ff15d",
+      "nested_signature": "grantRole(bytes32,address)",
+      "role_hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+      "grantee": "0x5ebaac853450aaff2e00da7715dd9449492c1013",
+      "role_name": "SETTLER_ROLE (later verified implementations)",
+      "role_capabilities": "Later verified implementations use SETTLER_ROLE in a settler/trusted-forwarder gate; it is not the role checked by _authorizeUpgrade.",
+      "grant_role_execution_transaction": {
+        "hash": "0xc086d7fdec5154bcd7f43bb711087d803676436feef2aec968b48151d6a6974e",
+        "block": 25708446,
+        "timestamp_utc": "2026-11-26T23:31:12Z",
+        "action_id": 14,
+        "method": "execute(uint256 id)"
+      },
+      "transaction_specific_role_granted_log": {
+        "logs_returned": 2,
+        "event": "RoleGranted(bytes32,address,address)",
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "role_hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+        "account": "0x5ebaac853450aaff2e00da7715dd9449492c1013",
+        "sender": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "log_index": 0,
+        "match": "Role hash and account match decoded proposal calldata."
+      },
+      "latest_state_role_check": {
+        "has_role": true,
+        "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "role_admin": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "classification": "direct_observation_read_only_proposal_getter_plus_transaction_specific_event_and_latest_state_eth_call",
+      "temporal_boundary": "Executed after the 2026-11-21 target transaction; not evidence of role state at the historical target block."
+    },
+    {
+      "proposal_id": 17,
+      "proposal_target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed_latest_state": true,
+      "proposal_value": "0",
+      "nested_selector": "0x2f2ff15d",
+      "nested_signature": "grantRole(bytes32,address)",
+      "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+      "grantee": "0x2b9212d4ed97cc39476cf5b8b952b2dc3f4f78a3",
+      "role_name": "DEFAULT_DVP_ROLE",
+      "role_capabilities": "DVP-gated vault operations. In verified 0xad966... source this is not the role checked by _authorizeUpgrade.",
+      "grant_role_execution_transaction": {
+        "hash": "0x6b99c175a8e17b03087f01b40159198331f701d45d2778e4a38f1b9dc0262f5a",
+        "block": 25714130,
+        "timestamp_utc": "2026-11-27T00:22:54Z",
+        "action_id": 17,
+        "method": "execute(uint256 id)"
+      },
+      "transaction_specific_role_granted_log": {
+        "logs_returned": 2,
+        "event": "RoleGranted(bytes32,address,address)",
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "account": "0x2b9212d4ed97cc39476cf5b8b952b2dc3f4f78a3",
+        "sender": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "log_index": 0,
+        "match": "Role hash and account match decoded proposal calldata."
+      },
+      "latest_state_role_check": {
+        "has_role": true,
+        "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "role_admin": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "classification": "direct_observation_read_only_proposal_getter_plus_transaction_specific_event_and_latest_state_eth_call",
+      "temporal_boundary": "Executed after the 2026-11-21 target transaction; not evidence of role state at the historical target block."
+    },
+    {
+      "proposal_id": 21,
+      "proposal_target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed_latest_state": true,
+      "proposal_value": "0",
+      "nested_selector": "0x2f2ff15d",
+      "nested_signature": "grantRole(bytes32,address)",
+      "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+      "grantee": "0x6980b68ba0e43636deca7335360a8c2915acdd40",
+      "role_name": "DEFAULT_DVP_ROLE",
+      "role_capabilities": "DVP-gated vault operations. In verified 0xad966... source this is not the role checked by _authorizeUpgrade.",
+      "grant_role_execution_transaction": {
+        "hash": "0xe514acf488c1cd41ca8aa02b595740eb2abef90ea2e381be14876faf03794472",
+        "block": 25800077,
+        "timestamp_utc": "2026-11-27T13:25:49Z",
+        "action_id": 21,
+        "method": "execute(uint256 id)"
+      },
+      "transaction_specific_role_granted_log": {
+        "logs_returned": 2,
+        "event": "RoleGranted(bytes32,address,address)",
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+        "account": "0x6980b68ba0e43636deca7335360a8c2915acdd40",
+        "sender": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "log_index": 0,
+        "match": "Role hash and account match decoded proposal calldata."
+      },
+      "latest_state_role_check": {
+        "has_role": true,
+        "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "role_admin": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "classification": "direct_observation_read_only_proposal_getter_plus_transaction_specific_event_and_latest_state_eth_call",
+      "temporal_boundary": "Executed after the 2026-11-21 target transaction; not evidence of role state at the historical target block."
+    },
+    {
+      "proposal_id": 22,
+      "proposal_target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed_latest_state": true,
+      "proposal_value": "0",
+      "nested_selector": "0x2f2ff15d",
+      "nested_signature": "grantRole(bytes32,address)",
+      "role_hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+      "grantee": "0x114761f4b156c8c351684c4d749b4b481f29343e",
+      "role_name": "SETTLER_ROLE (later verified implementations)",
+      "role_capabilities": "Later verified implementations use SETTLER_ROLE in a settler/trusted-forwarder gate; it is not the role checked by _authorizeUpgrade.",
+      "grant_role_execution_transaction": {
+        "hash": "0x139c749b893c3d231f5d144d8a6c2016e3d34ca74e30d2f253930a38d0e6d423",
+        "block": 25800102,
+        "timestamp_utc": "2026-11-27T13:26:03Z",
+        "action_id": 22,
+        "method": "execute(uint256 id)"
+      },
+      "transaction_specific_role_granted_log": {
+        "logs_returned": 2,
+        "event": "RoleGranted(bytes32,address,address)",
+        "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+        "role_hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+        "account": "0x114761f4b156c8c351684c4d749b4b481f29343e",
+        "sender": "0xbf099175a241194c38e977735d59ccb22596d775",
+        "log_index": 0,
+        "match": "Role hash and account match decoded proposal calldata."
+      },
+      "latest_state_role_check": {
+        "has_role": true,
+        "raw_result": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "role_admin": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "classification": "direct_observation_read_only_proposal_getter_plus_transaction_specific_event_and_latest_state_eth_call",
+      "temporal_boundary": "Executed after the 2026-11-21 target transaction; not evidence of role state at the historical target block."
     }
   ],
   "next_checks": [
-    "Inspect transaction-specific logs for execute(3) tx 0x85a54f65b3534531185fa7ddbed406e3b007c6f3e31d04a094c7e6b14ccaa1ac and execute(4) tx 0xf0a7beb9ae422c18ab22e1ea15c278481f290d0d3922777d01a8f9fcb6fc0aa8; confirm RoleGranted logs and sender.",
-    "Decode proposal IDs 14, 17, 21, and 22 with the same ABI layout.",
-    "Retrieve verified source for implementation 0xad966... and determine the actual upgrade authorization check and AccessControl role semantics.",
-    "Compare the role hash in proposal 3/4 and later proposals with the role enforced by upgradeTo/upgradeToAndCall."
+    "No further decoding of the six identified direct proxy grantRole proposals is required; all six role hashes, grantees, execution transactions and RoleGranted events were mapped.",
+    "Retain the historical-state-pruned caveat and the scope limitation excluding indirect/non-multisig upgrade paths."
   ],
   "sources": [
     {
@@ -98,20 +284,160 @@
   ],
   "change_control": {
     "raw_transaction_archive_modified": false,
-    "source_repository_modified": false,
-    "onchain_transactions_signed_or_sent": false
+    "source_repository_modified": true,
+    "onchain_transactions_signed_or_sent": false,
+    "latest_evidence_update_utc": "2026-11-28"
   },
   "role_hash_aggregate": {
-    "hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
-    "proposals": [
+    "DEFAULT_DVP_ROLE": {
+      "hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+      "proposals": [
+        3,
+        4,
+        17,
+        21
+      ],
+      "grantees": [
+        "0xc725e02a9466985e4f6a3def109d347472601b20",
+        "0x20df5ba54349a4b88a9ec036506ab962f8b93e0e",
+        "0x2b9212d4ed97cc39476cf5b8b952b2dc3f4f78a3",
+        "0x6980b68ba0e43636deca7335360a8c2915acdd40"
+      ],
+      "upgrade_authority_under_reviewed_0xad966_source": false
+    },
+    "SETTLER_ROLE": {
+      "hash": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa",
+      "proposals": [
+        14,
+        22
+      ],
+      "grantees": [
+        "0x5ebaac853450aaff2e00da7715dd9449492c1013",
+        "0x114761f4b156c8c351684c4d749b4b481f29343e"
+      ],
+      "implementation_scope": [
+        "0x9644667cc096964bafb6a533d57873544fbfb956",
+        "0x937471b6acdad0c77d6874d0546d6009e09cd3f0"
+      ],
+      "upgrade_authority_under_reviewed_later_sources": false
+    },
+    "DEFAULT_OWNER_ROLE": {
+      "hash": "0xef9601d24635ad31384c7350515a0fc1278494eeac14501e1be3d265f369a3be",
+      "granted_by_any_of_six_reviewed_grant_role_proposals": false,
+      "upgrade_authorization_role_in_0xad966_source": true
+    }
+  },
+  "batch_01_complete_proxy_proposal_scan": {
+    "retrieval_date": "2026-11-28",
+    "rpc": "https://testnet-rpc.rayls.com",
+    "methodology": "Read-only eth_call to proposalCount() and proposals(id) for every proposal ID from 0 through proposalCount()-1. Current proposalCount returned 24.",
+    "proposal_count": 24,
+    "proposal_ids_scanned": [
+      0,
+      1,
+      2,
       3,
-      4
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
     ],
-    "grantees": [
-      "0xc725e02a9466985e4f6a3def109d347472601b20",
-      "0x20df5ba54349a4b88a9ec036506ab962f8b93e0e"
+    "direct_sharedvault_proxy_target_proposal_ids": [
+      3,
+      4,
+      5,
+      10,
+      13,
+      14,
+      16,
+      17,
+      21,
+      22
     ],
-    "role_name": "unknown",
-    "capabilities": "unknown"
-  }
+    "grant_role_proposal_ids": [
+      3,
+      4,
+      14,
+      17,
+      21,
+      22
+    ],
+    "upgrade_proposal_ids": [
+      5,
+      10,
+      13,
+      16
+    ],
+    "all_ten_direct_proxy_target_proposals_showed_executed_true_in_latest_getter_state": true,
+    "completeness_boundary": "Complete scan of current OwnerMultisig proposal IDs 0–23 for direct target equality with SharedVaultProxy. It does not rule out indirect calls or upgrade authority outside this enumerated multisig proposal set."
+  },
+  "role_constant_verification": {
+    "implementation_0xad9667049f14d1757d147f652c41dc241c57091c": {
+      "source_verified": true,
+      "verified_at_utc": "2026-11-11T20:43:50.814690Z",
+      "read_only_getters": {
+        "DEFAULT_OWNER_ROLE()": {
+          "selector": "0x3b8162b7",
+          "result": "0xef9601d24635ad31384c7350515a0fc1278494eeac14501e1be3d265f369a3be"
+        },
+        "DEFAULT_DVP_ROLE()": {
+          "selector": "0x59f880bd",
+          "result": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91"
+        },
+        "DEFAULT_ADMIN_ROLE()": {
+          "selector": "0xa217fddf",
+          "result": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      },
+      "upgrade_authorization_source": "function _authorizeUpgrade(address) internal override onlyRole(DEFAULT_OWNER_ROLE) {}"
+    },
+    "implementation_0x9644667cc096964bafb6a533d57873544fbfb956": {
+      "source_verified": true,
+      "verified_at_utc": "2026-11-26T21:46:23.831215Z",
+      "read_only_getter": {
+        "SETTLER_ROLE()": {
+          "selector": "0x7445e85c",
+          "result": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa"
+        }
+      },
+      "source_use": "SETTLER_ROLE appears in a settler/trusted-forwarder authorization gate; _authorizeUpgrade remains gated by DEFAULT_OWNER_ROLE."
+    },
+    "implementation_0x937471b6acdad0c77d6874d0546d6009e09cd3f0": {
+      "source_verified": true,
+      "verified_at_utc": "2026-11-27T00:02:55.444785Z",
+      "read_only_getter": {
+        "SETTLER_ROLE()": {
+          "selector": "0x7445e85c",
+          "result": "0x4ec619e1829190795f929742ca4f1a6f7cd622481ddbbfb4c9b5efddb006f9aa"
+        }
+      },
+      "source_use": "SETTLER_ROLE appears in a settler/trusted-forwarder authorization gate; _authorizeUpgrade remains gated by DEFAULT_OWNER_ROLE."
+    },
+    "classification": "Direct read-only eth_call outputs supplied by user, correlated with Explorer-verified implementation source metadata."
+  },
+  "interpretation_boundary": [
+    "Proposals 3 and 4 executed before the 2026-11-21 target and grant DEFAULT_DVP_ROLE, not DEFAULT_OWNER_ROLE.",
+    "Proposals 14, 17, 21 and 22 executed after the 2026-11-21 target; their later grants do not establish role state at the historical target block.",
+    "Proposals 14 and 22 use the hash returned by SETTLER_ROLE() on later verified implementations 0x964466... and 0x937471....",
+    "Implementation 0xad966... gates UUPS upgrades with DEFAULT_OWNER_ROLE. None of the six direct proxy grantRole proposals grants that role.",
+    "This rules out these six direct proxy grantRole proposals as observed grants of upgrade authority; it does not rule out every conceivable indirect or non-multisig upgrade path.",
+    "The historical EIP-1967 implementation-slot read was unavailable because the RPC historical state was pruned; target-date implementation remains a chronology reconstruction, not a direct historical storage read.",
+    "Latest-state hasRole/getRoleAdmin results do not independently reconstruct role membership at the 2026-11-21 historical block."
+  ]
 }
