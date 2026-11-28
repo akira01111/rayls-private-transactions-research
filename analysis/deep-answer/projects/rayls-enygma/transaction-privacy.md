@@ -1,20 +1,22 @@
 # Rayls Enygma Public — transaction privacy
 
-Status: current official documentation downloaded from Rayls and its visibility matrix inspected in the user's Codespace.
+Status: official documentation downloaded and its visibility matrix inspected in the user's Codespace. The visibility matrix is an official product claim; it is not an independent decryption test.
 
-## Visibility matrix
+## Documented visibility matrix
 
 | Party | Can see | Cannot see |
 |---|---|---|
-| Anyone / explorer | Registered account address, public keys, username; shield/unshield address, token and amount; occurrence of shielded payment, relayer, gas fee, nullifiers, commitments and encrypted notes | Sender, recipient, amount and spent notes for shielded payment; token moved in shared vault |
+| Anyone / explorer | Registered account address, public keys, username; public shield/unshield address, token and amount; occurrence of a shielded payment, relayer/gas data, nullifiers, commitments, and encrypted notes | Sender, recipient, amount and spent notes for the shielded payment; token moved within the shared vault |
 | Recipient | Amount and token of each payment received | Sender identity from the note |
 | Sender | Its own payments | Other accounts' balances and payments |
-| Relayer | Publicly visible information, token used for its pricing, gas fee paid to it | Sender, recipient and amount of a shielded payment |
-| Auditor | Every shielded transaction decrypted: sender, recipient, amount, token; invites/claims and Foundation fees | Spend keys; cannot spend or move users' funds |
+| Relayer | Publicly visible information, token used for pricing, gas fee paid to it | Sender, recipient and amount of a shielded payment |
+| Auditor | Documented access to shielded transaction details including sender, recipient, amount and token | Spend keys; view access does not grant authority to spend or move users' funds |
 
-## Important boundary
+## What is and is not shielded
 
-Shielding, unshielding and registering are public activities. When public tokens move into or out of a vault, the address, token and amount are visible on-chain. A shielded payment is different: its sensitive payment details are hidden from public observers, while encrypted note data and commitments remain visible.
+Shielding, unshielding, and account registration are public activities. When tokens move into or out of a vault, the address, token, and amount are visible on-chain. A shielded payment is different: its sensitive payment details are hidden from public observers while cryptographic artifacts and encrypted note data remain visible.
+
+This is not invisibility of the transaction itself. An observer can see that a shielded payment occurred and can inspect the public commitments, nullifiers, ciphertext-related data, relayer, and gas metadata. The documented privacy property is about hiding payment content and linkage, not eliminating all public traces.
 
 ## Evidence
 
@@ -22,18 +24,17 @@ Shielding, unshielding and registering are public activities. When public tokens
    - Codespace retrieval: HTTP 200; 196,863 bytes.
    - SHA-256: 17704cffaf946d917d32ec35d77b6b2c00acf2aa368b835903ca6aff9e04c0d2.
    - Local snapshots: /tmp/deep-answer-auditor/rayls.html and /tmp/deep-answer-transaction-privacy/rayls_who_sees_what.html.
-   - Terminal extraction includes the full “What each party can see” table and details on public shielding/unshielding.
-
 2. [How Enygma Public works](https://docs.rayls.com/docs/how-enygma-public-works)
+3. [Try Enygma Public on testnet](https://docs.rayls.com/docs/try-enygma-public-on-testnet)
 
-## Classification
+## Evidence classification and limits
 
-- Official documentation claim: public observers can see ciphertext/commitment/nullifier-related data, but not the private parties and values of a shielded payment.
-- Official documentation claim: recipients see amount/token for their payments, but notes do not carry sender identity.
-- Official documentation claim: relayer cannot see sender, recipient, or amount of shielded payment.
+- **Official documentation claim:** public observers cannot see the sender, recipient, amount, or spent notes of a shielded payment.
+- **Official documentation claim:** recipients see the amount/token received but not sender identity from the note; relayers cannot see the shielded payment parties or amount.
+- **Not independently verified:** successful auditor decryption of a specific account/transaction.
+- **Not historically attributed:** this visibility matrix does not prove the exact configuration or implementation used by the separate 2026-11-21 historical transaction.
+- Do not infer that every on-chain Enygma operation is private: shield, unshield, and registration are explicitly public.
 
-## Limitations
+## Institutional relevance
 
-- Documentation claims are not the same as an independent decryption test.
-- The file does not prove the exact visibility configuration of the historical November 21 transaction investigated in the Rayls forensic work.
-- Do not infer that every on-chain action is private: shield, unshield, and registration are explicitly public.
+Enygma Public is the clearest main-case example in this research of a shielded-payment application on a public-chain testnet that retains public cryptographic evidence and documents an auditor-access path. Its testnet status and untested auditor decryption remain material limitations.
