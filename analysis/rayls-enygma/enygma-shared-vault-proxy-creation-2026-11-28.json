@@ -1,0 +1,114 @@
+{
+  "record_id": "RAYLS-ENYGMA-SHAREDVAULT-PROXY-CREATION-INITIAL-IMPLEMENTATION-20261128",
+  "record_type": "proxy_creation_and_initial_upgrade_event",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-28",
+  "subject": {
+    "proxy_address": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "proxy_name": "SharedVaultProxy",
+    "proxy_type_reported_by_explorer": "eip1967",
+    "creation_transaction_hash": "0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7",
+    "creation_timestamp_utc": "2026-10-30T00:04:35Z",
+    "creation_status": "success",
+    "created_by": "0xa5f0c684eb49866a9f62f901cd85f98a19da0ac8",
+    "historical_transaction_of_interest": {
+      "hash": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+      "block": 24825928,
+      "timestamp_utc": "2026-11-21T09:40:42Z"
+    }
+  },
+  "creation_transaction_observations": {
+    "source": "Rayls Testnet Explorer API",
+    "endpoint": "https://testnet-explorer.rayls.com/api/v2/transactions/0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7",
+    "transaction_types": ["contract_creation"],
+    "result": "success",
+    "gas_used": 255797,
+    "block_number": "not included in the selected fields from the retrieved Explorer response; exact block to be obtained from RPC transaction receipt",
+    "created_contract": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2"
+  },
+  "creation_log_observations": {
+    "source": "Rayls Testnet Explorer API",
+    "endpoint": "https://testnet-explorer.rayls.com/api/v2/transactions/0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7/logs",
+    "total_logs_returned": 5,
+    "log_0": {
+      "emitter": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "topic0": "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
+      "event_signature": "Upgraded(address)",
+      "topic1": "0x0000000000000000000000000a3a9f0e41937d330a8734c3276557f1ec9ad62f",
+      "decoded_implementation": "0x0a3a9f0e41937d330a8734c3276557f1ec9ad62f",
+      "log_index_in_transaction": 0,
+      "classification": "direct_observation_explorer_decoded_log"
+    },
+    "other_logs": [
+      {
+        "log_index_in_transaction": 1,
+        "topic0": "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d",
+        "classification": "role_event_signature_unresolved_in_this_record"
+      },
+      {
+        "log_index_in_transaction": 2,
+        "topic0": "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d",
+        "classification": "role_event_signature_unresolved_in_this_record"
+      },
+      {
+        "log_index_in_transaction": 3,
+        "topic0": "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d",
+        "classification": "role_event_signature_unresolved_in_this_record"
+      },
+      {
+        "log_index_in_transaction": 4,
+        "topic0": "0x7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb3847402498",
+        "classification": "event_signature_not_resolved_in_this_record",
+        "data": "0x0000000000000000000000000000000000000000000000000000000000000001"
+      }
+    ]
+  },
+  "interpretation": {
+    "established": [
+      "Explorer identifies the address as a successful EIP-1967 SharedVaultProxy creation.",
+      "The creation transaction emitted Upgraded(address) from the proxy address.",
+      "The implementation argument in the creation event is 0x0a3a9f0e41937d330a8734c3276557f1ec9ad62f.",
+      "The proxy therefore had an implementation assigned during its creation transaction."
+    ],
+    "not_established": [
+      "Whether the initial implementation remained active at block 24825928 on 2026-11-21.",
+      "Whether one or more upgrades occurred between the creation block on 2026-10-30 and transaction block 24825928.",
+      "The creation block number, pending exact receipt retrieval.",
+      "Whether implementation 0x0a3a... matches any source version already reviewed."
+    ],
+    "chronology_context": [
+      "A later Upgraded(address) event on block 25699353 (2026-11-26T22:08:28Z) points to 0x9644667cc096964bafb6a533d57873544fbfb956.",
+      "A later Upgraded(address) event on block 25714062 (2026-11-27T00:22:17Z) points to 0x937471b6acdad0c77d6874d0546d6009e09cd3f0.",
+      "These later events do not establish the implementation active at the 2026-11-21 historical transaction."
+    ]
+  },
+  "next_checks": [
+    "Use eth_getTransactionReceipt for the proxy creation transaction to obtain the exact creation block number.",
+    "Scan Upgraded(address) logs from the creation block through block 24825928, inclusive, in bounded chunks.",
+    "Inspect implementation 0x0a3a9f0e41937d330a8734c3276557f1ec9ad62f metadata and source/bytecode if available.",
+    "Reconcile any pre-transaction upgrade events with the previously recorded 0xad9667049f14d1757d147f652c41dc241c57091c reference."
+  ],
+  "sources": [
+    {
+      "id": "SRC-PROXY-CREATION-TX",
+      "type": "explorer_creation_transaction",
+      "url": "https://testnet-explorer.rayls.com/tx/0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7"
+    },
+    {
+      "id": "SRC-PROXY-CREATION-LOGS",
+      "type": "explorer_creation_logs",
+      "url": "https://testnet-explorer.rayls.com/api/v2/transactions/0xa626fb912862868ebe94747d6d2256e18e3ed7cdd2cf4d2da0ccdf31c7f4c3a7/logs"
+    },
+    {
+      "id": "SRC-PROXY-CURRENT-METADATA",
+      "type": "explorer_address_metadata",
+      "url": "https://testnet-explorer.rayls.com/api/v2/addresses/0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2"
+    }
+  ],
+  "change_control": {
+    "earlier_analysis_records_modified": false,
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false
+  }
+}
