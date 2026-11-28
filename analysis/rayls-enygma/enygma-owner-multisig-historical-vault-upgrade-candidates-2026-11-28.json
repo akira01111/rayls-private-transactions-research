@@ -1,0 +1,116 @@
+{
+  "record_id": "RAYLS-ENYGMA-OWNER-MULTISIG-HISTORICAL-VAULT-UPGRADE-CANDIDATES-20261128",
+  "record_type": "multisig_proposal_state_read_review",
+  "status": "in_progress",
+  "recorded_at_utc": "2026-11-28",
+  "subject": {
+    "multisig": "0xbf099175a241194c38e977735d59ccb22596d775",
+    "proxy": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+    "historical_transaction": "0x09edab2bb8914aea3c905608ea9fcd09c056a470a5e150df03e0b324eff525bb",
+    "historical_transaction_block": 24825928
+  },
+  "read_methodology": {
+    "rpc": "https://testnet-rpc.rayls.com",
+    "method": "eth_call",
+    "block_tag": "latest",
+    "getters": {
+      "proposalCount_selector": "0xda35c664",
+      "proposals_selector": "0x013cf08b"
+    },
+    "proposal_count_returned": 24,
+    "retrieval_date": "2026-11-28",
+    "classification": "direct_observation_current_state"
+  },
+  "proposal_state_observations": [
+    {
+      "proposal_id": 5,
+      "target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed": true,
+      "value": "0",
+      "multisig_proposal_calldata": "0x4f1ef2860000000000000000000000003a3f95cf53d4a0bd99d9afb3c785cd969cefdf3900000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000024f40783cf000000000000000000000000f10de8503ab9e2aa1cf6eb8a7425250fcb14b05700000000000000000000000000000000000000000000000000000000",
+      "inner_method_selector": "0x4f1ef286",
+      "inner_method_signature": "upgradeToAndCall(address,bytes)",
+      "implementation_argument": "0x3a3f95cf53d4a0bd99d9afb3c785cd969cefdf39",
+      "classification": "direct_observation_current_multisig_proposal_state_with_calldata_selector_interpretation",
+      "execution_time_and_block": "unknown from proposals(id) getter"
+    },
+    {
+      "proposal_id": 10,
+      "target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed": true,
+      "value": "0",
+      "multisig_proposal_calldata": "0x3659cfe6000000000000000000000000ad9667049f14d1757d147f652c41dc241c57091c",
+      "inner_method_selector": "0x3659cfe6",
+      "inner_method_signature": "upgradeTo(address)",
+      "implementation_argument": "0xad9667049f14d1757d147f652c41dc241c57091c",
+      "classification": "direct_observation_current_multisig_proposal_state_with_calldata_selector_interpretation",
+      "execution_time_and_block": "unknown from proposals(id) getter",
+      "cross_reference": "This implementation address matches the implementation address recorded in the earlier transaction audit as the prior associated implementation."
+    },
+    {
+      "proposal_id": 13,
+      "target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed": true,
+      "value": "0",
+      "inner_method_selector": "0x4f1ef286",
+      "inner_method_signature": "upgradeToAndCall(address,bytes)",
+      "implementation_argument": "0x9644667cc096964bafb6a533d57873544fbfb956",
+      "classification": "direct_observation_current_multisig_proposal_state_correlated_with_execution_transaction_and_proxy_upgrade_event",
+      "execution_transaction": "0xc2a566d29af6e96a8de6a9c002e20508f901e28f32c0f074f8c18c9072e13567",
+      "execution_block": 25699353
+    },
+    {
+      "proposal_id": 16,
+      "target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed": true,
+      "value": "0",
+      "inner_method_selector": "0x4f1ef286",
+      "inner_method_signature": "upgradeToAndCall(address,bytes)",
+      "implementation_argument": "0x937471b6acdad0c77d6874d0546d6009e09cd3f0",
+      "classification": "direct_observation_current_multisig_proposal_state_correlated_with_execution_transaction_and_proxy_upgrade_event",
+      "execution_transaction": "0xa8d762f12efaf8decc32918b4f32fe90db5bf8db377c156693c959ff3497250c",
+      "execution_block": 25714062
+    }
+  ],
+  "chronology_assessment": {
+    "verified_source_rule": "The currently verified OwnerMultisig source says proposal IDs increment from 0 and proposalCount is the next ID.",
+    "safe_conclusion": "Proposal 5 and proposal 10 were assigned before proposal 13 in the multisig's sequential proposal-ID order.",
+    "not_established": [
+      "The execution block/time of proposal 5.",
+      "The execution block/time of proposal 10.",
+      "Whether proposal 5 or proposal 10 executed before, at, or after the historical transaction at block 24825928.",
+      "Whether another earlier proposal also upgraded the proxy and was later superseded."
+    ],
+    "important_caution": "The executed=true flag is read from current state. It does not by itself reveal when the proposal was executed. Proposal IDs reflect proposal creation order under the verified source, not necessarily execution order."
+  },
+  "next_checks": [
+    "Query OwnerMultisig address transaction index and paginate to identify outer execute(5) and execute(10) transactions; verify whether the endpoint includes known execute(13) and execute(16) control transactions.",
+    "Query Explorer address logs for OwnerMultisig and/or scan its transaction-specific Proposed and Executed logs; address log endpoint completeness must be tested.",
+    "Read transaction-specific logs of candidate execute(5) and execute(10) transactions and match Executed(id) with proxy Upgraded(address) event in the same transaction.",
+    "Once execution time is established, reconstruct which implementation was active at block 24825928.",
+    "Do not treat proposal ID 10's implementation address as proof it was active on the target date until execution chronology is confirmed."
+  ],
+  "sources": [
+    {
+      "id": "SRC-OWNER-MULTISIG-VERIFIED-METADATA",
+      "type": "explorer_verified_source_metadata",
+      "url": "https://testnet-explorer.rayls.com/api/v2/smart-contracts/0xbf099175a241194c38e977735d59ccb22596d775"
+    },
+    {
+      "id": "SRC-OWNER-MULTISIG-PROPOSAL-GETTER",
+      "type": "direct_read_only_eth_call",
+      "url": "https://testnet-rpc.rayls.com"
+    },
+    {
+      "id": "SRC-PREVIOUS-IMPLEMENTATION-REFERENCE",
+      "type": "prior_analysis_record",
+      "url": "https://github.com/akira01111/rayls-private-transactions-research/blob/main/analysis/rayls-enygma/enygma-public-transfer-v2-relayer-fee-2026-11-27.json"
+    }
+  ],
+  "change_control": {
+    "prior_records_modified": false,
+    "raw_transaction_archive_modified": false,
+    "source_repository_modified": false,
+    "onchain_transactions_signed_or_sent": false
+  }
+}
