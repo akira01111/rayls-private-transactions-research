@@ -44,13 +44,41 @@
         "The nonzero role hash is not sufficient to assign a semantic role name or infer upgrade authority.",
         "Proposal 3 is shown executed=true in latest proposal state; the transaction index lists execute(3), but the transaction-specific RoleGranted log has not yet been inspected."
       ]
+    },
+    {
+      "proposal_id": 4,
+      "proposal_target": "0x9c5ad5e5ea5b5910e7fd1e1cc7b70ce0e4bf06c2",
+      "executed_latest_state": true,
+      "proposal_value": "0",
+      "nested_selector": "0x2f2ff15d",
+      "nested_signature": "grantRole(bytes32,address)",
+      "role_hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+      "grantee": "0x20df5ba54349a4b88a9ec036506ab962f8b93e0e",
+      "grant_role_execution_transaction_from_multisig_index": {
+        "hash": "0xf0a7beb9ae422c18ab22e1ea15c278481f290d0d3922777d01a8f9fcb6fc0aa8",
+        "block": 21804717,
+        "timestamp_utc": "2026-10-31T16:08:54Z",
+        "action_id": 4,
+        "method": "execute(uint256 id)"
+      },
+      "transaction_specific_role_granted_log": "not yet inspected",
+      "role_name": "unknown",
+      "role_capabilities": "unknown",
+      "classification": "direct_observation_current_proposal_getter_output_plus_multisig_transaction_index_observation",
+      "interpretation_boundary": [
+        "The proposal target is SharedVaultProxy and its nested calldata is grantRole(bytes32,address).",
+        "The role hash matches proposal 3 exactly.",
+        "The grantee differs from proposal 3.",
+        "The role hash alone does not identify the role name or establish upgrade authority.",
+        "Proposal 4 is executed=true in latest proposal state; the transaction index lists execute(4), but the transaction-specific RoleGranted log has not yet been inspected."
+      ]
     }
   ],
   "next_checks": [
-    "Inspect transaction-specific logs for execute(3) tx 0x85a54f65b3534531185fa7ddbed406e3b007c6f3e31d04a094c7e6b14ccaa1ac and confirm the proxy RoleGranted event.",
-    "Decode proposal 4 and then proposals 14, 17, 21, 22 with the same ABI layout.",
-    "Retrieve verified source for historical implementation 0xad966... and determine the actual upgrade authorization check and AccessControl role semantics.",
-    "Compare the role hash in proposal 3 (and later proposals) with the role enforced by upgradeTo/upgradeToAndCall."
+    "Inspect transaction-specific logs for execute(3) tx 0x85a54f65b3534531185fa7ddbed406e3b007c6f3e31d04a094c7e6b14ccaa1ac and execute(4) tx 0xf0a7beb9ae422c18ab22e1ea15c278481f290d0d3922777d01a8f9fcb6fc0aa8; confirm RoleGranted logs and sender.",
+    "Decode proposal IDs 14, 17, 21, and 22 with the same ABI layout.",
+    "Retrieve verified source for implementation 0xad966... and determine the actual upgrade authorization check and AccessControl role semantics.",
+    "Compare the role hash in proposal 3/4 and later proposals with the role enforced by upgradeTo/upgradeToAndCall."
   ],
   "sources": [
     {
@@ -72,5 +100,18 @@
     "raw_transaction_archive_modified": false,
     "source_repository_modified": false,
     "onchain_transactions_signed_or_sent": false
+  },
+  "role_hash_aggregate": {
+    "hash": "0xc7fe90722707aec742f400ec3786a55e7db95e8737640df85b25f30a15a65f91",
+    "proposals": [
+      3,
+      4
+    ],
+    "grantees": [
+      "0xc725e02a9466985e4f6a3def109d347472601b20",
+      "0x20df5ba54349a4b88a9ec036506ab962f8b93e0e"
+    ],
+    "role_name": "unknown",
+    "capabilities": "unknown"
   }
 }
