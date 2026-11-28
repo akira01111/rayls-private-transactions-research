@@ -1,27 +1,31 @@
 # R3 Corda — network model
 
-Status: preliminary; current evidence is version-specific to Corda 5.2.
+Status: reviewed for Corda 5.2 application-network architecture. Corda Enterprise 4.10 is retained only for the separately documented observer-node example; the versions are not merged.
 
-## Current evidence
+## Network model
 
-Corda 5.2 documentation describes application networks with a Membership Group Manager (MGM) that members register with before transacting within the group. A notary is a member/service role in the application network.
+### Permissioned application networks
+- Corda 5.2 describes application networks as membership groups in which members register before transacting.
+- The Membership Group Manager (MGM) acts as the central registrar for a dynamic application network. Network operators decide which identities can join; the required due diligence can vary and may include KYC.
+- Corda 5.2 documentation explicitly classifies Corda as a permissioned network in its application-network planning guidance.
 
-Corda documentation also describes participant-to-participant communication as peer-to-peer using flows.
+### Static and dynamic networks
+- Static networks are intended for local testing with predetermined virtual nodes or members and no MGM distributing member data across clusters.
+- Dynamic networks have a running MGM and are documented as being used for production networks as well as multi-cluster testing.
+- Participant communication is peer-to-peer through Corda flows. A notary provides uniqueness consensus to prevent double-spends; notary privacy depends on the selected protocol.
 
 ## Evidence
+1. [Planning Application Networks — Corda 5.2](https://docs.r3.com/en/platform/corda/5.2/application-networks/plan.html) — explicitly describes Corda as permissioned and assigns membership decisions to the Network Operator.
+2. [Creating Application Networks — Corda 5.2](https://docs.r3.com/en/platform/corda/5.2/application-networks/creating.html) — MGM and member onboarding.
+3. [Developing Applications — Corda 5.2](https://docs.r3.com/en/platform/corda/5.2/developing-applications.html) — static networks for local testing; dynamic networks for production and multi-cluster testing.
+4. [Notary Protocols — Corda 5.2](https://docs.r3.com/en/platform/corda/5.2/developing-applications/ledger/notaries/notary-protocols.html) — non-validating and contract-verifying notary protocols.
 
-1. [Creating Application Networks — Corda 5.2](https://docs.r3.com/en/platform/corda/5.2/application-networks/creating.html)
-2. [Notary Protocols — Corda 5.2](https://docs.r3.com/en/platform/corda/5.2/developing-applications/ledger/notaries/notary-protocols.html)
-3. [Corda 5.2 Glossary](https://docs.r3.com/en/platform/corda/5.2/reference/glossary.html)
+## Classification and limits
+- **Official documentation claims:** permissioned membership, MGM registration, static/dynamic network purposes, peer-to-peer flows, and notary roles.
+- **Interpretation:** Corda 5.2 application networks are permissioned environments, not open public ledgers.
+- Production-capable architecture does not, by itself, prove that a particular named Corda 5.2 network is currently live.
+- Corda Enterprise 4.10 and Corda 5.2 are separate version/edition scopes. The regulator observer-node example in the auditor-access file refers to Enterprise 4.10 and must not be described as a Corda 5.2 deployment.
+- Do not imply that all admitted members can read every network transaction. Visibility depends on transaction participation and application flows.
 
-## Classification
-
-- Official documentation claim: application-network membership requires registration with an MGM.
-- Official documentation claim: participant communication uses peer-to-peer flows.
-- Preliminary interpretation: Corda application networks are permissioned membership environments.
-
-## Still to verify
-
-- Compare Corda 5.2 and Corda Enterprise 4.10/4.14 only where necessary; they are separate product/version scopes.
-- Clarify the Corda Enterprise deployment model used for the intended comparison, rather than using “Corda” as if every release and edition were identical.
-- Do not infer that all application-network data is visible to every admitted member.
+## Institutional relevance
+Corda is a comparator for a permissioned, membership-governed DLT model. It demonstrates how institutions can control participation and use peer-to-peer transaction distribution, with corresponding interoperability and network-boundary trade-offs. See [deployment status](deployment-status.md).
